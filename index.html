@@ -484,13 +484,13 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="忘记Linux密码"><a href="#忘记Linux密码" class="headerlink" title="忘记Linux密码"></a>忘记Linux密码</h2><p> 如题，在配置hadoop集群的时候，忘记了Linux root用户密码，root用户密码又不能修改，虽然在/etc/sudoers 早就修改过免密sudo</p>
-<p><img src="..\assets\img\Linux修改Root密码\Linux安全模式修改密码(1" alt="/etc/sudoers">.jpg)</p>
-<h2 id="找回密码"><a href="#找回密码" class="headerlink" title="找回密码"></a>找回密码</h2><h4 id="1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）"><a href="#1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）" class="headerlink" title="1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）"></a>1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）</h4><p>  (实际进入开机页面的时候就已经想起来密码了，麻了)<br>  <img src="..\assets\img\Linux修改Root密码\Linux安全模式修改密码(2" alt="Linux开机页面">.jpg)</p>
+<p><img src="/assets/blogImg/Linux修改Root密码/Linux安全模式修改密码1.jpg" alt="/etc/sudoers"></p>
+<h2 id="找回密码"><a href="#找回密码" class="headerlink" title="找回密码"></a>找回密码</h2><h4 id="1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）"><a href="#1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）" class="headerlink" title="1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）"></a>1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）</h4><p>  (实际进入开机页面的时候就已经想起来密码了，麻了)<br>  <img src="/assets/blogImg/Linux修改Root密码/Linux安全模式修改密码2.jpg" alt="Linux开机页面"></p>
 <hr>
-<h4 id="2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start"><a href="#2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start" class="headerlink" title="2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)"></a>2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)</h4><p>  <img src="../assets/img/Linux修改Root密码/Linux安全模式修改密码(3" alt="ro修改为rw">.jpg)</p>
+<h4 id="2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start"><a href="#2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start" class="headerlink" title="2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)"></a>2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)</h4><p>  <img src="/assets/blogImg/Linux修改Root密码/Linux安全模式修改密码3.jpg" alt="ro修改为rw"></p>
 <hr>
 <h4 id="3-第三步-依次输入以下命令"><a href="#3-第三步-依次输入以下命令" class="headerlink" title="3.第三步 依次输入以下命令"></a>3.第三步 依次输入以下命令</h4><p>  <code>chroot /sysroot</code><br>  <code>passwd root</code><br>  <code>输入新密码 enter new passwd</code><br>  <code>再输入依次retype passwd</code><br>  <code>touch /.autorelabel</code><br>  <code>exit</code><br>  <code>reboot</code></p>
-<p>  <img src="/assets/blogImg/Linux修改Root密码/Linux安全模式修改密码(4" alt="ro修改为rw">.jpg)</p>
+<p>  <img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码4.jpg" alt="ro修改为rw"></p>
 <hr>
 
       
