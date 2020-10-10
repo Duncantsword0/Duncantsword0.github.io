@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: postgraduate | Hexo</title>
+  <title>Hadoop官方案例wordcount演示 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/tags/postgraduate/index.html">
+  <meta name="description" content="本地演示 创建在hadoop-2.7.2文件下面创建一个wcinput文件夹$ mkdir wcinput 在wcinput文件下创建一个wc.input文件并在文件中输入如下内容$ vim wc.input   hadoop yarn hadoop mapreduce chendingheng 201735020501 chendingheng    回到Hadoop目录&#x2F;opt&#x2F;module&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop官方案例wordcount演示">
+<meta property="og:url" content="http://example.com/BigData/Hadoop%E5%AE%98%E6%96%B9%E6%A1%88%E4%BE%8Bwordcount%E6%BC%94%E7%A4%BA/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本地演示 创建在hadoop-2.7.2文件下面创建一个wcinput文件夹$ mkdir wcinput 在wcinput文件下创建一个wc.input文件并在文件中输入如下内容$ vim wc.input   hadoop yarn hadoop mapreduce chendingheng 201735020501 chendingheng    回到Hadoop目录&#x2F;opt&#x2F;module&#x2F;">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-10T13:48:25.000Z">
+<meta property="article:modified_time" content="2020-10-10T14:18:01.205Z">
 <meta property="article:author" content="Duncan Chen">
+<meta property="article:tag" content="BigData">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -142,136 +147,216 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-BigData/Hadoop官方案例wordcount演示" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hadoop官方案例wordcount演示
+    </h1>
+  
+
+        
+        <a href="/BigData/Hadoop%E5%AE%98%E6%96%B9%E6%A1%88%E4%BE%8Bwordcount%E6%BC%94%E7%A4%BA/" class="archive-article-date">
+  	<time datetime="2020-10-10T13:48:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">230字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="本地演示"><a href="#本地演示" class="headerlink" title="本地演示"></a>本地演示</h1><ol>
+<li>创建在hadoop-2.7.2文件下面创建一个wcinput文件夹<br><code>$ mkdir wcinput</code></li>
+<li>在wcinput文件下创建一个wc.input文件并在文件中输入如下内容<br><code>$ vim wc.input</code></li>
+</ol>
+<blockquote>
+<p>hadoop yarn</p>
+<p>hadoop mapreduce</p>
+<p>chendingheng 201735020501</p>
+<p>chendingheng </p>
+</blockquote>
+<ol>
+<li>回到Hadoop目录/opt/module/hadoop-2.7.2，执行程序，并通过cat命令查看结果</li>
+</ol>
+<p><code>$ hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar wordcount wcinput wcoutput</code></p>
+<p><code>$ cat wcoutput/part-r-00000</code></p>
+<blockquote>
+<p>201735020501    1<br>chendingheng    2<br>hadoop    2<br>mapreduce    1<br>yarn    1</p>
+</blockquote>
+<h1 id="伪分布式演示"><a href="#伪分布式演示" class="headerlink" title="伪分布式演示"></a>伪分布式演示</h1><ol>
+<li>在HDFS文件系统上创建一个input文件夹<br><code>$ bin/hdfs dfs -mkdir -p /usr/hadoop200/input</code></li>
+<li>将测试文件内容上传到文件系统上<br><code>$ bin/hdfs dfs -put wcinput/wc.input/usr/hadoop200/input/</code></li>
+<li>查看上传的文件是否正确<br><code>$ bin/hdfs dfs -ls  /usr/hadoop200/input/</code><br><code>$ bin/hdfs dfs -cat  /usr/hadoop200/input/wc.input</code></li>
+<li>运行MapReduce程序，查看结果<br><code>$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar wordcount /usr/hadoop200/input/ /usr/hadoop200/output</code><br><code>$ bin/hdfs dfs -cat /usr/hadoop200/output/*</code></li>
+</ol>
+<blockquote>
+<p>201735020501    1<br>chendingheng    2<br>hadoop    2<br>mapreduce    1<br>yarn    1</p>
+</blockquote>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢♪(･ω･)ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/postgraduate/dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/" class="archive-article-date">
-  	<time datetime="2019-10-17T15:49:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/postgraduate/dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/">1.4 无穷小与无穷大</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">postgraduate</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/BigData/Hadoop%E5%AE%98%E6%96%B9%E6%A1%88%E4%BE%8Bwordcount%E6%BC%94%E7%A4%BA/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/postgraduate/1.1%E5%87%BD%E6%95%B0/" class="archive-article-date">
-  	<time datetime="2019-10-01T14:08:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/BigData/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">hadoop伪分布式环境搭建</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/postgraduate/1.1%E5%87%BD%E6%95%B0/">1.1 函数</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">postgraduate</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/postgraduate/1.4%20%E6%97%A0%E7%A9%B7%E5%B0%8F%E4%B8%8E%E6%97%A0%E7%A9%B7%E5%A4%A7/" class="archive-article-date">
-  	<time datetime="2019-10-01T13:08:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/postgraduate/1.4%20%E6%97%A0%E7%A9%B7%E5%B0%8F%E4%B8%8E%E6%97%A0%E7%A9%B7%E5%A4%A7/">1.4 无穷小与无穷大</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">postgraduate</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -295,9 +380,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

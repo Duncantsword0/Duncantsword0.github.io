@@ -6,15 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: postgraduate | Hexo</title>
+  <title>Hadoop基本环境配置 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/tags/postgraduate/index.html">
+  <meta name="description" content="Hadoop环境配置 英语名词：Cluster 集群    目标：本篇博客仅描述如何配置单节点hadoop以此快速使用MapReduce（计算）和HDFS    虚拟机环境配置（软硬件环境默认当代普通PC） 软件 Xshell VMare   虚拟机环境准备 克隆虚拟机（或者安装新的镜像） 修改虚拟机网络配置    修改完虚拟机的网络设置后，还应当去本机系统的网络配置处进行设置  修改克隆虚拟机的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop基本环境配置">
+<meta property="og:url" content="http://example.com/BigData/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Hadoop环境配置 英语名词：Cluster 集群    目标：本篇博客仅描述如何配置单节点hadoop以此快速使用MapReduce（计算）和HDFS    虚拟机环境配置（软硬件环境默认当代普通PC） 软件 Xshell VMare   虚拟机环境准备 克隆虚拟机（或者安装新的镜像） 修改虚拟机网络配置    修改完虚拟机的网络设置后，还应当去本机系统的网络配置处进行设置  修改克隆虚拟机的">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/assets/blogImg/VM/虚拟机网络设置1.jpg">
+<meta property="og:image" content="http://example.com/assets/blogImg/VM/虚拟机网络设置2.jpg">
+<meta property="og:image" content="http://example.com/assets/blogImg/VM/虚拟机网络设置3.jpg">
+<meta property="og:image" content="http://example.com/assets/blogImg/VM/虚拟机网络设置4.jpg">
+<meta property="og:image" content="http://example.com/assets/blogImg/VM/虚拟机网络设置5.jpg">
+<meta property="og:image" content="http://example.com/assets/blogImg/VM/虚拟机网络设置6.jpg">
+<meta property="og:image" content="http://example.com/assets/blogImg/Linux修改Root密码/Linux安全模式修改密码1.jpg">
+<meta property="og:image" content="http://example.com/assets/blogImg/VM/Linux使用Xshell传输文件1.jpg">
+<meta property="article:published_time" content="2020-10-01T15:08:03.000Z">
+<meta property="article:modified_time" content="2020-10-10T10:20:23.126Z">
 <meta property="article:author" content="Duncan Chen">
+<meta property="article:tag" content="BigData">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assets/blogImg/VM/虚拟机网络设置1.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -142,136 +156,247 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-BigData/Hadoop基本环境配置" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Hadoop基本环境配置
+    </h1>
+  
+
+        
+        <a href="/BigData/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="archive-article-date">
+  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">1.2k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">5分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Hadoop环境配置"><a href="#Hadoop环境配置" class="headerlink" title="Hadoop环境配置"></a>Hadoop环境配置</h2><ul>
+<li>英语名词：Cluster 集群</li>
+</ul>
+<hr>
+<ul>
+<li>目标：本篇博客仅描述如何配置单节点hadoop以此快速使用MapReduce（计算）和HDFS</li>
+</ul>
+<hr>
+<ul>
+<li>虚拟机环境配置（软硬件环境默认当代普通PC）</li>
+<li>软件 Xshell VMare</li>
+</ul>
+<hr>
+<h4 id="虚拟机环境准备"><a href="#虚拟机环境准备" class="headerlink" title="虚拟机环境准备"></a>虚拟机环境准备</h4><ol>
+<li>克隆虚拟机（或者安装新的镜像）</li>
+<li><p>修改虚拟机网络配置<br><img src="../../assets/blogImg/VM/虚拟机网络设置1.jpg" alt="虚拟机网络设置1"></p>
+<p><img src="../../assets/blogImg/VM/虚拟机网络设置2.jpg" alt="虚拟机网络设置2"></p>
+<p><img src="../../assets/blogImg/VM/虚拟机网络设置3.jpg" alt="虚拟机网络设置3"></p>
+<p><img src="../../assets/blogImg/VM/虚拟机网络设置4.jpg" alt="虚拟机网络设置4"></p>
+<p><strong>修改完虚拟机的网络设置后，还应当去本机系统的网络配置处进行设置</strong><br><img src="../../assets/blogImg/VM/虚拟机网络设置5.jpg" alt="虚拟机网络设置5"><br><img src="../../assets/blogImg/VM/虚拟机网络设置6.jpg" alt="虚拟机网络设置6"></p>
+</li>
+<li>修改克隆虚拟机的静态IP<br><code>$ sudo vim /etc/sysconfig/network-scripts/ifcfg-eno**</code><br><strong>不同版本的CentOS系统可能会有所不同，按Tab补全</strong><br><code>TYPE=&quot;Ethernet&quot;</code><br><code>PROXY_METHOD=&quot;none&quot;</code><br><code>BROWSER_ONLY=&quot;no&quot;</code><br><code>BOOTPROTO=&quot;dhcp&quot;</code><br><code>DEFROUTE=&quot;yes&quot;</code><br><code>IPV4_FAILURE_FATAL=&quot;no&quot;</code><br><code>IPV6INIT=&quot;yes&quot;</code><br><code>IPV6_AUTOCONF=&quot;yes&quot;</code><br><code>IPV6_DEFROUTE=&quot;yes&quot;</code><br><code>IPV6_FAILURE_FATAL=&quot;no&quot;</code><br><code>IPV6_ADDR_GEN_MODE=&quot;stable-privacy&quot;</code><br><code>NAME=&quot;ens33&quot;</code><br><code>UUID=&quot;d0f6333e-eabd-4b30-92d5-d25a56ba4e2f&quot;</code><br><code>DEVICE=&quot;ens33&quot;</code><br><code>ONBOOT=&quot;yes&quot;</code><br><strong>修改ip类型为静态IP</strong><br><code>BOOTPROTO=&quot;static&quot;</code><br><strong>添加以下三行分别为IP,掩码，网关的代码</strong><br><code>IPADDR=xxx.xxx.xxx.xxx</code><br><code>NETMASK=xxx.xxx.xxx.xxx</code><br><code>GATEWAY=xxx.xxx.xxx.xxx</code><br><strong>具体值要根据虚拟机的网络设置，比如我这里的是 其中ip地址的网络号与上图给出的一致为192.168.94，而主机号地址则必须为1-254，不能为0或者255，出于预留ip号给其他主机的考虑，可以从整数位开始分配</strong><br><code>IPADDR=192.168.94.200</code><br><code>NETMASK=255.255.255.0</code><br><code>GATEWAY=192.168.94.2</code></li>
+</ol>
+<p>  <strong>之后重启Linux的网络服务</strong><br>  <code>$ sudo service network restart</code><br>  <strong>输入<code>$ ip addr</code>查看ip地址</strong><br>  <code>$ sudo ip addr</code><br>  <strong>根据ip通过shell工具，即Xshell软件进行访问，接下来所有操作将通过Xshell，模拟真实开发环境（通过客户端shell工具连接服务器）</strong></p>
+<ol>
+<li>修改主机名<br><code>$ sudo vim /etc/hosts</code><br><strong>按照文件格式添加ip 和主机名 头两个localhost回环地址默认可不管直接按这样的顺序去配置</strong><br><code>192.168.94.200 hadoop200</code><br><code>192.168.94.201 hadoop201</code><br><code>192.168.94.202 hadoop202</code><br><code>...</code><br><strong>之后保存，输入<code>$ hostname</code>查看自己的主机名，hadoop主机将会根据此文件查找其他的hadoop机器，如果不愿意手打，也可以直接手写一个循环bash文件，文件的内容将在下面给出</strong><br><code>$ sudo vim changeHosts.sh</code><br><strong>开始编辑</strong><br><code>#!/bin/bash</code><br><code>for((i=200;i&lt;210;i++))</code><br><code>do</code><br><code>echo &quot;192.168.94.$i hadoop$i&quot; &gt;&gt; /etc/hosts</code><br><code>done</code><br><strong>执行bash文件</strong><br><code>$ sudo bash changeHosts.sh</code><br><strong>同时永久更改主机名，修改/etc/sysconfig/network 文件</strong><br><code>$ sudo vim /etc/sysconfig/network</code><br><code>NETWORKING=yes</code><br><code>HOSTNAME=hadoop101</code><br><strong>重启</strong><br><code>$ sudo reboot</code></li>
+<li>关闭防火墙(Hadoop集群搭建一般是在内网，因此为了通信顺利会关闭防火墙，通过一个外服务器与外界通信，外服务器带有防火墙)<br><code>$ sudo firewall-cmd --state</code><br><strong>停止firewall</strong><br><code>$ sudo systemctl stop firewalld.service</code><br><strong>禁止firewall开机启动</strong><br><code>$ sudo systemctl disable firewalld.service</code></li>
+<li>创建hadoop用户<br><code>$ sudo useradd hadoop100</code><br><code>$ sudo passwd hadoop100</code></li>
+<li>配置hadoop200用户(具有root权限）<br><code>$ sudo vim /etc/sudoers</code><br><img src="../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码1.jpg" alt="vim /etc/sudoers"><br>图中的normaluser替换为hadoop200</li>
+<li>在/opt目录下创建文件夹创建module(存放软件模块)、software（存放软件压缩包）文件夹<br><code>$ sudo mkdir module</code><br><code>$ sudo mkdir software</code></li>
+<li><p>修改module、software文件夹的所有者<br><code>$ sudo chown hadoop200:hadoop200 module/ software/</code><br><strong>以下操作使用hadoop200用户,进入/opt/software/</strong><br><code>$ su hadoop200</code><br><code>$ cd /opt/software/</code><br><strong>输入rz命令、回车，如果支持则会弹出上传文件弹框；否则会提示找不到,若不支持rz上传文件 则需先安装rz：</strong><br><code>$ yum -y install lrzsz</code><br><strong>拖动已经下载好的JDK和Hadoop包到控制台，shell工具将会自动传输,也可直接通过rz命令上传文件，下载地址在本文最下方给出</strong><br><img src="../assets/blogImg/../../../assets/blogImg/VM/Linux使用Xshell传输文件1.jpg" alt="vim /etc/sudoers"><br><strong>安装JDK之前应当检查当前镜像是否有其他jdk版本避免冲突</strong><br><strong>执行以下命令移除已经安装有的java包,然后解压新的java包 hadoop包到module文件夹下</strong><br><code>$ rpm -qa | grep java | xargs sudo rpm -e --nodeps</code><br><code>$ tar -zxf jdk-8u261-linux-x64.tar.gz -C /opt/module/</code><br><code>$ tar -zxf hadoop-2.7.2.tar.gz -C /opt/module/</code><br><strong>配置两者的环境变量</strong><br><code>$ sudo vim /etc/profile</code><br><strong>拉到最下面，写入以下内容，之后执行source命令应用修改</strong><br><code>#JAVA_HOME</code><br><code>export JAVA_HOME=/opt/module/jdk1.8.0_261</code><br><code>export PATH=$PATH:$JAVA_HOME/bin</code></p>
+<p><code>#HADOOP_HOME</code><br><code>export HADOOP_HOME=/opt/module/hadoop-2.7.2</code><br><code>export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin</code></p>
+<p><code>$ source /etc/profile</code><br><strong>测试java 和 hadoop</strong><br><code>$ java -version</code><br><code>$ hadoop version</code><br><strong>如无报错信息基本已经配置成功,接下来根据需要可选择将配置成哪种集群</strong><br>Local (Standalone) Mode 一般用来Debug<br>Pseudo-Distributed Mode 伪分布式<br>Fully-Distributed Mode 完全分布式（真实开发环境）</p>
+</li>
+<li>拍摄快照（之后配置集群的时候只需要克隆就好了）</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/centos/7.8.2003/isos/x86_64/">CentOS 7.8.2003 阿里云镜像网站下载</a><br>直接选everything镜像，确保不会少依赖</li>
+<li><a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase-downloads.html">Oracle JDK下载地址</a><br>选择JDK8</li>
+</ul>
+<hr>
+<ul>
+<li>下载需要oracle账号， 网上毛了一个<br>oracle账号<code>amador.sun@foxmail.com</code><br>密码：<code>1211WaN!</code></li>
+</ul>
+<hr>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
+<li><a target="_blank" rel="noopener" href="https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/">hadoop包2.7.2下载地址</a></li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢♪(･ω･)ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/postgraduate/dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/" class="archive-article-date">
-  	<time datetime="2019-10-17T15:49:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/postgraduate/dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/">1.4 无穷小与无穷大</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">postgraduate</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/BigData/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/postgraduate/1.1%E5%87%BD%E6%95%B0/" class="archive-article-date">
-  	<time datetime="2019-10-01T14:08:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/BigData/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Hadoop基本架构
+        
+      </div>
+    </a>
+  
+  
+    <a href="/postgraduate/dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">1.4 无穷小与无穷大</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/postgraduate/1.1%E5%87%BD%E6%95%B0/">1.1 函数</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">postgraduate</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/postgraduate/1.4%20%E6%97%A0%E7%A9%B7%E5%B0%8F%E4%B8%8E%E6%97%A0%E7%A9%B7%E5%A4%A7/" class="archive-article-date">
-  	<time datetime="2019-10-01T13:08:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/postgraduate/1.4%20%E6%97%A0%E7%A9%B7%E5%B0%8F%E4%B8%8E%E6%97%A0%E7%A9%B7%E5%A4%A7/">1.4 无穷小与无穷大</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">postgraduate</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -295,9 +420,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
