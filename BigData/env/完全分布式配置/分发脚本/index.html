@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Tag: hexo | Hexo</title>
+  <title>分发脚本 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/tags/hexo/index.html">
+  <meta name="description" content="分发脚本​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。  scp   scp hostname:directory destination scp hadoop100:&#x2F;opt&#x2F;module&#x2F;hadoop2.7.2 hadoop:&#x2F;opt&#x2F;module&#x2F;  基本用法和cp一致，执行时需要输入代">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分发脚本">
+<meta property="og:url" content="http://example.com/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="分发脚本​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。  scp   scp hostname:directory destination scp hadoop100:&#x2F;opt&#x2F;module&#x2F;hadoop2.7.2 hadoop:&#x2F;opt&#x2F;module&#x2F;  基本用法和cp一致，执行时需要输入代">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-16T07:51:50.000Z">
+<meta property="article:modified_time" content="2020-10-16T09:14:24.463Z">
 <meta property="article:author" content="Duncan Chen">
+<meta property="article:tag" content="BigData">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -142,60 +147,241 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-BigData/env/完全分布式配置/分发脚本" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/text/hexo/HexoDoc/" class="archive-article-date">
-  	<time datetime="2019-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/text/hexo/HexoDoc/">HexoDoc</a>
+    <h1 class="article-title" itemprop="name">
+      分发脚本
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/" class="archive-article-date">
+  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">394字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="分发脚本"><a href="#分发脚本" class="headerlink" title="分发脚本"></a>分发脚本</h1><p>​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。</p>
+<ul>
+<li><strong>scp</strong></li>
+</ul>
+<blockquote>
+<p><code>scp hostname:directory destination</code></p>
+<p>scp hadoop100:/opt/module/hadoop2.7.2 hadoop:/opt/module/</p>
+</blockquote>
+<p>基本用法和cp一致，执行时需要输入代码</p>
+<p>此复制命令，并没有完全把文件复制过来，比如文件的时间戳等</p>
+<ul>
+<li><p><strong>rsync（和scp基本一致，不过文件复制是归档复制,包括所有者还有权限都完全拷贝，两个目录参数不能都为远程目录）</strong><br>如果文件一模一样，不会拷贝</p>
+<p>-a 归档复制（可以省略）</p>
+<p>-v 显示复制信息</p>
+</li>
+</ul>
+<blockquote>
+<p>  1)拉取: </p>
+<p>​        rsync [option]   user@host::src   dest</p>
+<p>​         rsync [option]   rsync://user@host:port/src    dest</p>
+<p>​     2)推送:</p>
+<p>​        rsync [option]   src   user@host::dest</p>
+<p>​         rsync [option]   src   rsync://user@host:port/dest</p>
+</blockquote>
+<p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
+<blockquote>
+<h1 id="bin-bash"><a href="#bin-bash" class="headerlink" title="!/bin/bash"></a>!/bin/bash</h1><h1 id="1-获取参数个数，如果没有参数，直接退出"><a href="#1-获取参数个数，如果没有参数，直接退出" class="headerlink" title="1.获取参数个数，如果没有参数，直接退出"></a>1.获取参数个数，如果没有参数，直接退出</h1><h1 id="这个程式的参数个数"><a href="#这个程式的参数个数" class="headerlink" title="$# 这个程式的参数个数"></a>$# 这个程式的参数个数</h1><p>pcount=$#</p>
+<p>if((pcount==0)); then</p>
+<p>echo no args;</p>
+<p>exit;</p>
+<h1 id="fi-作为if条件的结束-即end-if"><a href="#fi-作为if条件的结束-即end-if" class="headerlink" title="fi 作为if条件的结束 即end if"></a>fi 作为if条件的结束 即end if</h1><p>fi</p>
+<h1 id="2-获取文件名称"><a href="#2-获取文件名称" class="headerlink" title="2 获取文件名称"></a>2 获取文件名称</h1><p>p1=$1</p>
+<p>frame=<code>basename $p1</code></p>
+<p>echo fname=$frame</p>
+<h1 id="3-获取上级目录到绝对路径"><a href="#3-获取上级目录到绝对路径" class="headerlink" title="3 获取上级目录到绝对路径"></a>3 获取上级目录到绝对路径</h1><h1 id="P是绝对路劲选项，防止输入的参数是软链接"><a href="#P是绝对路劲选项，防止输入的参数是软链接" class="headerlink" title="-P是绝对路劲选项，防止输入的参数是软链接"></a>-P是绝对路劲选项，防止输入的参数是软链接</h1><p>pdir=’cd -P $(dirname $p1); pwd’</p>
+<p>echo pdir =$pdir</p>
+<h1 id="4-获取当前用户名称"><a href="#4-获取当前用户名称" class="headerlink" title="4 获取当前用户名称"></a>4 获取当前用户名称</h1><p>user =’whoami’</p>
+<h1 id="5-循环"><a href="#5-循环" class="headerlink" title="5 循环"></a>5 循环</h1><p>for((host=103;host&lt;105;host++));</p>
+<p>do</p>
+<p>echo ———————hadoop$host————————</p>
+<p>rsync -av $pdir/$fname $user@hadoop$host:$pdir</p>
+<p>done</p>
+</blockquote>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢♪(･ω･)ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/text/md/typoraDoc/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          typora
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">page</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -219,9 +405,9 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
