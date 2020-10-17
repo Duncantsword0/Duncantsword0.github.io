@@ -831,7 +831,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">243字</span>
+      <span class="post-count">240字</span>
     </span>
   </span>
 
@@ -860,7 +860,7 @@
 <blockquote>
 <p>hadoop yarn</p>
 <p>hadoop mapreduce</p>
-<p>chendingheng 201735020501</p>
+<p>cdh</p>
 <p>chendingheng </p>
 </blockquote>
 <ol>
@@ -869,7 +869,7 @@
 <p><code>$ hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar wordcount wcinput wcoutput</code></p>
 <p><code>$ cat wcoutput/part-r-00000</code></p>
 <blockquote>
-<p>201735020501    1<br>chendingheng    2<br>hadoop    2<br>mapreduce    1<br>yarn    1</p>
+<p>cdh    2<br>hadoop    2<br>mapreduce    1<br>yarn    1</p>
 </blockquote>
 <h1 id="伪分布式演示"><a href="#伪分布式演示" class="headerlink" title="伪分布式演示"></a>伪分布式演示</h1><ol>
 <li>在HDFS文件系统上创建一个input文件夹<br><code>$ bin/hdfs dfs -mkdir -p /usr/hadoop200/input</code></li>
@@ -878,7 +878,7 @@
 <li>运行MapReduce程序，查看结果<br><code>$ bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar wordcount /usr/hadoop200/input/ /usr/hadoop200/output</code><br><code>$ bin/hdfs dfs -cat /usr/hadoop200/output/*</code></li>
 </ol>
 <blockquote>
-<p>201735020501    1<br>chendingheng    2<br>hadoop    2<br>mapreduce    1<br>yarn    1</p>
+<p>cdh    2<br>hadoop    2<br>mapreduce    1<br>yarn    1</p>
 </blockquote>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
@@ -1114,6 +1114,103 @@
 
 
   
+    <article id="post-BigData/env/基础配置/Hadoop基本架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">Hadoop基本架构</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/" class="archive-article-date">
+  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">2字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Apache-Hadoop"><a href="#Apache-Hadoop" class="headerlink" title="Apache Hadoop"></a>Apache Hadoop</h2><p><img src="../../../../assets/blogImg/bigData/Hadoop基本架构.png" alt="大数据基本架构"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-BigData/env/基础配置/Hadoop基本环境配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1299,103 +1396,6 @@ echo "192.168.94.$i hadoop$i" >&gt; /etc/hosts<br>done</p>
       
         <p class="article-more-link">
           <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/基础配置/Hadoop基本架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">Hadoop基本架构</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">2字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Apache-Hadoop"><a href="#Apache-Hadoop" class="headerlink" title="Apache Hadoop"></a>Apache Hadoop</h2><p><img src="../../../../assets/blogImg/bigData/Hadoop基本架构.png" alt="大数据基本架构"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">展开全文 >></a>
         </p>
       
 
@@ -1759,11 +1759,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BigData</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color3">BigData</a>
               </li>
              
               <li class="article-tag-list-item">
