@@ -144,6 +144,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-system/Linux/忘记Linux系统密码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/system/Linux/%E5%BF%98%E8%AE%B0Linux%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/">忘记Linux系统密码</a>
+    </h1>
+  
+
+        
+        <a href="/system/Linux/%E5%BF%98%E8%AE%B0Linux%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/" class="archive-article-date">
+  	<time datetime="2019-10-01T14:08:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">162字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="忘记Linux密码"><a href="#忘记Linux密码" class="headerlink" title="忘记Linux密码"></a>忘记Linux密码</h2><p> 如题，在配置hadoop集群的时候，忘记了Linux root用户密码，root用户密码又不能修改，虽然在/etc/sudoers 早就修改过免密sudo</p>
+<p><img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码1.jpg" alt="/etc/sudoers"></p>
+<h2 id="找回密码"><a href="#找回密码" class="headerlink" title="找回密码"></a>找回密码</h2><h4 id="1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）"><a href="#1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）" class="headerlink" title="1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）"></a>1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）</h4><p>  (实际进入开机页面的时候就已经想起来密码了，麻了)<br>  <img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码2.jpg" alt="Linux开机页面"></p>
+<hr>
+<h4 id="2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start"><a href="#2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start" class="headerlink" title="2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)"></a>2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)</h4><p>  <img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码3.jpg" alt="ro修改为rw"></p>
+<hr>
+<h4 id="3-第三步-依次输入以下命令"><a href="#3-第三步-依次输入以下命令" class="headerlink" title="3.第三步 依次输入以下命令"></a>3.第三步 依次输入以下命令</h4><p>  <code>chroot /sysroot</code><br>  <code>passwd root</code><br>  <code>输入新密码 enter new passwd</code><br>  <code>再输入依次retype passwd</code><br>  <code>touch /.autorelabel</code><br>  <code>exit</code><br>  <code>reboot</code></p>
+<p>  <img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码4.jpg" alt="ro修改为rw"></p>
+<hr>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/system/Linux/%E5%BF%98%E8%AE%B0Linux%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-postgraduate/1.1函数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -329,100 +423,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/system/Linux/shell/shell%20%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-system/Linux/忘记Linux系统密码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/system/Linux/%E5%BF%98%E8%AE%B0Linux%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/">忘记Linux系统密码</a>
-    </h1>
-  
-
-        
-        <a href="/system/Linux/%E5%BF%98%E8%AE%B0Linux%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2019-10-01T14:08:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-01</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">162字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="忘记Linux密码"><a href="#忘记Linux密码" class="headerlink" title="忘记Linux密码"></a>忘记Linux密码</h2><p> 如题，在配置hadoop集群的时候，忘记了Linux root用户密码，root用户密码又不能修改，虽然在/etc/sudoers 早就修改过免密sudo</p>
-<p><img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码1.jpg" alt="/etc/sudoers"></p>
-<h2 id="找回密码"><a href="#找回密码" class="headerlink" title="找回密码"></a>找回密码</h2><h4 id="1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）"><a href="#1-第一步-关机重启进入开机页面-按下键盘e键（Press-‘e’-to-edit-selected-item）" class="headerlink" title="1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）"></a>1.第一步 关机重启进入开机页面,按下键盘e键（Press ‘e’ to edit selected item）</h4><p>  (实际进入开机页面的时候就已经想起来密码了，麻了)<br>  <img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码2.jpg" alt="Linux开机页面"></p>
-<hr>
-<h4 id="2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start"><a href="#2-第二步-将ro修改为rw-加入init-sysroot-bin-sh-修改完成按下ctrl-x-Ctrl-x-to-start" class="headerlink" title="2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)"></a>2.第二步 将ro修改为rw 加入init = /sysroot/bin/sh 修改完成按下ctrl-x (Ctrl-x to start)</h4><p>  <img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码3.jpg" alt="ro修改为rw"></p>
-<hr>
-<h4 id="3-第三步-依次输入以下命令"><a href="#3-第三步-依次输入以下命令" class="headerlink" title="3.第三步 依次输入以下命令"></a>3.第三步 依次输入以下命令</h4><p>  <code>chroot /sysroot</code><br>  <code>passwd root</code><br>  <code>输入新密码 enter new passwd</code><br>  <code>再输入依次retype passwd</code><br>  <code>touch /.autorelabel</code><br>  <code>exit</code><br>  <code>reboot</code></p>
-<p>  <img src="../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码4.jpg" alt="ro修改为rw"></p>
-<hr>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/system/Linux/%E5%BF%98%E8%AE%B0Linux%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81/">展开全文 >></a>
         </p>
       
 
