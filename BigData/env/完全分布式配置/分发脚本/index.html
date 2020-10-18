@@ -16,7 +16,7 @@
 <meta property="og:description" content="分发脚本​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。  scp   scp hostname:directory destination scp hadoop100:&#x2F;opt&#x2F;module&#x2F;hadoop2.7.2 hadoop:&#x2F;opt&#x2F;module&#x2F;  基本用法和cp一致，执行时需要输入代">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-16T07:51:50.000Z">
-<meta property="article:modified_time" content="2020-10-16T09:14:24.463Z">
+<meta property="article:modified_time" content="2020-10-18T03:08:29.476Z">
 <meta property="article:author" content="Duncan Chen">
 <meta property="article:tag" content="BigData">
 <meta name="twitter:card" content="summary">
@@ -209,10 +209,10 @@
 <blockquote>
 <p>  1)拉取: </p>
 <p>​        rsync [option]   user@host::src   dest</p>
-<p>​         rsync [option]   rsync://user@host:port/src    dest</p>
+<p>​        rsync [option]   rsync://user@host:port/src    dest</p>
 <p>​     2)推送:</p>
 <p>​        rsync [option]   src   user@host::dest</p>
-<p>​         rsync [option]   src   rsync://user@host:port/dest</p>
+<p>​        rsync [option]   src   rsync://user@host:port/dest</p>
 </blockquote>
 <p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
 <blockquote>
@@ -347,8 +347,8 @@
     </a>
   
   
-    <a href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">page</div>
+    <a href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">通过类的finalize方法避免在GC中消亡</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -500,10 +500,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">markdown</a>
               </li>
              
@@ -512,15 +508,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BigData</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">shell</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>
@@ -657,5 +657,21 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>

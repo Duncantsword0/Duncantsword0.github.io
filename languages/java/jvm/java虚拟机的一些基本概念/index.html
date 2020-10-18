@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>page | Hexo</title>
+  <title>java虚拟机的一些基本概念 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="基本概念堆简单来讲，就是在内存中开辟出一块区域，用来存放一些指针的具体引用，因此堆的大小将会很大，绝大部分垃圾回收都会在这里进行。这是一个影响程序内存大小的重要区域。 栈奉行先进后出，栈内存的是栈帧，不同的JVM里有不同数量的栈，但大致可分为  本地方法栈（运行本地方法） java虚拟机栈（运行java方法）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="page">
+<meta property="og:title" content="java虚拟机的一些基本概念">
 <meta property="og:url" content="http://example.com/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="基本概念堆简单来讲，就是在内存中开辟出一块区域，用来存放一些指针的具体引用，因此堆的大小将会很大，绝大部分垃圾回收都会在这里进行。这是一个影响程序内存大小的重要区域。 栈奉行先进后出，栈内存的是栈帧，不同的JVM里有不同数量的栈，但大致可分为  本地方法栈（运行本地方法） java虚拟机栈（运行java方法）">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-13T01:32:26.000Z">
-<meta property="article:modified_time" content="2020-10-13T02:06:18.374Z">
+<meta property="article:modified_time" content="2020-10-18T03:39:03.054Z">
 <meta property="article:author" content="Duncan Chen">
 <meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
@@ -155,7 +155,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      page
+      java虚拟机的一些基本概念
     </h1>
   
 
@@ -300,11 +300,11 @@
   
 <nav id="article-nav">
   
-    <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          分发脚本
+          通过类的finalize方法避免在GC中消亡
         
       </div>
     </a>
@@ -463,10 +463,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">markdown</a>
               </li>
              
@@ -475,15 +471,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BigData</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">shell</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>
@@ -620,5 +620,21 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<!-- <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
