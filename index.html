@@ -460,7 +460,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">394字</span>
+      <span class="post-count">408字</span>
     </span>
   </span>
 
@@ -498,33 +498,12 @@
 <p>-v 显示复制信息</p>
 </li>
 </ul>
-<blockquote>
-<p>  1)拉取: </p>
-<p>​        rsync [option]   user@host::src   dest</p>
-<p>​        rsync [option]   rsync://user@host:port/src    dest</p>
-<p>​     2)推送:</p>
-<p>​        rsync [option]   src   user@host::dest</p>
-<p>​        rsync [option]   src   rsync://user@host:port/dest</p>
-</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1)拉取: </span><br><span class="line"></span><br><span class="line">​        rsync [option]   user@host::src   dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   rsync://user@host:port/src    dest</span><br><span class="line"></span><br><span class="line">​     2)推送:</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   user@host::dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   rsync://user@host:port/dest</span><br></pre></td></tr></table></figure>
 <p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
-<blockquote>
-<h1 id="bin-bash"><a href="#bin-bash" class="headerlink" title="!/bin/bash"></a>!/bin/bash</h1><h1 id="1-获取参数个数，如果没有参数，直接退出"><a href="#1-获取参数个数，如果没有参数，直接退出" class="headerlink" title="1.获取参数个数，如果没有参数，直接退出"></a>1.获取参数个数，如果没有参数，直接退出</h1><h1 id="这个程式的参数个数"><a href="#这个程式的参数个数" class="headerlink" title="$# 这个程式的参数个数"></a>$# 这个程式的参数个数</h1><p>pcount=$#</p>
-<p>if((pcount==0)); then</p>
-<p>echo no args;</p>
-<p>exit;</p>
-<h1 id="fi-作为if条件的结束-即end-if"><a href="#fi-作为if条件的结束-即end-if" class="headerlink" title="fi 作为if条件的结束 即end if"></a>fi 作为if条件的结束 即end if</h1><p>fi</p>
-<h1 id="2-获取文件名称"><a href="#2-获取文件名称" class="headerlink" title="2 获取文件名称"></a>2 获取文件名称</h1><p>p1=$1</p>
-<p>frame=<code>basename $p1</code></p>
-<p>echo fname=$frame</p>
-<h1 id="3-获取上级目录到绝对路径"><a href="#3-获取上级目录到绝对路径" class="headerlink" title="3 获取上级目录到绝对路径"></a>3 获取上级目录到绝对路径</h1><h1 id="P是绝对路劲选项，防止输入的参数是软链接"><a href="#P是绝对路劲选项，防止输入的参数是软链接" class="headerlink" title="-P是绝对路劲选项，防止输入的参数是软链接"></a>-P是绝对路劲选项，防止输入的参数是软链接</h1><p>pdir=’cd -P $(dirname $p1); pwd’</p>
-<p>echo pdir =$pdir</p>
-<h1 id="4-获取当前用户名称"><a href="#4-获取当前用户名称" class="headerlink" title="4 获取当前用户名称"></a>4 获取当前用户名称</h1><p>user =’whoami’</p>
-<h1 id="5-循环"><a href="#5-循环" class="headerlink" title="5 循环"></a>5 循环</h1><p>for((host=103;host&lt;105;host++));</p>
-<p>do</p>
-<p>echo ———————hadoop$host————————</p>
-<p>rsync -av $pdir/$fname $user@hadoop$host:$pdir</p>
-<p>done</p>
-</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">1.获取参数个数，如果没有参数，直接退出</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$#</span> 这个程式的参数个数</span></span><br><span class="line"></span><br><span class="line">pcount=$#</span><br><span class="line"></span><br><span class="line">if((pcount==0)); then</span><br><span class="line"></span><br><span class="line">echo no args;</span><br><span class="line"></span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">fi</span> 作为<span class="keyword">if</span>条件的结束 即end <span class="keyword">if</span></span></span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 获取文件名称</span></span><br><span class="line"></span><br><span class="line">p1=$1</span><br><span class="line"></span><br><span class="line">frame=`basename $p1`</span><br><span class="line"></span><br><span class="line">echo fname=$frame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 获取上级目录到绝对路径 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">-P是绝对路劲选项，防止输入的参数是软链接</span></span><br><span class="line"></span><br><span class="line">pdir=&#x27;cd -P $(dirname $p1); pwd&#x27;</span><br><span class="line"></span><br><span class="line">echo pdir =$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 获取当前用户名称</span></span><br><span class="line"></span><br><span class="line">user =&#x27;whoami&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5 循环</span></span><br><span class="line"></span><br><span class="line">for((host=103;host&lt;105;host++));</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">echo --------------hadoop$host----------------</span><br><span class="line"></span><br><span class="line">rsync -av $pdir/$fname $user@hadoop$host:$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://duncantsword0.github.io/system/Linux/shell/shell%20%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/">一些shell的基础知识</a></li>
+</ul>
 
       
 
@@ -1230,103 +1209,6 @@
 
 
   
-    <article id="post-BigData/env/基础配置/Hadoop基本架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">Hadoop基本架构</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">2字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Apache-Hadoop"><a href="#Apache-Hadoop" class="headerlink" title="Apache Hadoop"></a>Apache Hadoop</h2><p><img src="../../../../assets/blogImg/bigData/Hadoop基本架构.png" alt="大数据基本架构"></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-BigData/env/基础配置/Hadoop基本环境配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1513,6 +1395,103 @@ echo "192.168.94.$i hadoop$i" >&gt; /etc/hosts<br>done</p>
       
         <p class="article-more-link">
           <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/env/基础配置/Hadoop基本架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">Hadoop基本架构</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/" class="archive-article-date">
+  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">2字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Apache-Hadoop"><a href="#Apache-Hadoop" class="headerlink" title="Apache Hadoop"></a>Apache Hadoop</h2><p><img src="../../../../assets/blogImg/bigData/Hadoop基本架构.png" alt="大数据基本架构"></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">展开全文 >></a>
         </p>
       
 
@@ -1764,7 +1743,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1772,15 +1751,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BigData</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
