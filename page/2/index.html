@@ -144,7 +144,7 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-languages/java/jvm/java虚拟机的一些基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-languages/java/jvm/通过类的finalize方法避免在GC中消亡" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -152,12 +152,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">java虚拟机的一些基本概念</a>
+      <a class="article-title" href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">通过类的finalize方法避免在GC中消亡</a>
     </h1>
   
 
         
-        <a href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="archive-article-date">
+        <a href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" class="archive-article-date">
   	<time datetime="2020-10-13T01:32:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
 </a>
         <div style="margin-top:10px;">
@@ -165,7 +165,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">130字</span>
+      <span class="post-count">763字</span>
     </span>
   </span>
 
@@ -174,7 +174,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-hourglass-half"></i>
       <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
+      <span class="post-count">2分</span>
     </span>
   </span>
 </div>
@@ -187,11 +187,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p>简单来讲，就是在内存中开辟出一块区域，用来存放一些指针的具体引用，因此堆的大小将会很大，绝大部分垃圾回收都会在这里进行。这是一个影响程序内存大小的重要区域。</p>
-<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p>奉行先进后出，栈内存的是栈帧，不同的JVM里有不同数量的栈，但大致可分为</p>
+        <p>一般来说，java对象即使在可达性分析算法中判定为不可达对象，也不是非死不可的，这个时候可能还处于缓刑阶段（gc还没来啊，来了后可能还要执行finalize()方法），这个时候对象就可以利用这段时间进行自救了。</p>
+<p><strong>以下自救的代码例子：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此代码演示了两点：</span></span><br><span class="line"><span class="comment">//1.对象可以在被GC时自我拯救</span></span><br><span class="line"><span class="comment">//2.但这种自我拯救的机会只有一次，因为一个对象的finalize()方法最多只会被系统自动调用一次</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalizeEscapeGC</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> FinalizeEscapeGC SAVE_HOOK = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">isAlive</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我还活着&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.finalize();</span><br><span class="line">        System.out.println(<span class="string">&quot;finalize()方法被执行&quot;</span>);</span><br><span class="line">        <span class="comment">//重新与引用链上的任何一个对象建立联系，例如把自己（this）赋值给某个类变量或者对象的成员变量</span></span><br><span class="line">        FinalizeEscapeGC.SAVE_HOOK = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        SAVE_HOOK = <span class="keyword">new</span> FinalizeEscapeGC();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//对象第一次成功拯救自己 begin</span></span><br><span class="line">        SAVE_HOOK = <span class="keyword">null</span>;<span class="comment">//此时这个类已经没有人引用了</span></span><br><span class="line">        System.gc();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//因为finalize方法优先级很低，先暂停0.5s，等待它开始调用</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span> (SAVE_HOOK !=<span class="keyword">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;我真的死了&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第二次尝试拯救自己，代码与上面完全相同</span></span><br><span class="line">        SAVE_HOOK = <span class="keyword">null</span>;<span class="comment">//此时这个类已经没有人引用了</span></span><br><span class="line">        System.gc();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//因为finalize方法优先级很低，先暂停0.5s，等待它开始调用</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span> (SAVE_HOOK !=<span class="keyword">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;我真的死了&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>运行结果：</p>
+<p>finalize()方法被执行<br>我还活着<br>我真的死了</p>
+</blockquote>
+<p><strong>注：</strong></p>
 <ul>
-<li>本地方法栈（运行本地方法）</li>
-<li>java虚拟机栈（运行java方法）</li>
+<li>finalize()方法虚拟机会去触发，但并不一定保证完全等它执行完毕。这么做的原因是避免在GC过程中，因为finalize方法调用更多资源，导致GC缓慢，更多的资源无法释放，最终陷入死循环。</li>
+<li><p>真正要宣告对象死亡，要经过两次标记</p>
+<ul>
+<li>对象在进行可达性分析后发现没有与GC ROOT 相连接的引用链，第一次标记</li>
+<li>有没有必要执行finalize()方法（没有覆盖finalize()方法或者已经被虚拟机调用过一次，被视为没有必要执行，简单来说就是立刻死刑），第二次标记</li>
+</ul>
+</li>
+<li><p>不鼓励用finalize()拯救对象，原因是本质它对其他语言程序员转为Java的一种妥协，并不完全等同于C++这些语言的析构函数（与构造函数相反的函数，当对象结束生命周期，或者对象所在函数调用结束后，系统自动调用的函数，一般来做清理善后的工作，例如new了一片控件，在析构函数中会delete释放空间），析构函数能做的，在java中用try-finally这样的语句块能做得更好，同时也更具可读性。</p>
+</li>
+<li>综上，建议完全忘掉这个语法。</li>
 </ul>
 
       
@@ -216,7 +230,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">展开全文 >></a>
+          <a class="article-more-a" href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">展开全文 >></a>
         </p>
       
 
@@ -1215,7 +1229,7 @@ echo "192.168.94.$i hadoop$i" >&gt; /etc/hosts<br>done</p>
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">180字</span>
+      <span class="post-count">184字</span>
     </span>
   </span>
 
@@ -1238,6 +1252,8 @@ echo "192.168.94.$i hadoop$i" >&gt; /etc/hosts<br>done</p>
     <div class="article-entry" itemprop="articleBody">
       
         <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$0 这个程式的执行名字</span><br><span class="line">$n 这个程式的第n个参数值，n&#x3D;1..9</span><br><span class="line">$* 这个程式的所有参数,此选项参数可超过9个。</span><br><span class="line">$# 这个程式的参数个数</span><br><span class="line">$$ 这个程式的PID(脚本运行的当前进程ID号)</span><br><span class="line">$! 执行上一个背景指令的PID(后台运行的最后一个进程的进程ID号)</span><br><span class="line">$? 执行上一个指令的返回值 (显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误)</span><br><span class="line">$- 显示shell使用的当前选项，与set命令功能相同</span><br><span class="line">$@ 跟$*类似，但是可以当作数组用</span><br><span class="line">#fi 作为if条件的结束 即end if</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>* </p>
+
       
 
       
@@ -1522,10 +1538,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Hightcharts,前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
@@ -1534,23 +1546,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BigData,HDFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BigData</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HDFS,BigData</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1559,10 +1575,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Shell</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
               </li>
              
               <li class="article-tag-list-item">
