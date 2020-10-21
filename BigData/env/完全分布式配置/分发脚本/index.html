@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://example.com">
   <title>分发脚本 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="分发脚本​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。  scp   scp hostname:directory destination scp hadoop100:&#x2F;opt&#x2F;module&#x2F;hadoop2.7.2 hadoop:&#x2F;opt&#x2F;module&#x2F;  基本用法和cp一致，执行时需要输入代">
+  <meta name="description" content="分发脚本​    在根据镜像，配置多台机器后，并修改ip地址后。 ​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。  scp  -r （递归复制）    scp directory hostname:destination $ scp &#x2F;etc&#x2F;profile root@hadoop102:&#x2F;e">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分发脚本">
 <meta property="og:url" content="http://example.com/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="分发脚本​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。  scp   scp hostname:directory destination scp hadoop100:&#x2F;opt&#x2F;module&#x2F;hadoop2.7.2 hadoop:&#x2F;opt&#x2F;module&#x2F;  基本用法和cp一致，执行时需要输入代">
+<meta property="og:description" content="分发脚本​    在根据镜像，配置多台机器后，并修改ip地址后。 ​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。  scp  -r （递归复制）    scp directory hostname:destination $ scp &#x2F;etc&#x2F;profile root@hadoop102:&#x2F;e">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-10-16T07:51:50.000Z">
-<meta property="article:modified_time" content="2020-10-18T04:22:28.983Z">
+<meta property="article:modified_time" content="2020-10-20T16:37:21.803Z">
 <meta property="article:author" content="Duncan Chen">
 <meta property="article:tag" content="BigData">
 <meta name="twitter:card" content="summary">
@@ -168,7 +168,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">408字</span>
+      <span class="post-count">512字</span>
     </span>
   </span>
 
@@ -177,7 +177,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-hourglass-half"></i>
       <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
+      <span class="post-count">2分</span>
     </span>
   </span>
 </div>
@@ -190,13 +190,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="分发脚本"><a href="#分发脚本" class="headerlink" title="分发脚本"></a>分发脚本</h1><p>​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。</p>
+        <h1 id="分发脚本"><a href="#分发脚本" class="headerlink" title="分发脚本"></a>分发脚本</h1><p>​    <del>在根据镜像，配置多台机器后，并修改ip地址后。</del></p>
+<p>​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。</p>
 <ul>
-<li><strong>scp</strong></li>
+<li><strong>scp  -r</strong> （递归复制） </li>
 </ul>
 <blockquote>
-<p><code>scp hostname:directory destination</code></p>
-<p>scp hadoop100:/opt/module/hadoop2.7.2 hadoop:/opt/module/</p>
+<p><code>scp directory hostname:destination</code></p>
+<p>$ scp /etc/profile root@hadoop102:/etc/profile</p>
+<p>$ source /etc/profile</p>
 </blockquote>
 <p>基本用法和cp一致，执行时需要输入代码</p>
 <p>此复制命令，并没有完全把文件复制过来，比如文件的时间戳等</p>
@@ -206,9 +208,16 @@
 <p>-v 显示复制信息</p>
 </li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1)拉取: </span><br><span class="line"></span><br><span class="line">​        rsync [option]   user@host::src   dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   rsync://user@host:port/src    dest</span><br><span class="line"></span><br><span class="line">​     2)推送:</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   user@host::dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   rsync://user@host:port/dest</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1)拉取: </span><br><span class="line"></span><br><span class="line">​        rsync [option]   user@host::src   dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   rsync://user@host:port/src    dest</span><br><span class="line"></span><br><span class="line">2)推送:</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   user@host::dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   rsync://user@host:port/dest</span><br></pre></td></tr></table></figure>
 <p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">1.获取参数个数，如果没有参数，直接退出</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$#</span> 这个程式的参数个数</span></span><br><span class="line"></span><br><span class="line">pcount=$#</span><br><span class="line"></span><br><span class="line">if((pcount==0)); then</span><br><span class="line"></span><br><span class="line">echo no args;</span><br><span class="line"></span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">fi</span> 作为<span class="keyword">if</span>条件的结束 即end <span class="keyword">if</span></span></span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 获取文件名称</span></span><br><span class="line"></span><br><span class="line">p1=$1</span><br><span class="line"></span><br><span class="line">frame=`basename $p1`</span><br><span class="line"></span><br><span class="line">echo fname=$frame</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 获取上级目录到绝对路径 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">-P是绝对路劲选项，防止输入的参数是软链接</span></span><br><span class="line"></span><br><span class="line">pdir=&#x27;cd -P $(dirname $p1); pwd&#x27;</span><br><span class="line"></span><br><span class="line">echo pdir =$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 获取当前用户名称</span></span><br><span class="line"></span><br><span class="line">user =&#x27;whoami&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5 循环</span></span><br><span class="line"></span><br><span class="line">for((host=103;host&lt;105;host++));</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">echo --------------hadoop$host----------------</span><br><span class="line"></span><br><span class="line">rsync -av $pdir/$fname $user@hadoop$host:$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">1.获取参数个数，如果没有参数，直接退出</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$#</span> 这个程式的参数个数,<span class="keyword">if</span>后面记得跟空格</span></span><br><span class="line"></span><br><span class="line">pcount=$#</span><br><span class="line"></span><br><span class="line">if ((pcount==0)); then</span><br><span class="line"></span><br><span class="line">echo no args;</span><br><span class="line"></span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">fi</span> 作为<span class="keyword">if</span>条件的结束 即end <span class="keyword">if</span></span></span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 获取文件名称</span></span><br><span class="line"></span><br><span class="line">p1=$1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">不是<span class="string">&#x27;，而是`</span></span></span><br><span class="line"></span><br><span class="line">fname=`basename $p1`</span><br><span class="line"></span><br><span class="line">echo fname=$fname</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 获取上级目录到绝对路径 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">-P是绝对路劲选项，防止输入的参数是软链接</span></span><br><span class="line"></span><br><span class="line">pdir=`cd -P $(dirname $p1); pwd`</span><br><span class="line"></span><br><span class="line">echo pdir =$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 获取当前用户名称</span></span><br><span class="line"></span><br><span class="line">user=`whoami`</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5 循环 将本地数据发送到其他服务器 此处只配置三台机器</span></span><br><span class="line"></span><br><span class="line">for((host=102;host&lt;105;host++));</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">echo --------------hadoop$host----------------</span><br><span class="line"></span><br><span class="line">rsync -av $pdir/$fname $user@hadoop$host:$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试脚本是否正常运作</p>
+<p>$ cd ~</p>
+<p>$ vim xsync</p>
+<p>$ sudo chmod +7 xsync 修改为可执行文件</p>
+<p>$ sudo ./xsync .  将当前目录所有文件分发到其他服务器对应的目录里</p>
+</blockquote>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://duncantsword0.github.io/system/Linux/shell/shell%20%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/">一些shell的基础知识</a></li>
 </ul>
@@ -326,8 +335,8 @@
     </a>
   
   
-    <a href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">通过类的finalize方法避免在GC中消亡</div>
+    <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">启动集群常见错误</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -483,11 +492,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+                <a href="javascript:void(0)" class="js-tag color5">Hightcharts,前端</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -495,11 +504,31 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BigData,HDFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Linux,shell</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">shell</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">搜狗输入法,win10</a>
               </li>
             
             <div class="clearfix"></div>
