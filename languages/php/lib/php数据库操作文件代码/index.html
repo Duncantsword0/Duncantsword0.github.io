@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>PHP有基础的情况下快速上手 | Hexo</title>
+  <title>php数据库操作文件代码 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="开发环境    集成开发软件 可使用的操作系统 说明     WAMP Win 推荐   XAMPP Win&#x2F;Mac    Mamp Mac 推荐   Lamp Linux(CentOS&#x2F;Fedora&#x2F;Debian&#x2F;Ubuntu)     vscode 插件 参考文献后盾人的PHP文档wamp官网（可能需要科学上网）">
+  <meta name="description" content="config.inc.php  1234567&lt;?php define(&amp;#x27;DB_HOST&amp;#x27;,&amp;#x27;localhost&amp;#x27;);define(&amp;#x27;DB_USER&amp;#x27;,&amp;#x27;root&amp;#x27;);define(&amp;#x27;DB_PASSWORD&amp;#x27;,&amp;#x27;&amp;#x27;);define(&amp;#x27;DB_DATABASE&amp;#x">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP有基础的情况下快速上手">
-<meta property="og:url" content="http://example.com/languages/php/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/index.html">
+<meta property="og:title" content="php数据库操作文件代码">
+<meta property="og:url" content="http://example.com/languages/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="开发环境    集成开发软件 可使用的操作系统 说明     WAMP Win 推荐   XAMPP Win&#x2F;Mac    Mamp Mac 推荐   Lamp Linux(CentOS&#x2F;Fedora&#x2F;Debian&#x2F;Ubuntu)     vscode 插件 参考文献后盾人的PHP文档wamp官网（可能需要科学上网）">
+<meta property="og:description" content="config.inc.php  1234567&lt;?php define(&amp;#x27;DB_HOST&amp;#x27;,&amp;#x27;localhost&amp;#x27;);define(&amp;#x27;DB_USER&amp;#x27;,&amp;#x27;root&amp;#x27;);define(&amp;#x27;DB_PASSWORD&amp;#x27;,&amp;#x27;&amp;#x27;);define(&amp;#x27;DB_DATABASE&amp;#x">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-10-12T16:01:28.000Z">
-<meta property="article:modified_time" content="2020-10-13T01:37:47.598Z">
+<meta property="article:published_time" content="2020-10-22T05:38:14.000Z">
+<meta property="article:modified_time" content="2020-10-22T05:59:08.598Z">
 <meta property="article:author" content="Duncan Chen">
-<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="php">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -147,7 +147,7 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-languages/php/PHP有基础的情况下快速上手" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-languages/php/lib/php数据库操作文件代码" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -155,20 +155,20 @@
         
   
     <h1 class="article-title" itemprop="name">
-      PHP有基础的情况下快速上手
+      php数据库操作文件代码
     </h1>
   
 
         
-        <a href="/languages/php/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" class="archive-article-date">
-  	<time datetime="2020-10-12T16:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
+        <a href="/languages/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/" class="archive-article-date">
+  	<time datetime="2020-10-22T05:38:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
 </a>
         <div style="margin-top:10px;">
   <span class="post-time">
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">61字</span>
+      <span class="post-count">611字</span>
     </span>
   </span>
 
@@ -177,7 +177,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-hourglass-half"></i>
       <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
+      <span class="post-count">3分</span>
     </span>
   </span>
 </div>
@@ -190,40 +190,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>集成开发软件</th>
-<th>可使用的操作系统</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>WAMP</td>
-<td>Win</td>
-<td>推荐</td>
-</tr>
-<tr>
-<td>XAMPP</td>
-<td>Win/Mac</td>
-<td></td>
-</tr>
-<tr>
-<td>Mamp</td>
-<td>Mac</td>
-<td>推荐</td>
-</tr>
-<tr>
-<td>Lamp</td>
-<td>Linux(CentOS/Fedora/Debian/Ubuntu)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>vscode 插件</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://houdunren.gitee.io/note/php/">后盾人的PHP文档</a><br><a target="_blank" rel="noopener" href="https://www.wampserver.com/">wamp官网（可能需要科学上网）</a></p>
+        <ul>
+<li>config.inc.php</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">define(<span class="string">&#x27;DB_HOST&#x27;</span>,<span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_USER&#x27;</span>,<span class="string">&#x27;root&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PASSWORD&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_DATABASE&#x27;</span>,<span class="string">&#x27;php1&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PORT&#x27;</span>,<span class="number">3306</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>mysql.inc.php</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="comment">//数据库连接</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">connect</span>(<span class="params">$host=DB_HOST,$user=DB_USER,$password=DB_PASSWORD,$database=DB_DATABASE,$port=DB_PORT</span>)</span>&#123;</span><br><span class="line">	$link=@mysqli_connect($host, $user, $password, $database, $port);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_connect_errno())&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_connect_error());</span><br><span class="line">	&#125;</span><br><span class="line">	mysqli_set_charset($link,<span class="string">&#x27;utf8&#x27;</span>);</span><br><span class="line">	<span class="keyword">return</span> $link;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行一条SQL语句,返回结果集对象或者返回布尔值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute</span>(<span class="params">$link,$query</span>)</span>&#123;</span><br><span class="line">	$result=mysqli_query($link,$query);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_errno($link))&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_error($link));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> $result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行一条SQL语句，只会返回布尔值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute_bool</span>(<span class="params">$link,$query</span>)</span>&#123;</span><br><span class="line">	$bool=mysqli_real_query($link,$query);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_errno($link))&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_error($link));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> $bool;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//一次性执行多条SQL语句</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 一次性执行多条SQL语句</span></span><br><span class="line"><span class="comment">$link：连接</span></span><br><span class="line"><span class="comment">$arr_sqls：数组形式的多条sql语句</span></span><br><span class="line"><span class="comment">$error：传入一个变量，里面会存储语句执行的错误信息</span></span><br><span class="line"><span class="comment">使用案例：</span></span><br><span class="line"><span class="comment">$arr_sqls=array(</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;</span></span><br><span class="line"><span class="comment">);</span></span><br><span class="line"><span class="comment">var_dump(execute_multi($link, $arr_sqls,$error));</span></span><br><span class="line"><span class="comment">echo $error;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute_multi</span>(<span class="params">$link,$arr_sqls,&amp;$error</span>)</span>&#123;</span><br><span class="line">	$sqls=implode(<span class="string">&#x27;;&#x27;</span>,$arr_sqls).<span class="string">&#x27;;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span>(mysqli_multi_query($link,$sqls))&#123;</span><br><span class="line">		$data=<span class="keyword">array</span>();</span><br><span class="line">		$i=<span class="number">0</span>;<span class="comment">//计数</span></span><br><span class="line">		<span class="keyword">do</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>($result=mysqli_store_result($link))&#123;</span><br><span class="line">				$data[$i]=mysqli_fetch_all($result);</span><br><span class="line">				mysqli_free_result($result);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				$data[$i]=<span class="literal">null</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			$i++;</span><br><span class="line">			<span class="keyword">if</span>(!mysqli_more_results($link)) <span class="keyword">break</span>;</span><br><span class="line">		&#125;<span class="keyword">while</span> (mysqli_next_result($link));</span><br><span class="line">		<span class="keyword">if</span>($i==count($arr_sqls))&#123;</span><br><span class="line">			<span class="keyword">return</span> $data;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			$error=<span class="string">&quot;sql语句执行失败：&lt;br /&gt;&amp;nbsp;数组下标为<span class="subst">&#123;$i&#125;</span>的语句:<span class="subst">&#123;$arr_sqls[$i]&#125;</span>执行错误&lt;br /&gt;&amp;nbsp;错误原因：&quot;</span>.mysqli_error($link);</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		$error=<span class="string">&#x27;执行失败！请检查首条语句是否正确！&lt;br /&gt;可能的错误原因：&#x27;</span>.mysqli_error($link);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//获取记录数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">num</span>(<span class="params">$link,$sql_count</span>)</span>&#123;</span><br><span class="line">	$result=execute($link,$sql_count);</span><br><span class="line">	$count=mysqli_fetch_row($result);</span><br><span class="line">	<span class="keyword">return</span> $count[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//数据入库之前进行转义，确保，数据能够顺利的入库</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关闭与数据库的连接</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">close</span>(<span class="params">$link</span>)</span>&#123;</span><br><span class="line">	mysqli_close($link);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>返回json结果集</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$link=connect();</span><br><span class="line">$query = <span class="string">&#x27;SELECT * FROM recruit&#x27;</span>;</span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">while</span> ( $row =mysqli_fetch_assoc( $result ))&#123;</span><br><span class="line">    $rows []= $row ; <span class="comment">//接受结果集</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> json_encode($rows);</span><br><span class="line">close($link);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>从get或者post获取参数</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">&#x27;Content-Type:application/json; charset=utf-8&#x27;</span>);</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line">$link = connect();</span><br><span class="line">$query = <span class="string">&#x27;insert </span></span><br><span class="line"><span class="string">into </span></span><br><span class="line"><span class="string">comment </span></span><br><span class="line"><span class="string">values</span></span><br><span class="line"><span class="string">(NULL,&#x27;</span>.$_GET[<span class="string">&#x27;user_id&#x27;</span>].<span class="string">&#x27;,&#x27;</span>.$_GET[<span class="string">&#x27;post_id&#x27;</span>].<span class="string">&#x27;,\&#x27;&#x27;</span>.$_GET[<span class="string">&#x27;cmt_content&#x27;</span>].<span class="string">&#x27;\&#x27;);&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">if</span>($result)&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">200</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">500</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;</span><br><span class="line">close($link);</span><br><span class="line"><span class="keyword">echo</span> json_encode($data);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://houdunren.gitee.io/note/php/">后盾人的PHP文档</a></li>
+</ul>
 
       
 
@@ -258,7 +243,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PHP</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
         		</li>
       		
 		</ul>
@@ -314,7 +299,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/languages/php/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/languages/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -328,18 +313,18 @@
   
 <nav id="article-nav">
   
-    <a href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/languages/php/lib/php%E6%8E%A5%E6%94%B6%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Ejson/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          通过类的finalize方法避免在GC中消亡
+          php数据库操作文件代码
         
       </div>
     </a>
   
   
-    <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%AE%98%E6%96%B9%E6%A1%88%E4%BE%8Bwordcount%E6%BC%94%E7%A4%BA/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hadoop官方案例wordcount演示</div>
+    <a href="/languages/python/advance/tensorFlow2/%E5%88%9D%E8%AF%86tensorFlow/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">初识tensorFlow2</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -487,10 +472,6 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">postgraduate</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BigData</a>
               </li>
              
@@ -499,11 +480,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color3">postgraduate</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -511,11 +492,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -523,15 +516,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">搜狗输入法,win10</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">tensorFlow2</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜狗输入法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">win10</a>
               </li>
             
             <div class="clearfix"></div>
