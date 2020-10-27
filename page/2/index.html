@@ -144,6 +144,580 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-BigData/basic/HDFS/HDFS概述" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/basic/HDFS/HDFS%E6%A6%82%E8%BF%B0/">HDFS概述</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/basic/HDFS/HDFS%E6%A6%82%E8%BF%B0/" class="archive-article-date">
+  	<time datetime="2020-10-18T04:31:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-18</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">730字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">2分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="HDFS-Hadoop-Distributed-File-System分布式文件系统"><a href="#HDFS-Hadoop-Distributed-File-System分布式文件系统" class="headerlink" title="HDFS(Hadoop Distributed File System分布式文件系统"></a>HDFS(Hadoop Distributed File System分布式文件系统</h1><h5 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h5><ul>
+<li>高容错（一份文件多机器备份）</li>
+<li>处理的数据多（GB,TB，甚至PB）</li>
+<li>成本低（廉价机器即可使用）</li>
+</ul>
+<h5 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h5><ul>
+<li>不适合低延迟数据访问（比如毫秒级数据，做不到）</li>
+<li>无法高效存储大量小文件<ul>
+<li>文件太小，会占用NameNode的大量内存来存储目录和块信息</li>
+<li>小文件寻址时间超过读取时间，不符合HDFS设计目的</li>
+</ul>
+</li>
+<li>不支持并发写入，文件随机修改<ul>
+<li>一个文件只能有一个写，不允许多个线程写</li>
+<li>仅支持数据追加append，不允许修改</li>
+</ul>
+</li>
+</ul>
+<h2 id="节点概述："><a href="#节点概述：" class="headerlink" title="节点概述："></a>节点概述：</h2><ul>
+<li><p>NameNode:</p>
+<ul>
+<li>管理HDFS的命名空间，也叫作名称空间（内含目录，文件，块）</li>
+<li>配置副本策略(例如哪个副本存哪里)</li>
+<li>管理数据块（Block）映射信息</li>
+<li>处理客户端读写请求（所有读写请求首先要发给NN）</li>
+</ul>
+</li>
+<li><p>DataNode(SlaveNode,由NameNode下达命令，DataNode执行实际操作):</p>
+<ul>
+<li>存储实际的数据块（HDFS存储的基本单位就是数据块）</li>
+<li>执行数据块的读/写操作</li>
+</ul>
+</li>
+<li><p>SecondaryNameNode(并非NameNode的备份，NameNode挂了它也没法顶上去)</p>
+<ul>
+<li>辅助NameNode，分担其工作量，定期合并Fsimage,Edits,并推送给NameNode</li>
+<li>紧急情况下，可帮助恢复NameNode(但并不一定能完全恢复，俩节点之间始终有一个时间差)</li>
+</ul>
+</li>
+<li><p>Client</p>
+<ul>
+<li>文件切分（文件上传HDFS时，客户端将文件切分成一个一个Block，然后上传）</li>
+<li>与NN交互，获取文件位置信息</li>
+<li>与DN交互，读取或写入数据</li>
+<li>提供一些命令管理HDFS，例如NN格式化</li>
+<li>通过命令访问HDFS做增删改查操作</li>
+</ul>
+</li>
+</ul>
+<p>注：</p>
+<ul>
+<li><p>HDFS中的文件在物理上是分块存储（Block）,块的大小可以通过配置参数<strong><em>dfs.blocksize</em></strong>来规定，默认大小在2.X版本是128M，老版本是64M。</p>
+<ul>
+<li>如果寻址时间（找某个文件块花费的时间）约为10ms，即查找到目标block的时间为10ms。</li>
+<li>考虑到寻址时间为传输时间(文件传输到目的地的时间)1%为最佳状态。</li>
+<li>最后的传输时间=10ms/0.01=1000ms=1s</li>
+<li>而目前的磁盘传输速率普遍为100MB/s</li>
+</ul>
+</li>
+<li><p>提问，为什么块的大小不能设置太小，也不能设置太大？</p>
+<ul>
+<li>HDFS的块设置太小，会增加寻址时间，因为块变多了，地址也变多了，程序会一直在找块的位置</li>
+<li>如果块设置的太大，从磁盘传输数据的时间会明显大于定位这个块开始需要的时间，也就是传输时间&gt;寻址时间。导致程序在处理这块数据时，会非常慢</li>
+</ul>
+</li>
+<li><p><strong>总结：HDFS块的大小设置主要取决于磁盘的传输速率</strong></p>
+</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HDFS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/basic/HDFS/HDFS%E6%A6%82%E8%BF%B0/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/javaAPI/通过java编程访问hadoop" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/javaAPI/%E9%80%9A%E8%BF%87java%E7%BC%96%E7%A8%8B%E8%AE%BF%E9%97%AEhadoop/">通过java编程访问hadoop</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/javaAPI/%E9%80%9A%E8%BF%87java%E7%BC%96%E7%A8%8B%E8%AE%BF%E9%97%AEhadoop/" class="archive-article-date">
+  	<time datetime="2020-10-18T04:31:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-18</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">130字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>创建文件</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//基础配置</span></span><br><span class="line">Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">conf.set(<span class="string">&quot;fs.defaultFS&quot;</span>,<span class="string">&quot;hdfs://hadoop102:9000&quot;</span>);</span><br><span class="line">conf.set(<span class="string">&quot;fs.hdfs.impl&quot;</span>,<span class="string">&quot;org.apache.hadoop.hdfs.DistributedFileSystem&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//设置操作用户名， 防止操作时没有权限</span></span><br><span class="line">System.setProperty(<span class="string">&quot;HADOOP_USER_NAME&quot;</span>, <span class="string">&quot;username&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">byte</span>[] buff = <span class="string">&quot;Hello world&quot;</span>.getBytes(); <span class="comment">// 要写入的内容</span></span><br><span class="line">String filename = <span class="string">&quot;test&quot;</span>; <span class="comment">//要写入的文件名</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//打开流</span></span><br><span class="line">FileSystem fs = FileSystem.get(conf);</span><br><span class="line">FSDataOutputStream os = fs.create(<span class="keyword">new</span> Path(filename));</span><br><span class="line"></span><br><span class="line"><span class="comment">//写入文件</span></span><br><span class="line">os.write(buff,<span class="number">0</span>,buff.length);</span><br><span class="line">System.out.println(<span class="string">&quot;Create:&quot;</span>+ filename);</span><br><span class="line"></span><br><span class="line"><span class="comment">//关闭流</span></span><br><span class="line">os.close();</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common">hadoop maven</a></li>
+<li></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/javaAPI/%E9%80%9A%E8%BF%87java%E7%BC%96%E7%A8%8B%E8%AE%BF%E9%97%AEhadoop/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-languages/text/md/typoraDoc" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/text/md/typoraDoc/">typora</a>
+    </h1>
+  
+
+        
+        <a href="/languages/text/md/typoraDoc/" class="archive-article-date">
+  	<time datetime="2020-10-16T08:32:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">398字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一：菜单栏"><a href="#一：菜单栏" class="headerlink" title="一：菜单栏"></a>一：菜单栏</h2><ul>
+<li>文件：alt+F</li>
+</ul>
+<ul>
+<li>编辑：alt+E</li>
+</ul>
+<ul>
+<li>段落：alt+P</li>
+</ul>
+<ul>
+<li>格式：alt+O</li>
+</ul>
+<ul>
+<li>视图：alt+V</li>
+</ul>
+<ul>
+<li>主题：alt+T</li>
+</ul>
+<ul>
+<li>帮助：alt+H</li>
+</ul>
+<h2 id="二：文件"><a href="#二：文件" class="headerlink" title="二：文件"></a>二：文件</h2><ul>
+<li>新建：Ctrl+N</li>
+</ul>
+<ul>
+<li>新建窗口：Ctrl+Shift+N</li>
+</ul>
+<ul>
+<li>打开：Ctrl+O</li>
+</ul>
+<ul>
+<li>快速打开：Ctrl+P</li>
+</ul>
+<ul>
+<li>保存：Ctrl+S</li>
+</ul>
+<ul>
+<li>另存为：Ctrl+Shift+S</li>
+</ul>
+<ul>
+<li>偏好：Ctrl+,</li>
+</ul>
+<ul>
+<li>关闭：Ctrl+W</li>
+</ul>
+<h2 id="三：编辑"><a href="#三：编辑" class="headerlink" title="三：编辑"></a>三：编辑</h2><ul>
+<li>撤销：Ctrl+Z</li>
+</ul>
+<ul>
+<li>重做：Ctrl+Y</li>
+</ul>
+<ul>
+<li>剪切：Ctrl+X</li>
+</ul>
+<ul>
+<li>复制：Ctrl+C</li>
+</ul>
+<ul>
+<li>粘贴：Ctrl+V</li>
+</ul>
+<ul>
+<li>复制为MarkDown：Ctrl+Shift+C</li>
+</ul>
+<ul>
+<li>粘贴为纯文本：Ctrl+Shift+V</li>
+</ul>
+<ul>
+<li>全选：Ctrl+A</li>
+</ul>
+<ul>
+<li>选中当前行/句：Ctrl+L</li>
+</ul>
+<ul>
+<li>选中当前格式文本：Ctrl+E</li>
+</ul>
+<ul>
+<li>选中当前词：Ctrl+D</li>
+</ul>
+<ul>
+<li>跳转到文首：Ctrl+Home</li>
+</ul>
+<ul>
+<li>跳转到所选内容：Ctrl+J</li>
+</ul>
+<ul>
+<li>跳转到文末：Ctrl+End</li>
+</ul>
+<ul>
+<li>查找：Ctrl+F</li>
+</ul>
+<ul>
+<li>查找下一个：F3</li>
+</ul>
+<ul>
+<li>查找上一个：Shift+F3</li>
+</ul>
+<ul>
+<li>替换：Ctrl+H</li>
+</ul>
+<h2 id="四：段落"><a href="#四：段落" class="headerlink" title="四：段落"></a>四：段落</h2><ul>
+<li>标题：Ctrl+1/2/3/4/5</li>
+</ul>
+<ul>
+<li>段落：Ctrl+0</li>
+</ul>
+<ul>
+<li>增大标题级别：Ctrl+=</li>
+</ul>
+<ul>
+<li>减少标题级别：Ctrl+-</li>
+</ul>
+<ul>
+<li>表格：Ctrl+T</li>
+</ul>
+<ul>
+<li>代码块：Ctrl+Shift+K</li>
+</ul>
+<ul>
+<li>公式块：Ctrl+Shift+M</li>
+</ul>
+<ul>
+<li>引用：Ctrl+Shift+Q</li>
+</ul>
+<ul>
+<li>有序列表：Ctrl+Shift+[</li>
+</ul>
+<ul>
+<li>无序列表：Ctrl+Shift+]</li>
+</ul>
+<ul>
+<li>增加缩进：Ctrl+]</li>
+</ul>
+<ul>
+<li>减少缩进：Ctrl+[</li>
+</ul>
+<h2 id="五：格式"><a href="#五：格式" class="headerlink" title="五：格式"></a>五：格式</h2><ul>
+<li>加粗：Ctrl+B</li>
+</ul>
+<ul>
+<li>斜体：Ctrl+I</li>
+</ul>
+<ul>
+<li>下划线：Ctrl+U</li>
+</ul>
+<ul>
+<li>代码：Ctrl+Shift+`</li>
+</ul>
+<ul>
+<li>删除线：Alt+Shift+5</li>
+</ul>
+<ul>
+<li>超链接：Ctrl+K</li>
+</ul>
+<ul>
+<li>图像：Ctrl+Shift+I</li>
+</ul>
+<ul>
+<li>清除样式：Ctrl+</li>
+</ul>
+<h2 id="六：视图"><a href="#六：视图" class="headerlink" title="六：视图"></a>六：视图</h2><ul>
+<li>显示隐藏侧边栏：Ctrl+Shift+L</li>
+</ul>
+<ul>
+<li>大纲视图：Ctrl+Shift+1</li>
+</ul>
+<ul>
+<li>文档列表视图：Ctrl+Shift+2</li>
+</ul>
+<ul>
+<li>文件树视图：Ctrl+Shift+3</li>
+</ul>
+<ul>
+<li>源代码模式：Ctrl+/</li>
+</ul>
+<ul>
+<li>专注模式：F8</li>
+</ul>
+<ul>
+<li>打字机模式：F9</li>
+</ul>
+<ul>
+<li>切换全屏：F11</li>
+</ul>
+<ul>
+<li>实际大小：Ctrl+Shift+0</li>
+</ul>
+<ul>
+<li>放大：Ctrl+Shift+=</li>
+</ul>
+<ul>
+<li>缩小：Ctrl+Shift+-</li>
+</ul>
+<ul>
+<li>应用内窗口切换：Ctrl+Tab</li>
+</ul>
+<ul>
+<li>打开DevTools：Shift+F12</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="http://support.typora.io/Shortcut-Keys/">typora快捷键</a><br><a target="_blank" rel="noopener" href="http://support.typora.io/">typora支持</a><br><a target="_blank" rel="noopener" href="https://www.typora.io/">typora官网</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">markdown</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/text/md/typoraDoc/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-BigData/env/完全分布式配置/启动集群常见错误" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -224,133 +798,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/完全分布式配置/分发脚本" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">分发脚本</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/" class="archive-article-date">
-  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">512字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">2分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="分发脚本"><a href="#分发脚本" class="headerlink" title="分发脚本"></a>分发脚本</h1><p>​    <del>在根据镜像，配置多台机器后，并修改ip地址后。</del></p>
-<p>​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。</p>
-<ul>
-<li><strong>scp  -r</strong> （递归复制） </li>
-</ul>
-<blockquote>
-<p><code>scp directory hostname:destination</code></p>
-<p>$ scp /etc/profile root@hadoop102:/etc/profile</p>
-<p>$ source /etc/profile</p>
-</blockquote>
-<p>基本用法和cp一致，执行时需要输入代码</p>
-<p>此复制命令，并没有完全把文件复制过来，比如文件的时间戳等</p>
-<ul>
-<li><p><strong>rsync（和scp基本一致，不过文件复制是归档复制,包括所有者还有权限都完全拷贝，两个目录参数不能都为远程目录）</strong><br>如果文件一模一样，不会拷贝</p>
-<p>-a 归档复制（可以省略）</p>
-<p>-v 显示复制信息</p>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1)拉取: </span><br><span class="line"></span><br><span class="line">​        rsync [option]   user@host::src   dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   rsync://user@host:port/src    dest</span><br><span class="line"></span><br><span class="line">2)推送:</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   user@host::dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   rsync://user@host:port/dest</span><br></pre></td></tr></table></figure>
-<p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">1.获取参数个数，如果没有参数，直接退出</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$#</span> 这个程式的参数个数,<span class="keyword">if</span>后面记得跟空格</span></span><br><span class="line"></span><br><span class="line">pcount=$#</span><br><span class="line"></span><br><span class="line">if ((pcount==0)); then</span><br><span class="line"></span><br><span class="line">echo no args;</span><br><span class="line"></span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">fi</span> 作为<span class="keyword">if</span>条件的结束 即end <span class="keyword">if</span></span></span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 获取文件名称</span></span><br><span class="line"></span><br><span class="line">p1=$1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">不是<span class="string">&#x27;，而是`</span></span></span><br><span class="line"></span><br><span class="line">fname=`basename $p1`</span><br><span class="line"></span><br><span class="line">echo fname=$fname</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 获取上级目录到绝对路径 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">-P是绝对路劲选项，防止输入的参数是软链接</span></span><br><span class="line"></span><br><span class="line">pdir=`cd -P $(dirname $p1); pwd`</span><br><span class="line"></span><br><span class="line">echo pdir =$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 获取当前用户名称</span></span><br><span class="line"></span><br><span class="line">user=`whoami`</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5 循环 将本地数据发送到其他服务器 此处只配置三台机器</span></span><br><span class="line"></span><br><span class="line">for((host=102;host&lt;105;host++));</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">echo --------------hadoop$host----------------</span><br><span class="line"></span><br><span class="line">rsync -av $pdir/$fname $user@hadoop$host:$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>测试脚本是否正常运作</p>
-<p>$ cd ~</p>
-<p>$ vim xsync</p>
-<p>$ sudo chmod +7 xsync 修改为可执行文件</p>
-<p>$ sudo ./xsync .  将当前目录所有文件分发到其他服务器对应的目录里</p>
-</blockquote>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://duncantsword0.github.io/system/Linux/shell/shell%20%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/">一些Shell的基础知识</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">展开全文 >></a>
         </p>
       
 
@@ -582,7 +1029,7 @@
 
 
   
-    <article id="post-languages/java/jvm/java虚拟机的一些基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-BigData/env/完全分布式配置/分发脚本" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -590,12 +1037,139 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">java虚拟机的一些基本概念</a>
+      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">分发脚本</a>
     </h1>
   
 
         
-        <a href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="archive-article-date">
+        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/" class="archive-article-date">
+  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">512字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">2分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="分发脚本"><a href="#分发脚本" class="headerlink" title="分发脚本"></a>分发脚本</h1><p>​    <del>在根据镜像，配置多台机器后，并修改ip地址后。</del></p>
+<p>​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。</p>
+<ul>
+<li><strong>scp  -r</strong> （递归复制） </li>
+</ul>
+<blockquote>
+<p><code>scp directory hostname:destination</code></p>
+<p>$ scp /etc/profile root@hadoop102:/etc/profile</p>
+<p>$ source /etc/profile</p>
+</blockquote>
+<p>基本用法和cp一致，执行时需要输入代码</p>
+<p>此复制命令，并没有完全把文件复制过来，比如文件的时间戳等</p>
+<ul>
+<li><p><strong>rsync（和scp基本一致，不过文件复制是归档复制,包括所有者还有权限都完全拷贝，两个目录参数不能都为远程目录）</strong><br>如果文件一模一样，不会拷贝</p>
+<p>-a 归档复制（可以省略）</p>
+<p>-v 显示复制信息</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1)拉取: </span><br><span class="line"></span><br><span class="line">​        rsync [option]   user@host::src   dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   rsync://user@host:port/src    dest</span><br><span class="line"></span><br><span class="line">2)推送:</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   user@host::dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   rsync://user@host:port/dest</span><br></pre></td></tr></table></figure>
+<p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">1.获取参数个数，如果没有参数，直接退出</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$#</span> 这个程式的参数个数,<span class="keyword">if</span>后面记得跟空格</span></span><br><span class="line"></span><br><span class="line">pcount=$#</span><br><span class="line"></span><br><span class="line">if ((pcount==0)); then</span><br><span class="line"></span><br><span class="line">echo no args;</span><br><span class="line"></span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">fi</span> 作为<span class="keyword">if</span>条件的结束 即end <span class="keyword">if</span></span></span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 获取文件名称</span></span><br><span class="line"></span><br><span class="line">p1=$1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">不是<span class="string">&#x27;，而是`</span></span></span><br><span class="line"></span><br><span class="line">fname=`basename $p1`</span><br><span class="line"></span><br><span class="line">echo fname=$fname</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 获取上级目录到绝对路径 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">-P是绝对路劲选项，防止输入的参数是软链接</span></span><br><span class="line"></span><br><span class="line">pdir=`cd -P $(dirname $p1); pwd`</span><br><span class="line"></span><br><span class="line">echo pdir =$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 获取当前用户名称</span></span><br><span class="line"></span><br><span class="line">user=`whoami`</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5 循环 将本地数据发送到其他服务器 此处只配置三台机器</span></span><br><span class="line"></span><br><span class="line">for((host=102;host&lt;105;host++));</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">echo --------------hadoop$host----------------</span><br><span class="line"></span><br><span class="line">rsync -av $pdir/$fname $user@hadoop$host:$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试脚本是否正常运作</p>
+<p>$ cd ~</p>
+<p>$ vim xsync</p>
+<p>$ sudo chmod +7 xsync 修改为可执行文件</p>
+<p>$ sudo ./xsync .  将当前目录所有文件分发到其他服务器对应的目录里</p>
+</blockquote>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://duncantsword0.github.io/system/Linux/shell/shell%20%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/">一些Shell的基础知识</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-languages/BackEnd/java/jvm/java虚拟机的一些基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">java虚拟机的一些基本概念</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="archive-article-date">
   	<time datetime="2020-10-13T01:32:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
 </a>
         <div style="margin-top:10px;">
@@ -654,7 +1228,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/languages/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">展开全文 >></a>
+          <a class="article-more-a" href="/languages/BackEnd/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">展开全文 >></a>
         </p>
       
 
@@ -684,7 +1258,7 @@
 
 
   
-    <article id="post-languages/java/jvm/通过类的finalize方法避免在GC中消亡" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-languages/BackEnd/java/jvm/通过类的finalize方法避免在GC中消亡" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -692,12 +1266,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">通过类的finalize方法避免在GC中消亡</a>
+      <a class="article-title" href="/languages/BackEnd/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">通过类的finalize方法避免在GC中消亡</a>
     </h1>
   
 
         
-        <a href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" class="archive-article-date">
+        <a href="/languages/BackEnd/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" class="archive-article-date">
   	<time datetime="2020-10-13T01:32:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
 </a>
         <div style="margin-top:10px;">
@@ -770,7 +1344,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/languages/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">展开全文 >></a>
+          <a class="article-more-a" href="/languages/BackEnd/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">展开全文 >></a>
         </p>
       
 
@@ -800,7 +1374,7 @@
 
 
   
-    <article id="post-languages/php/etc/PHP有基础的情况下快速上手" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-languages/BackEnd/php/etc/PHP有基础的情况下快速上手" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -808,12 +1382,12 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/languages/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">PHP有基础的情况下快速上手</a>
+      <a class="article-title" href="/languages/BackEnd/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">PHP有基础的情况下快速上手</a>
     </h1>
   
 
         
-        <a href="/languages/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" class="archive-article-date">
+        <a href="/languages/BackEnd/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" class="archive-article-date">
   	<time datetime="2020-10-12T16:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
 </a>
         <div style="margin-top:10px;">
@@ -903,7 +1477,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/languages/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">展开全文 >></a>
+          <a class="article-more-a" href="/languages/BackEnd/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">展开全文 >></a>
         </p>
       
 
@@ -1030,501 +1604,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%AE%98%E6%96%B9%E6%A1%88%E4%BE%8Bwordcount%E6%BC%94%E7%A4%BA/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/基础配置/Hadoop伪分布式环境搭建" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">hadoop伪分布式环境搭建</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="archive-article-date">
-  	<time datetime="2020-10-10T10:21:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">384字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-进入-hadoop-2-7-2-etc-hadoop-目录下-配置hadoop-env-sh-修改JAVA-HOME的值"><a href="#1-进入-hadoop-2-7-2-etc-hadoop-目录下-配置hadoop-env-sh-修改JAVA-HOME的值" class="headerlink" title="1.进入/hadoop-2.7.2/etc/hadoop/目录下,配置hadoop-env.sh,修改JAVA_HOME的值"></a>1.进入/hadoop-2.7.2/etc/hadoop/目录下,配置hadoop-env.sh,修改JAVA_HOME的值</h2><p><code>$ cd /opt/module/hadoop-2.7.2/etc/hadoop/</code><br><code>$ vim hadoop-env.sh</code><br><code>$ cd /opt/module/hadoop-2.7.2/</code><br><code>$ bin/hadoop</code><br>若无错误提示则修改成功</p>
-<h2 id="2-配置core-site-xml"><a href="#2-配置core-site-xml" class="headerlink" title="2.配置core-site.xml"></a>2.配置core-site.xml</h2><p><code>$ vim core-site.xml</code></p>
-<blockquote>
-<!-- 指定HDFS中NameNode的地址 -->
-<property>
-
-<name>fs.defaultFS</name>
-
-  <value>hdfs://hadoop200:9000</value>
-
-</property>
-
-
-
-<!-- 指定Hadoop运行时产生文件的存储目录 -->
-<property>
-
-  <name>hadoop.tmp.dir</name>
-
-  <value>/opt/module/hadoop-2.7.2/data/tmp</value>
-
-</property>
-
-</blockquote>
-<h2 id="3-配置hdfs-site-xml-，之后启动集群，格式化NameNode（第一次启动时格式化，以后就不要总格式化）-启动NameNode，DataNode，输入jps，或者通过http-192-168-94-200-50070-dfshealth-html-tab-overview-查看情况-ip地址是之前设置的主机号，可以换成自定义的域名，自定义域名需要修改Windows系统的host文件"><a href="#3-配置hdfs-site-xml-，之后启动集群，格式化NameNode（第一次启动时格式化，以后就不要总格式化）-启动NameNode，DataNode，输入jps，或者通过http-192-168-94-200-50070-dfshealth-html-tab-overview-查看情况-ip地址是之前设置的主机号，可以换成自定义的域名，自定义域名需要修改Windows系统的host文件" class="headerlink" title="3.配置hdfs-site.xml ，之后启动集群，格式化NameNode（第一次启动时格式化，以后就不要总格式化）,启动NameNode，DataNode，输入jps，或者通过http://192.168.94.200:50070/dfshealth.html#tab-overview 查看情况(ip地址是之前设置的主机号，可以换成自定义的域名，自定义域名需要修改Windows系统的host文件)"></a>3.配置hdfs-site.xml ，之后启动集群，格式化NameNode（第一次启动时格式化，以后就不要总格式化）,启动NameNode，DataNode，输入jps，或者通过<a target="_blank" rel="noopener" href="http://192.168.94.200:50070/dfshealth.html#tab-overview">http://192.168.94.200:50070/dfshealth.html#tab-overview</a> 查看情况(ip地址是之前设置的主机号，可以换成自定义的域名，自定义域名需要修改Windows系统的host文件)</h2><p><code>$ vim hdfs-site.xml</code></p>
-<blockquote>
-<!-- 指定HDFS副本的数量 -->
-<property>
-
-  <name>dfs.replication</name>
-
-  <value>1</value>
-
-</property>
-
-</blockquote>
-<p><code>$ bin/hdfs namenode -format</code><br><code>$ sbin/hadoop-daemon.sh start namenode</code><br><code>$ sbin/hadoop-daemon.sh start datanode</code><br><code>$ jps</code></p>
-<blockquote>
-<p>7137 NameNode<br>7217 DataNode<br>7288 Jps</p>
-</blockquote>
-<h2 id="4-配置yarn-env-sh-取消注释JAVA-HOME并修改JAVA-HOME的值"><a href="#4-配置yarn-env-sh-取消注释JAVA-HOME并修改JAVA-HOME的值" class="headerlink" title="4.配置yarn-env.sh,取消注释JAVA_HOME并修改JAVA_HOME的值"></a>4.配置yarn-env.sh,取消注释JAVA_HOME并修改JAVA_HOME的值</h2><p><code>$ vim yarn-env.sh</code><br> <img src="../../assets/blogImg/bigData/修改yarn-env1.jpg" alt="修改yarn-env1.sh"></p>
-<h2 id="5-修改site文件，在标签下添加以下内容"><a href="#5-修改site文件，在标签下添加以下内容" class="headerlink" title="5.修改site文件，在标签下添加以下内容"></a>5.修改site文件，在<configuration>标签下添加以下内容</h2><p><code>$ vim yarn-site.xml</code></p>
-<blockquote>
-<!-- Reducer获取数据的方式 -->
-<property>
-
-​    <name>yarn.nodemanager.aux-services</name>
-
-​    <value>mapreduce_shuffle</value>
-
-</property>
-
-
-
-<!-- 指定YARN的ResourceManager的地址 -->
-<!-- 关于resourcemanager的值需要自己设置，例如此处主机是hadoop200 即本机 -->
-<property>
-
-​    <name>yarn.resourcemanager.hostname</name>
-
-​    <value>hadoop200</value>
-
-</property>
-
-</blockquote>
-<h2 id="6-配置mapred-env-sh-取消注释JAVA-HOME并修改JAVA-HOME的值"><a href="#6-配置mapred-env-sh-取消注释JAVA-HOME并修改JAVA-HOME的值" class="headerlink" title="6.配置mapred-env.sh 取消注释JAVA_HOME并修改JAVA_HOME的值"></a>6.配置mapred-env.sh 取消注释JAVA_HOME并修改JAVA_HOME的值</h2><p>  <code>$ vim mapred-env.sh</code><br>  <code>/opt/module/jdk1.8.0_261</code></p>
-<h2 id="7-根据模板创建mapred-site-xml，在标签下添加以下内容"><a href="#7-根据模板创建mapred-site-xml，在标签下添加以下内容" class="headerlink" title="7.根据模板创建mapred-site.xml，在标签下添加以下内容"></a>7.根据模板创建mapred-site.xml，在<configuration>标签下添加以下内容</h2><p>  <code>$ cp mapred-site.xml.template mapred-site.xml</code><br>  <code>$ vim mapred-site.xml</code></p>
-<blockquote>
-<!-- 指定MR运行在Yarn上 -->
-<property>
-
-​    <name>mapreduce.framework.name</name>
-
-​    <value>yarn</value>
-
-</property>
-
-</blockquote>
-<h2 id="8-回到-opt-module-hadoop-2-7-2目录下，执行yarn命令-成功后显示，之后可到浏览器查看http-192-168-94-200-8088-cluster"><a href="#8-回到-opt-module-hadoop-2-7-2目录下，执行yarn命令-成功后显示，之后可到浏览器查看http-192-168-94-200-8088-cluster" class="headerlink" title="8.回到/opt/module/hadoop-2.7.2目录下，执行yarn命令,成功后显示，之后可到浏览器查看http://192.168.94.200:8088/cluster"></a>8.回到/opt/module/hadoop-2.7.2目录下，执行yarn命令,成功后显示，之后可到浏览器查看<a target="_blank" rel="noopener" href="http://192.168.94.200:8088/cluster">http://192.168.94.200:8088/cluster</a></h2><p><code>$ cd ../..</code><br><code>$ yarn-daemon.sh start resourcemanager</code><br><code>$ yarn-daemon.sh start nodemanager</code><br><code>$ Jps</code></p>
-<blockquote>
-<p>7137 NameNode<br>7217 DataNode<br>8930 Jps<br>8835 NodeManager<br>8584 ResourceManager</p>
-</blockquote>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/基础配置/Hadoop基本架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">Hadoop基本架构</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">2字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Apache-Hadoop"><a href="#Apache-Hadoop" class="headerlink" title="Apache Hadoop"></a>Apache Hadoop</h2><ul>
-<li><img src="../../../../assets/blogImg/bigData/Hadoop基本架构.png" alt="大数据基本架构"></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/基础配置/Hadoop基本环境配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">Hadoop基本环境配置</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">1.2k字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">4分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Hadoop环境配置"><a href="#Hadoop环境配置" class="headerlink" title="Hadoop环境配置"></a>Hadoop环境配置</h2><ul>
-<li>英语名词：Cluster 集群</li>
-</ul>
-<hr>
-<ul>
-<li>目标：本篇博客仅描述如何配置单节点hadoop以此快速使用MapReduce（计算）和HDFS</li>
-</ul>
-<hr>
-<ul>
-<li>虚拟机环境配置（软硬件环境默认当代普通PC）</li>
-<li>软件 Xshell VMare</li>
-</ul>
-<hr>
-<h4 id="虚拟机环境准备"><a href="#虚拟机环境准备" class="headerlink" title="虚拟机环境准备"></a>虚拟机环境准备</h4><ol>
-<li>克隆虚拟机（或者安装新的镜像）</li>
-<li><p>修改虚拟机网络配置</p>
-<p><img src="../../../../assets/blogImg/VM/虚拟机网络设置1.jpg" alt="虚拟机网络设置1"></p>
-<p><img src="../../../../assets/blogImg/VM/虚拟机网络设置2.jpg" alt="虚拟机网络设置2"></p>
-<p><img src="../../../../assets/blogImg/VM/虚拟机网络设置3.jpg" alt="虚拟机网络设置3"></p>
-<p><img src="../../../../assets/blogImg/VM/虚拟机网络设置4.jpg" alt="虚拟机网络设置4"></p>
-<p><strong>修改完虚拟机的网络设置后，还应当去本机系统的网络配置处进行设置</strong><br><img src="../../../../assets/blogImg/VM/虚拟机网络设置5.jpg" alt="虚拟机网络设置5"><br><img src="../../../../assets/blogImg/VM/虚拟机网络设置6.jpg" alt="虚拟机网络设置6"></p>
-</li>
-<li><p>修改克隆虚拟机的静态IP</p>
-<p>$ sudo vim /etc/sysconfig/network-scripts/ifcfg-eno<strong>
-</strong>不同版本的CentOS系统可能会有所不同，按Tab补全** </p>
-</li>
-</ol>
-<blockquote>
-<p>  TYPE=”Ethernet”<br>  PROXY_METHOD=”none”<br>  BROWSER_ONLY=”no”<br>  BOOTPROTO=”dhcp”<br>  DEFROUTE=”yes”<br>  IPV4_FAILURE_FATAL=”no”<br>  IPV6INIT=”yes”<br>  IPV6_AUTOCONF=”yes”<br>  IPV6_DEFROUTE=”yes”<br>  IPV6_FAILURE_FATAL=”no”<br>  IPV6_ADDR_GEN_MODE=”stable-privacy”<br>  NAME=”ens33”<br>  UUID=”d0f6333e-eabd-4b30-92d5-d25a56ba4e2f”<br>  DEVICE=”ens33”<br>  ONBOOT=”yes”</p>
-</blockquote>
-<p>  <strong>修改ip类型为静态IP</strong></p>
-<blockquote>
-<p>  BOOTPROTO=”static”</p>
-</blockquote>
-<p>  <strong>添加以下三行分别为IP,掩码，网关的代码</strong></p>
-<blockquote>
-<p>  IPADDR=xxx.xxx.xxx.xxx<br>  NETMASK=xxx.xxx.xxx.xxx<br>  GATEWAY=xxx.xxx.xxx.xxx</p>
-</blockquote>
-<p>  <strong>具体值要根据虚拟机的网络设置，比如我这里的是 其中ip地址的网络号与上图给出的一致为192.168.94，而主机号地址则必须为1-254，不能为0或者255，出于预留ip号给其他主机的考虑，可以从整数位开始分配</strong></p>
-<blockquote>
-<p>  IPADDR=192.168.94.200<br>  NETMASK=255.255.255.0<br>  GATEWAY=192.168.94.2</p>
-</blockquote>
-<p>  <strong>之后重启Linux的网络服务</strong><br>  <code>$ sudo service network restart</code><br>  <strong>输入<code>$ ip addr</code>查看ip地址</strong><br>  <code>$ sudo ip addr</code><br>  <strong>根据ip通过shell工具，即Xshell软件进行访问，接下来所有操作将通过Xshell，模拟真实开发环境（通过客户端shell工具连接服务器）</strong></p>
-<ol>
-<li><p>修改主机名</p>
-<p><code>$ sudo vim /etc/hosts</code></p>
-<p><strong>按照文件格式添加ip 和主机名 头两个localhost回环地址默认可不管直接按这样的顺序去配置</strong></p>
-</li>
-</ol>
-<blockquote>
-<p>192.168.94.200 hadoop200<br>192.168.94.201 hadoop201<br>192.168.94.202 hadoop202<br>… </p>
-</blockquote>
-<p><strong>之后保存，输入hostname查看自己的主机名，hadoop主机将会根据此文件查找其他的hadoop机器，如果不愿意手打，也可以直接手写一个循环bash文件，文件的内容将在下面给出</strong><br><code>$ hostname</code><br><code>$ sudo vim changeHosts.sh</code></p>
-<p><strong>开始编辑</strong></p>
-<blockquote>
-<h1 id="bin-bash"><a href="#bin-bash" class="headerlink" title="!/bin/bash"></a>!/bin/bash</h1><p>for((i=200;i<210;i++))
-do
-echo "192.168.94.$i hadoop$i" >&gt; /etc/hosts<br>done</p>
-</blockquote>
-<p><strong>执行bash文件</strong><br><code>$ sudo bash changeHosts.sh</code><br><strong>同时永久更改主机名，修改/etc/sysconfig/network 文件</strong><br><code>$ sudo vim /etc/sysconfig/network</code></p>
-<blockquote>
-<p>  NETWORKING=yes<br>  HOSTNAME=hadoop101</p>
-</blockquote>
-<p>  <strong>重启</strong></p>
-<p>  <code>$ sudo reboot</code></p>
-<ol>
-<li><p>关闭防火墙(Hadoop集群搭建一般是在内网，因此为了通信顺利会关闭防火墙，通过一个外服务器与外界通信，外服务器带有防火墙)</p>
-<p><code>$ sudo firewall-cmd --state</code><br><strong>停止firewall</strong><br><code>$ sudo systemctl stop firewalld.service</code><br><strong>禁止firewall开机启动</strong><br><code>$ sudo systemctl disable firewalld.service</code></p>
-</li>
-<li><p>创建hadoop用户</p>
-<p><code>$ sudo useradd hadoop100</code><br><code>$ sudo passwd hadoop100</code></p>
-</li>
-<li><p>配置hadoop200用户(具有root权限）</p>
-<p><code>$ sudo vim /etc/sudoers</code></p>
-<p><img src="../../../../assets/blogImg/Linux修改Root密码/Linux安全模式修改密码1.jpg" alt="vim /etc/sudoers"><br>图中的normaluser替换为hadoop200</p>
-</li>
-<li><p>在/opt目录下创建文件夹创建module(存放软件模块)、software（存放软件压缩包）文件夹</p>
-<p><code>$ sudo mkdir module</code><br><code>$ sudo mkdir software</code></p>
-</li>
-<li><p>修改module、software文件夹的所有者</p>
-<p><code>$ sudo chown hadoop200:hadoop200 module/ software/</code></p>
-<p><strong>以下操作使用hadoop200用户,进入/opt/software/</strong></p>
-<p><code>$ su hadoop200</code><br><code>$ cd /opt/software/</code></p>
-<p><strong>输入rz命令、回车，如果支持则会弹出上传文件弹框；否则会提示找不到,若不支持rz上传文件 则需先安装rz：</strong></p>
-<p><code>$ yum -y install lrzsz</code></p>
-<p><strong>拖动已经下载好的JDK和Hadoop包到控制台，shell工具将会自动传输,也可直接通过rz命令上传文件，下载地址在本文最下方给出</strong></p>
-<p><img src="../../../../assets/blogImg/VM/Linux使用Xshell传输文件1.jpg" alt="vim /etc/sudoers"></p>
-<p><strong>安装JDK之前应当检查当前镜像是否有其他jdk版本避免冲突</strong></p>
-<p><strong>执行以下命令移除已经安装有的java包,然后解压新的java包 hadoop包到module文件夹下</strong></p>
-<p><code>$ rpm -qa | grep java | xargs sudo rpm -e --nodeps</code><br><code>$ tar -zxf jdk-8u261-linux-x64.tar.gz -C /opt/module/</code><br><code>$ tar -zxf hadoop-2.7.2.tar.gz -C /opt/module/</code></p>
-<p><strong>配置两者的环境变量</strong></p>
-<p><code>$ sudo vim /etc/profile</code></p>
-<p><strong>拉到最下面，写入以下内容，之后执行source命令应用修改</strong></p>
-</li>
-</ol>
-<blockquote>
-<h1 id="JAVA-HOME"><a href="#JAVA-HOME" class="headerlink" title="JAVA_HOME"></a>JAVA_HOME</h1><p>  export JAVA_HOME=/opt/module/jdk1.8.0_261<br>  export PATH=$PATH:$JAVA_HOME/bin</p>
-<h1 id="HADOOP-HOME"><a href="#HADOOP-HOME" class="headerlink" title="HADOOP_HOME"></a>HADOOP_HOME</h1><p>  export HADOOP_HOME=/opt/module/hadoop-2.7.2<br>  export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin</p>
-</blockquote>
-<p>  <code>$ source /etc/profile</code><br>  <strong>测试java 和 hadoop</strong><br>  <code>$ java -version</code><br>  <code>$ hadoop version</code><br>  <strong>如无报错信息基本已经配置成功,接下来根据需要可选择将配置成哪种集群</strong></p>
-<blockquote>
-<p>  Local (Standalone) Mode 一般用来Debug<br>  Pseudo-Distributed Mode 伪分布式<br>  Fully-Distributed Mode 完全分布式（真实开发环境）</p>
-</blockquote>
-<ol>
-<li>拍摄快照（之后配置集群的时候只需要克隆就好了）</li>
-</ol>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/centos/7.8.2003/isos/x86_64/">CentOS 7.8.2003 阿里云镜像网站下载</a><br>直接选everything镜像，确保不会少依赖</li>
-<li><a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase-downloads.html">Oracle JDK下载地址</a><br>选择JDK8</li>
-</ul>
-<hr>
-<ul>
-<li>下载需要oracle账号， 网上毛了一个<br>oracle账号<code>amador.sun@foxmail.com</code><br>密码：<code>1211WaN!</code></li>
-</ul>
-<hr>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
-<li><a target="_blank" rel="noopener" href="https://archive.apache.org/dist/hadoop/common/hadoop-2.7.2/">hadoop包2.7.2下载地址</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">展开全文 >></a>
         </p>
       
 
@@ -1685,10 +1764,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
               </li>
              
@@ -1697,11 +1772,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1709,7 +1780,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color3">Postgraduate</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Academic</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1717,7 +1792,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Jmeter</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">测试工具</a>
               </li>
              
               <li class="article-tag-list-item">
