@@ -148,6 +148,832 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-languages/BackEnd/java/软件测试/Jmeter/Jmeter5初次使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/java/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/Jmeter/Jmeter5%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/">Jmeter初次使用</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/java/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/Jmeter/Jmeter5%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2020-10-23T15:54:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">793字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">2分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Jmeter"><a href="#Jmeter" class="headerlink" title="Jmeter"></a>Jmeter</h2><p>​    <strong>本质一压力测试工具，通过多线程模拟大量用户真实场景同时访问。</strong></p>
+<p><strong>操作步骤：</strong></p>
+<ul>
+<li>将apache-jmeter-5.3文件解压，打开其中bin文件夹中的jmeter.bat，进入JMeter的图形用户界面</li>
+<li>同样通过options——choose language-&gt;Chinese ( simplified )可以改变用户界面使用的语言</li>
+</ul>
+<p><strong>Jmeter构成：</strong></p>
+<ul>
+<li><p>JMeter用测试计划来组织JMeter的测试步骤，JMeter测试计划一般包含如下元件：</p>
+<ul>
+<li>线程组<ul>
+<li>线程组是测试计划的起点，所有控制器都必须在一个线程组中，其他元件（例如，监听器）既可以放在线程组中，也可以直接放在测试计划下，直接放在测试计划下的元件将可应用于所有线程组。线程组元件控制一组JMeter用于执行测试的线程。</li>
+<li>线程数可以看作虚拟用户数，用于模拟与服务器应用的并发连接</li>
+<li>Ramp-Up时间：加载线程的时间。如果线程数是10，这里设置的时间是100s，表示JMeter将在100s内逐渐加载10个线程，每10s加载1个。需要适当设置此数值，避免测试启动时过载。</li>
+<li>调度器：设置线程组的持续时间和启动延迟时间。在启动延迟时间之后开始执行线程，在持续时间之前结束线程。</li>
+</ul>
+</li>
+<li>逻辑控制器<ul>
+<li>右击“线程组”，找到JMeter两种控制器：取样器（Sampler）和逻辑控制器，取样器用于向服务器发送请求，例如，HTTP 请求取样器使得 JMeter发送一个HTTP请求，完成对某网站的测试功能。</li>
+<li>逻辑控制器：控制何时发送请求，改变发送请求的顺序，控制是否重复发送请求（循环控制器、ForEach控制器、While控制器），或者根据条件选择发送不同的请求（if控制器、Switch控制器）。</li>
+</ul>
+</li>
+<li>取样器监听器<ul>
+<li>大多数监听器除了监听测试结果外，还可以浏览、保存和读取测试结果</li>
+</ul>
+</li>
+<li>定时器<ul>
+<li>定时器控制发送请求的时间，因为JMeter是模拟人的操作对系统进行性能测试，人在操作系统时，不同的操作步骤之间有一定的时间间隔，我们将这个时间间隔称为思考时间。通过定时器设置思考时间，使得模拟更接近实际场景。</li>
+</ul>
+</li>
+<li>断言<ul>
+<li>断言用于检查被测试系统的返回值是否与期望值一致</li>
+</ul>
+</li>
+<li>配置元件<ul>
+<li>配置元件用于设置取样器运行时使用的缺省值或变量</li>
+</ul>
+</li>
+<li>前置处理器<ul>
+<li>前置处理器用于在作用域内的取样器执行前执行一些操作</li>
+</ul>
+</li>
+<li>后置处理器<ul>
+<li>后置处理器用于在作用域内的取样器执行后执行一些操作</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>注：右击Test Plan——添加，即可看到JMeter的元件</p>
+<p><strong>元件的执行顺序</strong></p>
+<ul>
+<li>元件的执行顺序是：配置元件、前置处理器、定时器、取样器、后置处理器、断言、监听器。</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://jmeter.apache.org/download_jmeter.cgi">Jmeter下载</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Jmeter</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">测试工具</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/java/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/Jmeter/Jmeter5%E5%88%9D%E6%AC%A1%E4%BD%BF%E7%94%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-languages/BackEnd/php/lib/php接收参数以及返回json" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/php/lib/php%E6%8E%A5%E6%94%B6%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Ejson/">php数据库操作文件代码</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/php/lib/php%E6%8E%A5%E6%94%B6%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Ejson/" class="archive-article-date">
+  	<time datetime="2020-10-22T05:38:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">156字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>返回json结果集</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$link=connect();</span><br><span class="line">$query = <span class="string">&#x27;SELECT * FROM recruit&#x27;</span>;</span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">while</span> ( $row =mysqli_fetch_assoc( $result ))&#123;</span><br><span class="line">    $rows []= $row ; <span class="comment">//接受结果集</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> json_encode($rows);</span><br><span class="line">close($link);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>从get或者post获取参数</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">&#x27;Content-Type:application/json; charset=utf-8&#x27;</span>);</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line">$link = connect();</span><br><span class="line">$query = <span class="string">&#x27;insert </span></span><br><span class="line"><span class="string">into </span></span><br><span class="line"><span class="string">comment </span></span><br><span class="line"><span class="string">values</span></span><br><span class="line"><span class="string">(NULL,&#x27;</span>.$_GET[<span class="string">&#x27;user_id&#x27;</span>].<span class="string">&#x27;,&#x27;</span>.$_GET[<span class="string">&#x27;post_id&#x27;</span>].<span class="string">&#x27;,\&#x27;&#x27;</span>.$_GET[<span class="string">&#x27;cmt_content&#x27;</span>].<span class="string">&#x27;\&#x27;);&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">if</span>($result)&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">200</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">500</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;</span><br><span class="line">close($link);</span><br><span class="line"><span class="keyword">echo</span> json_encode($data);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://houdunren.gitee.io/note/php/">后盾人的PHP文档</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/php/lib/php%E6%8E%A5%E6%94%B6%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Ejson/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-languages/BackEnd/php/lib/php数据库操作文件代码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/">php数据库操作文件代码</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/" class="archive-article-date">
+  	<time datetime="2020-10-22T05:38:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">611字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>config.inc.php</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">define(<span class="string">&#x27;DB_HOST&#x27;</span>,<span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_USER&#x27;</span>,<span class="string">&#x27;root&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PASSWORD&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_DATABASE&#x27;</span>,<span class="string">&#x27;php1&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PORT&#x27;</span>,<span class="number">3306</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>mysql.inc.php</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="comment">//数据库连接</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">connect</span>(<span class="params">$host=DB_HOST,$user=DB_USER,$password=DB_PASSWORD,$database=DB_DATABASE,$port=DB_PORT</span>)</span>&#123;</span><br><span class="line">	$link=@mysqli_connect($host, $user, $password, $database, $port);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_connect_errno())&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_connect_error());</span><br><span class="line">	&#125;</span><br><span class="line">	mysqli_set_charset($link,<span class="string">&#x27;utf8&#x27;</span>);</span><br><span class="line">	<span class="keyword">return</span> $link;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行一条SQL语句,返回结果集对象或者返回布尔值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute</span>(<span class="params">$link,$query</span>)</span>&#123;</span><br><span class="line">	$result=mysqli_query($link,$query);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_errno($link))&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_error($link));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> $result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行一条SQL语句，只会返回布尔值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute_bool</span>(<span class="params">$link,$query</span>)</span>&#123;</span><br><span class="line">	$bool=mysqli_real_query($link,$query);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_errno($link))&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_error($link));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> $bool;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//一次性执行多条SQL语句</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 一次性执行多条SQL语句</span></span><br><span class="line"><span class="comment">$link：连接</span></span><br><span class="line"><span class="comment">$arr_sqls：数组形式的多条sql语句</span></span><br><span class="line"><span class="comment">$error：传入一个变量，里面会存储语句执行的错误信息</span></span><br><span class="line"><span class="comment">使用案例：</span></span><br><span class="line"><span class="comment">$arr_sqls=array(</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;</span></span><br><span class="line"><span class="comment">);</span></span><br><span class="line"><span class="comment">var_dump(execute_multi($link, $arr_sqls,$error));</span></span><br><span class="line"><span class="comment">echo $error;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute_multi</span>(<span class="params">$link,$arr_sqls,&amp;$error</span>)</span>&#123;</span><br><span class="line">	$sqls=implode(<span class="string">&#x27;;&#x27;</span>,$arr_sqls).<span class="string">&#x27;;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span>(mysqli_multi_query($link,$sqls))&#123;</span><br><span class="line">		$data=<span class="keyword">array</span>();</span><br><span class="line">		$i=<span class="number">0</span>;<span class="comment">//计数</span></span><br><span class="line">		<span class="keyword">do</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>($result=mysqli_store_result($link))&#123;</span><br><span class="line">				$data[$i]=mysqli_fetch_all($result);</span><br><span class="line">				mysqli_free_result($result);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				$data[$i]=<span class="literal">null</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			$i++;</span><br><span class="line">			<span class="keyword">if</span>(!mysqli_more_results($link)) <span class="keyword">break</span>;</span><br><span class="line">		&#125;<span class="keyword">while</span> (mysqli_next_result($link));</span><br><span class="line">		<span class="keyword">if</span>($i==count($arr_sqls))&#123;</span><br><span class="line">			<span class="keyword">return</span> $data;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			$error=<span class="string">&quot;sql语句执行失败：&lt;br /&gt;&amp;nbsp;数组下标为<span class="subst">&#123;$i&#125;</span>的语句:<span class="subst">&#123;$arr_sqls[$i]&#125;</span>执行错误&lt;br /&gt;&amp;nbsp;错误原因：&quot;</span>.mysqli_error($link);</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		$error=<span class="string">&#x27;执行失败！请检查首条语句是否正确！&lt;br /&gt;可能的错误原因：&#x27;</span>.mysqli_error($link);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//获取记录数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">num</span>(<span class="params">$link,$sql_count</span>)</span>&#123;</span><br><span class="line">	$result=execute($link,$sql_count);</span><br><span class="line">	$count=mysqli_fetch_row($result);</span><br><span class="line">	<span class="keyword">return</span> $count[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//数据入库之前进行转义，确保，数据能够顺利的入库</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关闭与数据库的连接</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">close</span>(<span class="params">$link</span>)</span>&#123;</span><br><span class="line">	mysqli_close($link);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>返回json结果集</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$link=connect();</span><br><span class="line">$query = <span class="string">&#x27;SELECT * FROM recruit&#x27;</span>;</span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">while</span> ( $row =mysqli_fetch_assoc( $result ))&#123;</span><br><span class="line">    $rows []= $row ; <span class="comment">//接受结果集</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> json_encode($rows);</span><br><span class="line">close($link);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>从get或者post获取参数</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">&#x27;Content-Type:application/json; charset=utf-8&#x27;</span>);</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line">$link = connect();</span><br><span class="line">$query = <span class="string">&#x27;insert </span></span><br><span class="line"><span class="string">into </span></span><br><span class="line"><span class="string">comment </span></span><br><span class="line"><span class="string">values</span></span><br><span class="line"><span class="string">(NULL,&#x27;</span>.$_GET[<span class="string">&#x27;user_id&#x27;</span>].<span class="string">&#x27;,&#x27;</span>.$_GET[<span class="string">&#x27;post_id&#x27;</span>].<span class="string">&#x27;,\&#x27;&#x27;</span>.$_GET[<span class="string">&#x27;cmt_content&#x27;</span>].<span class="string">&#x27;\&#x27;);&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">if</span>($result)&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">200</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">500</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;</span><br><span class="line">close($link);</span><br><span class="line"><span class="keyword">echo</span> json_encode($data);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://houdunren.gitee.io/note/php/">后盾人的PHP文档</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-languages/BackEnd/python/advance/tensorFlow2/初识tensorFlow" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/python/advance/tensorFlow2/%E5%88%9D%E8%AF%86tensorFlow/">初识tensorFlow2</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/python/advance/tensorFlow2/%E5%88%9D%E8%AF%86tensorFlow/" class="archive-article-date">
+  	<time datetime="2020-10-22T05:37:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">22字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/">TensorFlow 官网（需要翻墙）</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/geektutu/tensorflow2-docs-zh">TensorFlow 2 / 2.0 官方文档中文版</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tensorFlow2</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/python/advance/tensorFlow2/%E5%88%9D%E8%AF%86tensorFlow/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/env/免密SSH配置/Linux免密SSH配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/env/%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/Linux%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/">Linux免密SSH配置</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/env/%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/Linux%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/" class="archive-article-date">
+  	<time datetime="2020-10-21T15:05:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">5字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/env/%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/Linux%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/basic/HDFS/HDFS的Shell操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/basic/HDFS/HDFS%E7%9A%84Shell%E6%93%8D%E4%BD%9C/">HDFS的Shell操作</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/basic/HDFS/HDFS%E7%9A%84Shell%E6%93%8D%E4%BD%9C/" class="archive-article-date">
+  	<time datetime="2020-10-21T09:30:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">692字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HDFS的Shell操作"><a href="#HDFS的Shell操作" class="headerlink" title="HDFS的Shell操作"></a>HDFS的Shell操作</h2><p>HDFS提供了一些Shell接口供人操作</p>
+<hr>
+<ol>
+<li><p>基本语法</p>
+<ul>
+<li>bin/hadoop fs 具体命令 OR bin/hdfs dfs 具体命令<ul>
+<li>dfs 是 fs 的实现类,hadoop 和 hdfs 俩脚本文件本质执行的是java -jar命令，调用的jar包一致</li>
+<li>jar包：org.apache.hadoop.fs.FsShell</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>基本上命令可以分为以下三类</p>
+<ul>
+<li>hdfs和hdfs传输<ul>
+<li>mv</li>
+</ul>
+</li>
+<li>本地从hdfs下载<ul>
+<li>get</li>
+</ul>
+</li>
+<li>本地给hdfs上传<ul>
+<li>put</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -put  putFile / 直接上传到根目录</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -cat /putFile/File_01.txt 查看文件内容</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -appendToFile putFile/File_01.txt /putFile/File_01.txt 附加到对应文件</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -copyFromLocal -f putFile/File_01.txt /putFile/File_01.txt 上传时强制覆盖</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -get putFile/File_01.txt 下载文件到当前目录</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -get -f /putFile/File_01.txt putFile/ 强制下载文件到/putFile目录并强制覆盖同名</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -get /putFile/File_01.txt putFile/File_02.txt 下载文件到/putFile目录重命名为File_02.txt </span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -getfacl /putFile/File_01.txt 显示文件的读写权限、大小、创建时间、路径等信息</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -getfacl -R /putFile/File_01.txt 递归显示目录下文件的读写权限、大小、创建时间、路径等信息</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -touchz /putFile/File_03.txt 创建File_03.txt</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -rm /putFile/File_03.txt 移除File_03.txt</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -mkdir /newDir 创建newDir</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -rm -r /newDir 递归移除newDir</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -rmdir /newDir 移除空目录，若不为空则不删除</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -mv /newDir/hello.txt /putFile/ 把hello.txt 转移到 putFile文件夹下</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h2><p><strong>HDFS 命令一览</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">Usage: hadoop fs [generic options]</span><br><span class="line">	[-appendToFile &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-cat [-ignoreCrc] &lt;src&gt; ...]</span><br><span class="line">	[-checksum &lt;src&gt; ...]</span><br><span class="line">	[-chgrp [-R] GROUP PATH...]</span><br><span class="line">	[-chmod [-R] &lt;MODE[,MODE]... | OCTALMODE&gt; PATH...]</span><br><span class="line">	[-chown [-R] [OWNER][:[GROUP]] PATH...]</span><br><span class="line">	[-copyFromLocal [-f] [-p] [-l] [-d] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-copyToLocal [-f] [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">	[-count [-q] [-h] [-v] [-t [&lt;storage type&gt;]] [-u] [-x] &lt;path&gt; ...]</span><br><span class="line">	[-cp [-f] [-p | -p[topax]] [-d] &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-createSnapshot &lt;snapshotDir&gt; [&lt;snapshotName&gt;]]</span><br><span class="line">	[-deleteSnapshot &lt;snapshotDir&gt; &lt;snapshotName&gt;]</span><br><span class="line">	[-df [-h] [&lt;path&gt; ...]]</span><br><span class="line">	[-du [-s] [-h] [-x] &lt;path&gt; ...]</span><br><span class="line">	[-expunge]</span><br><span class="line">	[-find &lt;path&gt; ... &lt;expression&gt; ...]</span><br><span class="line">	[-get [-f] [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">	[-getfacl [-R] &lt;path&gt;]</span><br><span class="line">	[-getfattr [-R] &#123;-n name | -d&#125; [-e en] &lt;path&gt;]</span><br><span class="line">	[-getmerge [-nl] [-skip-empty-file] &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">	[-help [cmd ...]]</span><br><span class="line">	[-ls [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [&lt;path&gt; ...]]</span><br><span class="line">	[-mkdir [-p] &lt;path&gt; ...]</span><br><span class="line">	[-moveFromLocal &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-moveToLocal &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">	[-mv &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-put [-f] [-p] [-l] [-d] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-renameSnapshot &lt;snapshotDir&gt; &lt;oldName&gt; &lt;newName&gt;]</span><br><span class="line">	[-rm [-f] [-r|-R] [-skipTrash] [-safely] &lt;src&gt; ...]</span><br><span class="line">	[-rmdir [--ignore-fail-on-non-empty] &lt;dir&gt; ...]</span><br><span class="line">	[-setfacl [-R] [&#123;-b|-k&#125; &#123;-m|-x &lt;acl_spec&gt;&#125; &lt;path&gt;]|[--set &lt;acl_spec&gt; &lt;path&gt;]]</span><br><span class="line">	[-setfattr &#123;-n name [-v value] | -x name&#125; &lt;path&gt;]</span><br><span class="line">	[-setrep [-R] [-w] &lt;rep&gt; &lt;path&gt; ...]</span><br><span class="line">	[-stat [format] &lt;path&gt; ...]</span><br><span class="line">	[-tail [-f] &lt;file&gt;]</span><br><span class="line">	[-test -[defsz] &lt;path&gt;]</span><br><span class="line">	[-text [-ignoreCrc] &lt;src&gt; ...]</span><br><span class="line">	[-touchz &lt;path&gt; ...]</span><br><span class="line">	[-truncate [-w] &lt;length&gt; &lt;path&gt; ...]</span><br><span class="line">	[-usage [cmd ...]]</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HDFS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/basic/HDFS/HDFS%E7%9A%84Shell%E6%93%8D%E4%BD%9C/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-System/win10/win10问题解决方案/软件问题/搜狗输入法/去除搜狗输入法自带双十一广告" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/System/win10/win10%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E8%BD%AF%E4%BB%B6%E9%97%AE%E9%A2%98/%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95/%E5%8E%BB%E9%99%A4%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%B8%A6%E5%8F%8C%E5%8D%81%E4%B8%80%E5%B9%BF%E5%91%8A/">去除搜狗输入法自带双十一广告</a>
+    </h1>
+  
+
+        
+        <a href="/System/win10/win10%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E8%BD%AF%E4%BB%B6%E9%97%AE%E9%A2%98/%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95/%E5%8E%BB%E9%99%A4%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%B8%A6%E5%8F%8C%E5%8D%81%E4%B8%80%E5%B9%BF%E5%91%8A/" class="archive-article-date">
+  	<time datetime="2020-10-21T08:49:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">81字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="去除搜狗输入法自带双十一广告"><a href="#去除搜狗输入法自带双十一广告" class="headerlink" title="去除搜狗输入法自带双十一广告"></a>去除搜狗输入法自带双十一广告</h2><ul>
+<li>到搜狗的根目录下E:\software\SogouInput\9.3.0.3129</li>
+<li>删除ShowInfo.exe，一个图标是购物车的程序</li>
+<li>自己新建一个程序，属性修改为只读</li>
+<li>以防万一，右键把修改权限全ban了</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://tieba.baidu.com/p/6719995187">贴吧方法</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">搜狗输入法</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">win10</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/System/win10/win10%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E8%BD%AF%E4%BB%B6%E9%97%AE%E9%A2%98/%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95/%E5%8E%BB%E9%99%A4%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%B8%A6%E5%8F%8C%E5%8D%81%E4%B8%80%E5%B9%BF%E5%91%8A/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-languages/FrontEnd/js插件/Highcharts/highchart第一次使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -530,1093 +1356,9 @@
 
 
   
-    <article id="post-languages/text/md/typoraDoc" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/text/md/typoraDoc/">typora</a>
-    </h1>
-  
-
-        
-        <a href="/languages/text/md/typoraDoc/" class="archive-article-date">
-  	<time datetime="2020-10-16T08:32:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">398字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一：菜单栏"><a href="#一：菜单栏" class="headerlink" title="一：菜单栏"></a>一：菜单栏</h2><ul>
-<li>文件：alt+F</li>
-</ul>
-<ul>
-<li>编辑：alt+E</li>
-</ul>
-<ul>
-<li>段落：alt+P</li>
-</ul>
-<ul>
-<li>格式：alt+O</li>
-</ul>
-<ul>
-<li>视图：alt+V</li>
-</ul>
-<ul>
-<li>主题：alt+T</li>
-</ul>
-<ul>
-<li>帮助：alt+H</li>
-</ul>
-<h2 id="二：文件"><a href="#二：文件" class="headerlink" title="二：文件"></a>二：文件</h2><ul>
-<li>新建：Ctrl+N</li>
-</ul>
-<ul>
-<li>新建窗口：Ctrl+Shift+N</li>
-</ul>
-<ul>
-<li>打开：Ctrl+O</li>
-</ul>
-<ul>
-<li>快速打开：Ctrl+P</li>
-</ul>
-<ul>
-<li>保存：Ctrl+S</li>
-</ul>
-<ul>
-<li>另存为：Ctrl+Shift+S</li>
-</ul>
-<ul>
-<li>偏好：Ctrl+,</li>
-</ul>
-<ul>
-<li>关闭：Ctrl+W</li>
-</ul>
-<h2 id="三：编辑"><a href="#三：编辑" class="headerlink" title="三：编辑"></a>三：编辑</h2><ul>
-<li>撤销：Ctrl+Z</li>
-</ul>
-<ul>
-<li>重做：Ctrl+Y</li>
-</ul>
-<ul>
-<li>剪切：Ctrl+X</li>
-</ul>
-<ul>
-<li>复制：Ctrl+C</li>
-</ul>
-<ul>
-<li>粘贴：Ctrl+V</li>
-</ul>
-<ul>
-<li>复制为MarkDown：Ctrl+Shift+C</li>
-</ul>
-<ul>
-<li>粘贴为纯文本：Ctrl+Shift+V</li>
-</ul>
-<ul>
-<li>全选：Ctrl+A</li>
-</ul>
-<ul>
-<li>选中当前行/句：Ctrl+L</li>
-</ul>
-<ul>
-<li>选中当前格式文本：Ctrl+E</li>
-</ul>
-<ul>
-<li>选中当前词：Ctrl+D</li>
-</ul>
-<ul>
-<li>跳转到文首：Ctrl+Home</li>
-</ul>
-<ul>
-<li>跳转到所选内容：Ctrl+J</li>
-</ul>
-<ul>
-<li>跳转到文末：Ctrl+End</li>
-</ul>
-<ul>
-<li>查找：Ctrl+F</li>
-</ul>
-<ul>
-<li>查找下一个：F3</li>
-</ul>
-<ul>
-<li>查找上一个：Shift+F3</li>
-</ul>
-<ul>
-<li>替换：Ctrl+H</li>
-</ul>
-<h2 id="四：段落"><a href="#四：段落" class="headerlink" title="四：段落"></a>四：段落</h2><ul>
-<li>标题：Ctrl+1/2/3/4/5</li>
-</ul>
-<ul>
-<li>段落：Ctrl+0</li>
-</ul>
-<ul>
-<li>增大标题级别：Ctrl+=</li>
-</ul>
-<ul>
-<li>减少标题级别：Ctrl+-</li>
-</ul>
-<ul>
-<li>表格：Ctrl+T</li>
-</ul>
-<ul>
-<li>代码块：Ctrl+Shift+K</li>
-</ul>
-<ul>
-<li>公式块：Ctrl+Shift+M</li>
-</ul>
-<ul>
-<li>引用：Ctrl+Shift+Q</li>
-</ul>
-<ul>
-<li>有序列表：Ctrl+Shift+[</li>
-</ul>
-<ul>
-<li>无序列表：Ctrl+Shift+]</li>
-</ul>
-<ul>
-<li>增加缩进：Ctrl+]</li>
-</ul>
-<ul>
-<li>减少缩进：Ctrl+[</li>
-</ul>
-<h2 id="五：格式"><a href="#五：格式" class="headerlink" title="五：格式"></a>五：格式</h2><ul>
-<li>加粗：Ctrl+B</li>
-</ul>
-<ul>
-<li>斜体：Ctrl+I</li>
-</ul>
-<ul>
-<li>下划线：Ctrl+U</li>
-</ul>
-<ul>
-<li>代码：Ctrl+Shift+`</li>
-</ul>
-<ul>
-<li>删除线：Alt+Shift+5</li>
-</ul>
-<ul>
-<li>超链接：Ctrl+K</li>
-</ul>
-<ul>
-<li>图像：Ctrl+Shift+I</li>
-</ul>
-<ul>
-<li>清除样式：Ctrl+</li>
-</ul>
-<h2 id="六：视图"><a href="#六：视图" class="headerlink" title="六：视图"></a>六：视图</h2><ul>
-<li>显示隐藏侧边栏：Ctrl+Shift+L</li>
-</ul>
-<ul>
-<li>大纲视图：Ctrl+Shift+1</li>
-</ul>
-<ul>
-<li>文档列表视图：Ctrl+Shift+2</li>
-</ul>
-<ul>
-<li>文件树视图：Ctrl+Shift+3</li>
-</ul>
-<ul>
-<li>源代码模式：Ctrl+/</li>
-</ul>
-<ul>
-<li>专注模式：F8</li>
-</ul>
-<ul>
-<li>打字机模式：F9</li>
-</ul>
-<ul>
-<li>切换全屏：F11</li>
-</ul>
-<ul>
-<li>实际大小：Ctrl+Shift+0</li>
-</ul>
-<ul>
-<li>放大：Ctrl+Shift+=</li>
-</ul>
-<ul>
-<li>缩小：Ctrl+Shift+-</li>
-</ul>
-<ul>
-<li>应用内窗口切换：Ctrl+Tab</li>
-</ul>
-<ul>
-<li>打开DevTools：Shift+F12</li>
-</ul>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="http://support.typora.io/Shortcut-Keys/">typora快捷键</a><br><a target="_blank" rel="noopener" href="http://support.typora.io/">typora支持</a><br><a target="_blank" rel="noopener" href="https://www.typora.io/">typora官网</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">markdown</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/text/md/typoraDoc/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/完全分布式配置/集群配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/">集群配置</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">763字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">3分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="节点分类-正常工作的hadoop-集群，需要启动至少这五个"><a href="#节点分类-正常工作的hadoop-集群，需要启动至少这五个" class="headerlink" title="节点分类(正常工作的hadoop 集群，需要启动至少这五个)"></a>节点分类(正常工作的hadoop 集群，需要启动至少这五个)</h3><ul>
-<li><p>NN（NameNode 仓库管理员，元数据记录者）</p>
-</li>
-<li><p>DN （DataNode 仓库文件所在地，真正的数据块存放地）</p>
-</li>
-<li><p>2NN (由于NN在合并日志文件的时候会处于停止写状态，因此将合并工作交给2NN，合并之后产生新的文件替代旧文件)</p>
-</li>
-</ul>
-<h3 id="Yarn调度"><a href="#Yarn调度" class="headerlink" title="Yarn调度"></a>Yarn调度</h3><ul>
-<li>RM（ResourceManager，资源管理器，Yarn集群主控节点，负责协调和管理整个集群（所有NodeManager）的资源）</li>
-<li>NM（NodeManager，与RM存在心跳通信。管理一个YARN集群中的每一个节点。比如监视资源使用情况（ CPU，内存，硬盘，网络））</li>
-</ul>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>机器一102</th>
-<th>机器二103</th>
-<th>机器三104</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>NN</td>
-<td>2NN</td>
-<td>RM</td>
-</tr>
-<tr>
-<td>DN,NM</td>
-<td>DN,NM</td>
-<td>DN,NM</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>对hdfs集群来说，主机101是NN+2NN,丛机是包括自己在内三台主机下的DN,NM</p>
-<p>对Yarn集群来说，主机103是RM，丛机是包括自己在内三台主机下的DN,NM</p>
-<p>这是最小配置，将NN,2NN,RM分别与各自的DN,NM混搭在一起。</p>
-<p>真实环境一般不会这么做。</p>
-<p>集群基本的环境变量，以及静态网络地址配置好了之后，就是<strong>四大件,三大环境</strong>的配置了。</p>
-<ul>
-<li><p><strong>core-site.xml</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 指定HDFS中NameNode的地址 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://hadoop102:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 指定Hadoop运行时产生文件的存储目录 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>/opt/module/hadoop-2.9.2/data/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><strong>hdfs-site.xml</strong><property></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 指定hdfs副本的数量 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>3<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 指定Hadoop辅助名称节点主机配置 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.secondary.http-address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>hadoop104:50090<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><strong>mapred-site.xml</strong></p>
-<ul>
-<li>不需要修改，还是指定运行在Yarn上<!-- 指定MR运行在Yarn上 --></li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><strong>yarn-site.xml</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Reducer获取数据的方式 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 指定YARN的ResourceManager的地址 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.hostname<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>hadoop103<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<hr>
-<ul>
-<li><p><strong>hadoop.env</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/opt/module/jdk1.8.0_261</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><strong>mapred.env</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/opt/module/jdk1.8.0_261</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li><p><strong>yarn.env</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/opt/module/jdk1.8.0_261</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<hr>
-<h3 id="启动指令："><a href="#启动指令：" class="headerlink" title="启动指令："></a>启动指令：</h3><ul>
-<li><p>启动namenode</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs namenode -format</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>启动hadoop集群</p>
-<p>| 机器一102                       | 机器二103                       | 机器三104                                |<br>| ———————————————- | ———————————————- | ———————————————————— |<br>| hadoop-daemon.sh start namenode | hadoop-daemon.sh start datanode | hadoop-daemon.sh start datanode          |<br>| hadoop-daemon.sh start datanode |                                 | hadoop-daemon.sh start secondarynamenode |</p>
-</li>
-</ul>
-<ul>
-<li><p>启动namenode</p>
-<p>hadoop-daemon.sh start namenode</p>
-</li>
-<li><p>启动datanode</p>
-<p>hadoop-daemon.sh start datanode</p>
-</li>
-<li><p>启动secondarynamenode</p>
-<p>hadoop-daemon.sh start secondarynamenode</p>
-</li>
-</ul>
-<p>  如果出错，就去<strong>core-site.xml</strong> 临时数据存储位置删除dfs文件夹，记住是三个节点都删，然后再启动，基本没有问题</p>
-<p>  成功后访问</p>
-<p>  <strong><a target="_blank" rel="noopener" href="http://hadoop102:50070/dfshealth.html#tab-datanode">http://hadoop102:50070/dfshealth.html#tab-datanode</a></strong></p>
-<p>  即可看到三个节点</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/完全分布式配置/启动集群常见错误" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/">启动集群常见错误</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" class="archive-article-date">
-  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">125字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="启动节点失败可能的原因"><a href="#启动节点失败可能的原因" class="headerlink" title="启动节点失败可能的原因"></a>启动节点失败可能的原因</h3><ul>
-<li><p>不同节点的namenode格式化数据不对，可直接删除tmp/dfs文件夹，然后重新执行-format命令格式化</p>
-<ul>
-<li><p>```shell<br>$ rm /opt/module/hadoop-2.9.2/data/tmp/dfs/ -rf</p>
-<p>$ hdfs namenode -format</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 执行启动节点命令时，显示pid permission denied，可能由于没有正确关闭集群导致</span><br><span class="line"></span><br><span class="line">  * &#96;&#96;&#96;shell</span><br><span class="line">    $ cd &#x2F;tmp&#x2F;</span><br><span class="line">    $ ll</span><br><span class="line">    $ sudo chown username:username hadoop-username-datanode.pid</span><br><span class="line">    $ ..以及其他pid</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/env/完全分布式配置/分发脚本" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">分发脚本</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/" class="archive-article-date">
-  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">512字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">2分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="分发脚本"><a href="#分发脚本" class="headerlink" title="分发脚本"></a>分发脚本</h1><p>​    <del>在根据镜像，配置多台机器后，并修改ip地址后。</del></p>
-<p>​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。</p>
-<ul>
-<li><strong>scp  -r</strong> （递归复制） </li>
-</ul>
-<blockquote>
-<p><code>scp directory hostname:destination</code></p>
-<p>$ scp /etc/profile root@hadoop102:/etc/profile</p>
-<p>$ source /etc/profile</p>
-</blockquote>
-<p>基本用法和cp一致，执行时需要输入代码</p>
-<p>此复制命令，并没有完全把文件复制过来，比如文件的时间戳等</p>
-<ul>
-<li><p><strong>rsync（和scp基本一致，不过文件复制是归档复制,包括所有者还有权限都完全拷贝，两个目录参数不能都为远程目录）</strong><br>如果文件一模一样，不会拷贝</p>
-<p>-a 归档复制（可以省略）</p>
-<p>-v 显示复制信息</p>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1)拉取: </span><br><span class="line"></span><br><span class="line">​        rsync [option]   user@host::src   dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   rsync://user@host:port/src    dest</span><br><span class="line"></span><br><span class="line">2)推送:</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   user@host::dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   rsync://user@host:port/dest</span><br></pre></td></tr></table></figure>
-<p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">1.获取参数个数，如果没有参数，直接退出</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$#</span> 这个程式的参数个数,<span class="keyword">if</span>后面记得跟空格</span></span><br><span class="line"></span><br><span class="line">pcount=$#</span><br><span class="line"></span><br><span class="line">if ((pcount==0)); then</span><br><span class="line"></span><br><span class="line">echo no args;</span><br><span class="line"></span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">fi</span> 作为<span class="keyword">if</span>条件的结束 即end <span class="keyword">if</span></span></span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 获取文件名称</span></span><br><span class="line"></span><br><span class="line">p1=$1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">不是<span class="string">&#x27;，而是`</span></span></span><br><span class="line"></span><br><span class="line">fname=`basename $p1`</span><br><span class="line"></span><br><span class="line">echo fname=$fname</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 获取上级目录到绝对路径 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">-P是绝对路劲选项，防止输入的参数是软链接</span></span><br><span class="line"></span><br><span class="line">pdir=`cd -P $(dirname $p1); pwd`</span><br><span class="line"></span><br><span class="line">echo pdir =$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 获取当前用户名称</span></span><br><span class="line"></span><br><span class="line">user=`whoami`</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5 循环 将本地数据发送到其他服务器 此处只配置三台机器</span></span><br><span class="line"></span><br><span class="line">for((host=102;host&lt;105;host++));</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">echo --------------hadoop$host----------------</span><br><span class="line"></span><br><span class="line">rsync -av $pdir/$fname $user@hadoop$host:$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>测试脚本是否正常运作</p>
-<p>$ cd ~</p>
-<p>$ vim xsync</p>
-<p>$ sudo chmod +7 xsync 修改为可执行文件</p>
-<p>$ sudo ./xsync .  将当前目录所有文件分发到其他服务器对应的目录里</p>
-</blockquote>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://duncantsword0.github.io/system/Linux/shell/shell%20%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/">一些Shell的基础知识</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-languages/BackEnd/java/jvm/通过类的finalize方法避免在GC中消亡" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/BackEnd/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">通过类的finalize方法避免在GC中消亡</a>
-    </h1>
-  
-
-        
-        <a href="/languages/BackEnd/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/" class="archive-article-date">
-  	<time datetime="2020-10-13T01:32:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">763字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">2分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一般来说，java对象即使在可达性分析算法中判定为不可达对象，也不是非死不可的，这个时候可能还处于缓刑阶段（gc还没来啊，来了后可能还要执行finalize()方法），这个时候对象就可以利用这段时间进行自救了。</p>
-<p><strong>以下自救的代码例子：</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此代码演示了两点：</span></span><br><span class="line"><span class="comment">//1.对象可以在被GC时自我拯救</span></span><br><span class="line"><span class="comment">//2.但这种自我拯救的机会只有一次，因为一个对象的finalize()方法最多只会被系统自动调用一次</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FinalizeEscapeGC</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> FinalizeEscapeGC SAVE_HOOK = <span class="keyword">null</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">isAlive</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我还活着&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.finalize();</span><br><span class="line">        System.out.println(<span class="string">&quot;finalize()方法被执行&quot;</span>);</span><br><span class="line">        <span class="comment">//重新与引用链上的任何一个对象建立联系，例如把自己（this）赋值给某个类变量或者对象的成员变量</span></span><br><span class="line">        FinalizeEscapeGC.SAVE_HOOK = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        SAVE_HOOK = <span class="keyword">new</span> FinalizeEscapeGC();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//对象第一次成功拯救自己 begin</span></span><br><span class="line">        SAVE_HOOK = <span class="keyword">null</span>;<span class="comment">//此时这个类已经没有人引用了</span></span><br><span class="line">        System.gc();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//因为finalize方法优先级很低，先暂停0.5s，等待它开始调用</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span> (SAVE_HOOK !=<span class="keyword">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;我真的死了&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//第二次尝试拯救自己，代码与上面完全相同</span></span><br><span class="line">        SAVE_HOOK = <span class="keyword">null</span>;<span class="comment">//此时这个类已经没有人引用了</span></span><br><span class="line">        System.gc();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//因为finalize方法优先级很低，先暂停0.5s，等待它开始调用</span></span><br><span class="line">        Thread.sleep(<span class="number">500</span>);</span><br><span class="line">        <span class="keyword">if</span> (SAVE_HOOK !=<span class="keyword">null</span>)&#123;</span><br><span class="line">            SAVE_HOOK.isAlive();</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;我真的死了&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>运行结果：</p>
-<p>finalize()方法被执行<br>我还活着<br>我真的死了</p>
-</blockquote>
-<p><strong>注：</strong></p>
-<ul>
-<li>finalize()方法虚拟机会去触发，但并不一定保证完全等它执行完毕。这么做的原因是避免在GC过程中，因为finalize方法调用更多资源，导致GC缓慢，更多的资源无法释放，最终陷入死循环。</li>
-<li><p>真正要宣告对象死亡，要经过两次标记</p>
-<ul>
-<li>对象在进行可达性分析后发现没有与GC ROOT 相连接的引用链，第一次标记</li>
-<li>有没有必要执行finalize()方法（没有覆盖finalize()方法或者已经被虚拟机调用过一次，被视为没有必要执行，简单来说就是立刻死刑），第二次标记</li>
-</ul>
-</li>
-<li><p>不鼓励用finalize()拯救对象，原因是本质它对其他语言程序员转为Java的一种妥协，并不完全等同于C++这些语言的析构函数（与构造函数相反的函数，当对象结束生命周期，或者对象所在函数调用结束后，系统自动调用的函数，一般来做清理善后的工作，例如new了一片控件，在析构函数中会delete释放空间），析构函数能做的，在java中用try-finally这样的语句块能做得更好，同时也更具可读性。</p>
-</li>
-<li>综上，建议完全忘掉这个语法。</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/BackEnd/java/jvm/%E9%80%9A%E8%BF%87%E7%B1%BB%E7%9A%84finalize%E6%96%B9%E6%B3%95%E9%81%BF%E5%85%8D%E5%9C%A8GC%E4%B8%AD%E6%B6%88%E4%BA%A1/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-languages/BackEnd/java/jvm/java虚拟机的一些基本概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/BackEnd/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">java虚拟机的一些基本概念</a>
-    </h1>
-  
-
-        
-        <a href="/languages/BackEnd/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="archive-article-date">
-  	<time datetime="2020-10-13T01:32:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">130字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h3 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h3><p>简单来讲，就是在内存中开辟出一块区域，用来存放一些指针的具体引用，因此堆的大小将会很大，绝大部分垃圾回收都会在这里进行。这是一个影响程序内存大小的重要区域。</p>
-<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><p>奉行先进后出，栈内存的是栈帧，不同的JVM里有不同数量的栈，但大致可分为</p>
-<ul>
-<li>本地方法栈（运行本地方法）</li>
-<li>java虚拟机栈（运行java方法）</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/BackEnd/java/jvm/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-languages/BackEnd/php/etc/PHP有基础的情况下快速上手" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/BackEnd/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">PHP有基础的情况下快速上手</a>
-    </h1>
-  
-
-        
-        <a href="/languages/BackEnd/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" class="archive-article-date">
-  	<time datetime="2020-10-12T16:01:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-13</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">62字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>集成开发软件</th>
-<th>可使用的操作系统</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>WAMP</td>
-<td>Win</td>
-<td>推荐</td>
-</tr>
-<tr>
-<td>XAMPP</td>
-<td>Win/Mac</td>
-<td></td>
-</tr>
-<tr>
-<td>Mamp</td>
-<td>Mac</td>
-<td>推荐</td>
-</tr>
-<tr>
-<td>Lamp</td>
-<td>Linux(CentOS/Fedora/Debian/Ubuntu)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>vscode 插件</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://houdunren.gitee.io/note/php/">后盾人的PHP文档</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.wampserver.com/">wamp官网（可能需要科学上网）</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PHP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/BackEnd/php/etc/PHP%E6%9C%89%E5%9F%BA%E7%A1%80%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1745,7 +1487,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
+                <a href="javascript:void(0)" class="js-tag color1">Hbase</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1753,15 +1495,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1773,7 +1507,35 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">GA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Shell</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Android混合开发</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">安卓开发BUG</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Liscense</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1793,6 +1555,18 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">搜狗输入法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">win10</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SpringBoot-Security</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Jmeter</a>
               </li>
              
@@ -1806,14 +1580,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">tensorFlow2</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">搜狗输入法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">win10</a>
               </li>
             
             <div class="clearfix"></div>
