@@ -148,6 +148,357 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-languages/Android/Mixed/安卓本地打包指南" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/Android/Mixed/%E5%AE%89%E5%8D%93%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E6%8C%87%E5%8D%97/">安卓本地打包指南</a>
+    </h1>
+  
+
+        
+        <a href="/languages/Android/Mixed/%E5%AE%89%E5%8D%93%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E6%8C%87%E5%8D%97/" class="archive-article-date">
+  	<time datetime="2020-11-05T10:54:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-05</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">802字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">4分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1.环境准备"></a>1.环境准备</h2><ul>
+<li>Android Studio 下载地址：<a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/index.html">Android Studio官网</a> OR <a target="_blank" rel="noopener" href="http://www.android-studio.org/">Android Studio中文社区</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.dcloud.io/hbuilderx.html">HBuilderX</a></li>
+<li>App离线SDK下载：<a target="_blank" rel="noopener" href="https://nativesupport.dcloud.net.cn/AppDocs/download/android">最新android平台SDK下载</a></li>
+</ul>
+<h2 id="2-具体操作步骤"><a href="#2-具体操作步骤" class="headerlink" title="2.具体操作步骤"></a>2.具体操作步骤</h2><ol>
+<li>新建一个空项目</li>
+<li>切换项目视图到project下，新建一个lib文件夹，将lib.5plus.base-release.aar、android-gif-drawable-release@1.2.17.aar、uniapp-release.aar和miit_mdid_1.0.10.aar（HBuilderX2.8.1之后更新到msa_mdid_1.0.13.aar）拷贝到libs目录下</li>
+<li>复制以下这段话到build.gradle:app里，添加资源引用</li>
+</ol>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.jar&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.2.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;androidx.constraintlayout:constraintlayout:2.0.1&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.12&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.3.0&#x27;</span></span><br><span class="line"></span><br><span class="line">    implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.aar&#x27;</span>, <span class="string">&#x27;*.jar&#x27;</span>], <span class="keyword">exclude</span>: [])</span><br><span class="line"></span><br><span class="line">    implementation <span class="string">&#x27;com.android.support:support-v4:28.0.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.github.bumptech.glide:glide:4.9.0&#x27;</span> <span class="comment">// 基座依赖</span></span><br><span class="line">    implementation <span class="string">&#x27;com.alibaba:fastjson:1.1.46.android&#x27;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>配置应用名称</p>
+<p>打开app-&gt;res -&gt; main -&gt; values -&gt; strings.xml文件，修改“app_name”字段值，该值为安装到手机上桌面显示的应用名称，建议与manifest.json中name（基础配置中的应用名称）对应。</p>
+</li>
+<li><p>配置应用启动页及provider节点</p>
+<p>将下述内容添加到Androidmanifest.xml的application节点中</p>
+<p><strong>注意：新建的项目默认会有一个MainActivity的节点，必须删掉！</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;io.dcloud.PandoraEntry&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:configChanges</span>=<span class="string">&quot;orientation|keyboardHidden|keyboard|navigation&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">&quot;@string/app_name&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">&quot;singleTask&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:hardwareAccelerated</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">&quot;@style/TranslucentTheme&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:screenOrientation</span>=<span class="string">&quot;user&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:windowSoftInputMode</span>=<span class="string">&quot;adjustResize&quot;</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;io.dcloud.PandoraEntryActivity&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">&quot;singleTask&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:configChanges</span>=<span class="string">&quot;orientation|keyboardHidden|screenSize|mcc|mnc|fontScale|keyboard&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:hardwareAccelerated</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:permission</span>=<span class="string">&quot;com.miui.securitycenter.permission.AppPermissionsEditor&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:screenOrientation</span>=<span class="string">&quot;user&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">&quot;@style/DCloudTheme&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:windowSoftInputMode</span>=<span class="string">&quot;adjustResize&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.DEFAULT&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.BROWSABLE&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.VIEW&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">&quot;h56131bcf&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--provider节点必须添加--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">provider</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;io.dcloud.common.util.DCloud_FileProvider&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:authorities</span>=<span class="string">&quot;$&#123;apk.applicationId&#125;.dc.fileprovider&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:grantUriPermissions</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;android.support.FILE_PROVIDER_PATHS&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:resource</span>=<span class="string">&quot;@xml/dcloud_file_provider&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">provider</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>注意：${apk.applicationId} 必须替换成当前应用的包名</strong></p>
+<ol>
+<li><p>在Andorid视图下，创建assets文件夹</p>
+<p>SDK-&gt;assets-&gt;data文件夹拷贝到刚刚创建的assets文件夹下</p>
+<p>注意：dcloud1.dat、dcloud2.dat为uni-app所需资源<strong>（2.7.0之后已不在需要，升级时需要删除，可以减少apk大小）</strong>，5+APP可将这两个文件删除。</p>
+<p>注意：SDK升级时，data下资源需要同时更新</p>
+<p>修改dcloud_control.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">app</span> <span class="attr">appid</span>=<span class="string">&quot;duncant&quot;</span> <span class="attr">appver</span>=<span class="string">&quot;&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>确保dcloud_control.xml中的appid与manifest.json一致</p>
+<p>将HBuilderX中的项目导出，将导出的资源复制到assets-&gt;apps下</p>
+<p>项目名</p>
+<p>/src/main/assets/apps/duncant/www/</p>
+<p>-css</p>
+<p>-img</p>
+<p>-js</p>
+<p>-…</p>
+<p>index.html</p>
+<p>manifest.json</p>
+<p>基本就是这样的文件结构</p>
+</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://nativesupport.dcloud.net.cn/AppDocs/usesdk/android">安卓本地打包指南官网参考</a></li>
+<li><a target="_blank" rel="noopener" href="https://nativesupport.dcloud.net.cn/AppDocs/download/android">安卓混合开发SDK下载包</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Android混合开发</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/Android/Mixed/%E5%AE%89%E5%8D%93%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E6%8C%87%E5%8D%97/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/HBase/Basic/HbaseShell基本安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/HBase/Basic/HbaseShell%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85/">HbaseShell基本安装</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/HBase/Basic/HbaseShell%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85/" class="archive-article-date">
+  	<time datetime="2020-10-28T04:21:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">41字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://hbase.apache.org/downloads.html">Hbase下载地址（需要注意与HDFS版本相互对应）</a></li>
+<li><a target="_blank" rel="noopener" href="http://abloz.com/hbase/book.html">Hbase中文官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="http://hbase.apache.org/book.html#configuration">HDFS Hbase对应关系(4.1. Hadoop有对照图)</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hbase</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/HBase/Basic/HbaseShell%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/HBase/Basic/HbaseShell命令测试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/HBase/Basic/HbaseShell%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95/">HbaseShell命令测试</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/HBase/Basic/HbaseShell%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95/" class="archive-article-date">
+  	<time datetime="2020-10-28T04:16:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">174字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;Ssex&#39;,&#39;male&#39;</span><br><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;Sage&#39;,&#39;22&#39;</span><br><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;Sdept&#39;,&#39;CS&#39;</span><br><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;course:math&#39;,&#39;80&#39;</span><br><span class="line"></span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary1&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary2&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary3&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary4&#39;  </span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary5&#39;</span><br><span class="line"></span><br><span class="line">get &#39;teacher&#39;,&#39;91001&#39;,&#123;COLUMN&#x3D;&gt;&#39;username&#39;,VERSIONS&#x3D;&gt;5&#125;</span><br><span class="line">get &#39;teacher&#39;,&#39;91001&#39;,&#123;COLUMN&#x3D;&gt;&#39;username&#39;,VERSIONS&#x3D;&gt;3&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hbase</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/HBase/Basic/HbaseShell%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-languages/Script/git/git基础配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -940,352 +1291,9 @@
 
 
   
-    <article id="post-BigData/env/免密SSH配置/Linux免密SSH配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/Linux%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/">Linux免密SSH配置</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/Linux%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/" class="archive-article-date">
-  	<time datetime="2020-10-21T15:05:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">5字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li>xxx</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/Linux%E5%85%8D%E5%AF%86SSH%E9%85%8D%E7%BD%AE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/basic/HDFS/HDFS的Shell操作" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/basic/HDFS/HDFS%E7%9A%84Shell%E6%93%8D%E4%BD%9C/">HDFS的Shell操作</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/basic/HDFS/HDFS%E7%9A%84Shell%E6%93%8D%E4%BD%9C/" class="archive-article-date">
-  	<time datetime="2020-10-21T09:30:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">692字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">3分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="HDFS的Shell操作"><a href="#HDFS的Shell操作" class="headerlink" title="HDFS的Shell操作"></a>HDFS的Shell操作</h2><p>HDFS提供了一些Shell接口供人操作</p>
-<hr>
-<ol>
-<li><p>基本语法</p>
-<ul>
-<li>bin/hadoop fs 具体命令 OR bin/hdfs dfs 具体命令<ul>
-<li>dfs 是 fs 的实现类,hadoop 和 hdfs 俩脚本文件本质执行的是java -jar命令，调用的jar包一致</li>
-<li>jar包：org.apache.hadoop.fs.FsShell</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<p>基本上命令可以分为以下三类</p>
-<ul>
-<li>hdfs和hdfs传输<ul>
-<li>mv</li>
-</ul>
-</li>
-<li>本地从hdfs下载<ul>
-<li>get</li>
-</ul>
-</li>
-<li>本地给hdfs上传<ul>
-<li>put</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -put  putFile / 直接上传到根目录</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -cat /putFile/File_01.txt 查看文件内容</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -appendToFile putFile/File_01.txt /putFile/File_01.txt 附加到对应文件</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -copyFromLocal -f putFile/File_01.txt /putFile/File_01.txt 上传时强制覆盖</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -get putFile/File_01.txt 下载文件到当前目录</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -get -f /putFile/File_01.txt putFile/ 强制下载文件到/putFile目录并强制覆盖同名</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -get /putFile/File_01.txt putFile/File_02.txt 下载文件到/putFile目录重命名为File_02.txt </span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -getfacl /putFile/File_01.txt 显示文件的读写权限、大小、创建时间、路径等信息</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -getfacl -R /putFile/File_01.txt 递归显示目录下文件的读写权限、大小、创建时间、路径等信息</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -touchz /putFile/File_03.txt 创建File_03.txt</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -rm /putFile/File_03.txt 移除File_03.txt</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -mkdir /newDir 创建newDir</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -rm -r /newDir 递归移除newDir</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -rmdir /newDir 移除空目录，若不为空则不删除</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> hadoop fs -mv /newDir/hello.txt /putFile/ 把hello.txt 转移到 putFile文件夹下</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h2><p><strong>HDFS 命令一览</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">Usage: hadoop fs [generic options]</span><br><span class="line">	[-appendToFile &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-cat [-ignoreCrc] &lt;src&gt; ...]</span><br><span class="line">	[-checksum &lt;src&gt; ...]</span><br><span class="line">	[-chgrp [-R] GROUP PATH...]</span><br><span class="line">	[-chmod [-R] &lt;MODE[,MODE]... | OCTALMODE&gt; PATH...]</span><br><span class="line">	[-chown [-R] [OWNER][:[GROUP]] PATH...]</span><br><span class="line">	[-copyFromLocal [-f] [-p] [-l] [-d] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-copyToLocal [-f] [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">	[-count [-q] [-h] [-v] [-t [&lt;storage type&gt;]] [-u] [-x] &lt;path&gt; ...]</span><br><span class="line">	[-cp [-f] [-p | -p[topax]] [-d] &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-createSnapshot &lt;snapshotDir&gt; [&lt;snapshotName&gt;]]</span><br><span class="line">	[-deleteSnapshot &lt;snapshotDir&gt; &lt;snapshotName&gt;]</span><br><span class="line">	[-df [-h] [&lt;path&gt; ...]]</span><br><span class="line">	[-du [-s] [-h] [-x] &lt;path&gt; ...]</span><br><span class="line">	[-expunge]</span><br><span class="line">	[-find &lt;path&gt; ... &lt;expression&gt; ...]</span><br><span class="line">	[-get [-f] [-p] [-ignoreCrc] [-crc] &lt;src&gt; ... &lt;localdst&gt;]</span><br><span class="line">	[-getfacl [-R] &lt;path&gt;]</span><br><span class="line">	[-getfattr [-R] &#123;-n name | -d&#125; [-e en] &lt;path&gt;]</span><br><span class="line">	[-getmerge [-nl] [-skip-empty-file] &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">	[-help [cmd ...]]</span><br><span class="line">	[-ls [-C] [-d] [-h] [-q] [-R] [-t] [-S] [-r] [-u] [&lt;path&gt; ...]]</span><br><span class="line">	[-mkdir [-p] &lt;path&gt; ...]</span><br><span class="line">	[-moveFromLocal &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-moveToLocal &lt;src&gt; &lt;localdst&gt;]</span><br><span class="line">	[-mv &lt;src&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-put [-f] [-p] [-l] [-d] &lt;localsrc&gt; ... &lt;dst&gt;]</span><br><span class="line">	[-renameSnapshot &lt;snapshotDir&gt; &lt;oldName&gt; &lt;newName&gt;]</span><br><span class="line">	[-rm [-f] [-r|-R] [-skipTrash] [-safely] &lt;src&gt; ...]</span><br><span class="line">	[-rmdir [--ignore-fail-on-non-empty] &lt;dir&gt; ...]</span><br><span class="line">	[-setfacl [-R] [&#123;-b|-k&#125; &#123;-m|-x &lt;acl_spec&gt;&#125; &lt;path&gt;]|[--set &lt;acl_spec&gt; &lt;path&gt;]]</span><br><span class="line">	[-setfattr &#123;-n name [-v value] | -x name&#125; &lt;path&gt;]</span><br><span class="line">	[-setrep [-R] [-w] &lt;rep&gt; &lt;path&gt; ...]</span><br><span class="line">	[-stat [format] &lt;path&gt; ...]</span><br><span class="line">	[-tail [-f] &lt;file&gt;]</span><br><span class="line">	[-test -[defsz] &lt;path&gt;]</span><br><span class="line">	[-text [-ignoreCrc] &lt;src&gt; ...]</span><br><span class="line">	[-touchz &lt;path&gt; ...]</span><br><span class="line">	[-truncate [-w] &lt;length&gt; &lt;path&gt; ...]</span><br><span class="line">	[-usage [cmd ...]]</span><br></pre></td></tr></table></figure>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HDFS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/basic/HDFS/HDFS%E7%9A%84Shell%E6%93%8D%E4%BD%9C/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-System/win10/win10问题解决方案/软件问题/搜狗输入法/去除搜狗输入法自带双十一广告" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/System/win10/win10%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E8%BD%AF%E4%BB%B6%E9%97%AE%E9%A2%98/%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95/%E5%8E%BB%E9%99%A4%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%B8%A6%E5%8F%8C%E5%8D%81%E4%B8%80%E5%B9%BF%E5%91%8A/">去除搜狗输入法自带双十一广告</a>
-    </h1>
-  
-
-        
-        <a href="/System/win10/win10%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E8%BD%AF%E4%BB%B6%E9%97%AE%E9%A2%98/%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95/%E5%8E%BB%E9%99%A4%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%B8%A6%E5%8F%8C%E5%8D%81%E4%B8%80%E5%B9%BF%E5%91%8A/" class="archive-article-date">
-  	<time datetime="2020-10-21T08:49:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-21</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">81字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="去除搜狗输入法自带双十一广告"><a href="#去除搜狗输入法自带双十一广告" class="headerlink" title="去除搜狗输入法自带双十一广告"></a>去除搜狗输入法自带双十一广告</h2><ul>
-<li>到搜狗的根目录下E:\software\SogouInput\9.3.0.3129</li>
-<li>删除ShowInfo.exe，一个图标是购物车的程序</li>
-<li>自己新建一个程序，属性修改为只读</li>
-<li>以防万一，右键把修改权限全ban了</li>
-</ul>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://tieba.baidu.com/p/6719995187">贴吧方法</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">搜狗输入法</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">win10</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/System/win10/win10%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/%E8%BD%AF%E4%BB%B6%E9%97%AE%E9%A2%98/%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95/%E5%8E%BB%E9%99%A4%E6%90%9C%E7%8B%97%E8%BE%93%E5%85%A5%E6%B3%95%E8%87%AA%E5%B8%A6%E5%8F%8C%E5%8D%81%E4%B8%80%E5%B9%BF%E5%91%8A/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1527,6 +1535,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">GA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">lambda</a>
               </li>
             
             <div class="clearfix"></div>

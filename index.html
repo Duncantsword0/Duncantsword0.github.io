@@ -148,6 +148,342 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-languages/BackEnd/java/lambda表达式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/java/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">lambda表达式</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/java/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="archive-article-date">
+  	<time datetime="2021-01-22T06:20:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-22</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">675字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">3分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-问题"><a href="#1-问题" class="headerlink" title="1.问题"></a>1.问题</h1><p>在写多线程的时候，发现匿名内部类代码量过多，且对于部分代码无法突出重点，因此直接上lamba，由此顺便了解复习了几个概念。</p>
+<h1 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2.解决方案"></a>2.解决方案</h1><h2 id="2-1函数式接口"><a href="#2-1函数式接口" class="headerlink" title="2.1函数式接口"></a>2.1函数式接口</h2><p>属于jdk8 新特性，简单来说，一个接口里只有一个方法（lambda表达式无法指明多个方法的接口）</p>
+<p><strong>能够接收Lambda表达式的参数类型，是一个只包含一个方法的接口。</strong>只包含一个方法的接口称之为<strong>函数接口</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="comment">//此注解在Runnable的接口出现，标注此接口是函数式接口，当出现多个方法的时候会编译不通过。</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-代理"><a href="#2-2-代理" class="headerlink" title="2.2 代理"></a>2.2 代理</h2><p>对于传统java编程来说，基本上就是oop。</p>
+<p>用到什么类，什么类的方法，就是new一个对象出来。</p>
+<p>以多线程举例子，整个代码的演化进程大概如下，外部类-&gt;静态内部类-&gt;局部内部类-&gt;匿名内部类-&gt;lambda简化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LambdaDemo</span> </span>&#123;</span><br><span class="line">    <span class="comment">//静态内部类</span></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Like2</span> <span class="keyword">implements</span> <span class="title">ILike</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lambda</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;i m lambda2&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ILike iLike = <span class="keyword">new</span> Like();</span><br><span class="line">        iLike.lambda();</span><br><span class="line"></span><br><span class="line">        Like2 like = <span class="keyword">new</span> Like2();</span><br><span class="line">        like.lambda();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//4.局部内部类</span></span><br><span class="line"></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Like3</span> <span class="keyword">implements</span> <span class="title">ILike</span></span>&#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lambda</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;I like lambda3&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        Like3 like3 = <span class="keyword">new</span> Like3();</span><br><span class="line">        like3.lambda();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//匿名内部类</span></span><br><span class="line"></span><br><span class="line">        iLike = <span class="keyword">new</span> ILike() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lambda</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;I amm lambda4&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        iLike.lambda();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//6.用lambda简化</span></span><br><span class="line">        iLike = ()-&gt; System.out.println(<span class="string">&quot;I am lambda5&quot;</span>);</span><br><span class="line">        iLike.lambda();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ILike</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">lambda</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Like</span> <span class="keyword">implements</span> <span class="title">ILike</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lambda</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;i m lambda&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在lambda表达式里，使用了代理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 静态代理实现</span></span><br><span class="line"><span class="comment"> * 真实对象和代理对象都要实现同一个接口</span></span><br><span class="line"><span class="comment"> * 代理对象调用真实对象的方法</span></span><br><span class="line"><span class="comment"> */</span><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 静态代理实现</span></span><br><span class="line"><span class="comment"> * 真实对象和代理对象都要实现同一个接口</span></span><br><span class="line"><span class="comment"> * 代理对象调用真实对象的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StacticProxy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt; System.out.println(<span class="string">&quot;fuck u&quot;</span>)).start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> WeddingCompany(<span class="keyword">new</span> You()).HappyMary();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">//        使用原来</span></span><br><span class="line">        You you = <span class="keyword">new</span> You();</span><br><span class="line">        you.HappyMary();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//使用代理</span></span><br><span class="line">        WeddingCompany weddingCompany = <span class="keyword">new</span> WeddingCompany(<span class="keyword">new</span> You());</span><br><span class="line">        weddingCompany.HappyMary();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Marry</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">HappyMary</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//真实角色</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">You</span> <span class="keyword">implements</span> <span class="title">Marry</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">HappyMary</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我要结婚了，很开心&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WeddingCompany</span> <span class="keyword">implements</span> <span class="title">Marry</span></span>&#123;</span><br><span class="line">    <span class="comment">//目标结婚对象</span></span><br><span class="line">    <span class="keyword">private</span> Marry target;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WeddingCompany</span><span class="params">(Marry target)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.target = target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">HappyMary</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        before();</span><br><span class="line">        <span class="keyword">this</span>.target.HappyMary();</span><br><span class="line">        after();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;结婚之前，前置通知&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;结婚之后，后置通知&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">lambda</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/java/lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-languages/BackEnd/java/SpringBoot/interface/springboot调用第三方接口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/java/SpringBoot/interface/springboot%E8%B0%83%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">springboot调用第三方接口</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/java/SpringBoot/interface/springboot%E8%B0%83%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/" class="archive-article-date">
+  	<time datetime="2021-01-18T07:11:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-18</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">1.2k字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">5分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>到了公司，第一天做的工作就是调用第三方的接口，直击灵魂。</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>1.如何调用第三方接口在Springboot？</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>首先确定工作流程</p>
+<h2 id="1-确定允许跨域访问"><a href="#1-确定允许跨域访问" class="headerlink" title="1.确定允许跨域访问"></a>1.确定允许跨域访问</h2><p>一般来说，被调用的服务器的是允许跨域访问的。但如果是自己内部服务器相互跨域访问，很有可能因为忘记添加允许跨域导致访问失败。</p>
+<h3 id="1-1-springboot-允许全局跨域配置类（常用）"><a href="#1-1-springboot-允许全局跨域配置类（常用）" class="headerlink" title="1.1 springboot 允许全局跨域配置类（常用）"></a>1.1 springboot 允许全局跨域配置类（常用）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrossConfig</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCorsMappings</span><span class="params">(CorsRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addMapping(<span class="string">&quot;/**&quot;</span>)</span><br><span class="line">                .allowedOrigins(<span class="string">&quot;*&quot;</span>)</span><br><span class="line">                .allowedMethods(<span class="string">&quot;GET&quot;</span>,<span class="string">&quot;HEAD&quot;</span>,<span class="string">&quot;POST&quot;</span>,<span class="string">&quot;PUT&quot;</span>,<span class="string">&quot;DELETE&quot;</span>,<span class="string">&quot;OPTIONS&quot;</span>)</span><br><span class="line">                .allowCredentials(<span class="keyword">true</span>)</span><br><span class="line">                .maxAge(<span class="number">3600</span>)</span><br><span class="line">                .allowedHeaders(<span class="string">&quot;*&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-springboot-允许局部跨域注解"><a href="#1-2-springboot-允许局部跨域注解" class="headerlink" title="1.2 springboot 允许局部跨域注解"></a>1.2 springboot 允许局部跨域注解</h3><p><strong>@CrossOrigin</strong>放在需要的方法或者Controller上，可以填入参数，表明允许跨域访问的ip地址</p>
+<h3 id="1-3-配置过滤器-不常用"><a href="#1-3-配置过滤器-不常用" class="headerlink" title="1.3 配置过滤器(不常用)"></a>1.3 配置过滤器(不常用)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@WebFilter(urlPatterns = &quot;/*&quot;, filterName = &quot;authFilter&quot;)</span> <span class="comment">//这里的“/*” 表示的是需要拦截的请求路径</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PassHttpFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123; &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        HttpServletResponse httpResponse = (HttpServletResponse)servletResponse;</span><br><span class="line">        httpResponse.setHeader(<span class="string">&quot;Access-Control-Allow-Headers&quot;</span>,<span class="string">&quot;Origin, X-Requested-With, Content-Type, Accept&quot;</span>);</span><br><span class="line">        httpResponse.setHeader(<span class="string">&quot;Access-Control-Allow-Credentials&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line">        httpResponse.addHeader(<span class="string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="string">&quot;http://127.0.0.1:8080&quot;</span>);</span><br><span class="line">        filterChain.doFilter(servletRequest, httpResponse);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-接收客户端的参数"><a href="#2-接收客户端的参数" class="headerlink" title="2.接收客户端的参数"></a>2.接收客户端的参数</h2><p>调用第三方接口的时候，为了确保返回的结果正确，要对参数的合法性进行先一步的确认。其中对于字符串类型，典型的校验有：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NotNull</span> <span class="meta">@Pattern(regexp = &quot;(\\d&#123;4&#125;)-(\\d&#123;2&#125;)-(\\d&#123;2&#125;) (\\d&#123;2&#125;):(\\d&#123;2&#125;)&quot;)</span>String beginTime<span class="comment">//校验时间字符串格式</span></span><br><span class="line"><span class="comment">//...其他可参考别的校验参数注解</span></span><br></pre></td></tr></table></figure>
+<p>以上都需要在写入校验注解的类上加上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Validated</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ForwardController</span></span></span><br></pre></td></tr></table></figure>
+<p>对于不确定的键，还可以配合map进行连接，切分，获取参数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestBody(required = true)</span> String body<span class="comment">//获取json body</span></span><br><span class="line">MultiValueMap&lt;String, String&gt; map = <span class="keyword">new</span> LinkedMultiValueMap&lt;&gt;();</span><br><span class="line">String[] kvs = body.split(<span class="string">&quot;&amp;&quot;</span>);</span><br><span class="line"><span class="keyword">for</span> (String kv : kvs) &#123;</span><br><span class="line">            String[] singlekv = kv.split(<span class="string">&quot;=&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (singlekv.length&lt;=<span class="number">2</span>)&#123;</span><br><span class="line">                String key = singlekv[<span class="number">0</span>];</span><br><span class="line">                String value = singlekv[<span class="number">1</span>];</span><br><span class="line">                String deKey = <span class="keyword">null</span>;</span><br><span class="line">                String deValue = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    deKey = URLDecoder.decode(key, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">                    deValue = URLDecoder.decode(value, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                key = deKey;</span><br><span class="line">                value = deValue;</span><br><span class="line">                map.add(key,value);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-确定请求格式与返回格式，发送请求，拿到数据"><a href="#3-确定请求格式与返回格式，发送请求，拿到数据" class="headerlink" title="3.确定请求格式与返回格式，发送请求，拿到数据"></a>3.确定请求格式与返回格式，发送请求，拿到数据</h2><p>一般请求格式和返回格式就是读一下第三方接口的文档，看看有什么参数和接口，再复读一遍到代码里面。有的时候接口文档很清晰，有的时候则很复杂，这个时候则需要一些接口调试工具去测试。</p>
+<p>考虑到单点用户登录的问题，内部的token应当是可以传递的， 假如客户机是通过类似于扮演角色（即，客户机请求服务器数据，服务器有一个固定用户访问第三方服务器），则可以利用定时任务每隔一段时间进行登录，刷新或者获取新的登录token。token的有效期一般只有一到两个小时，为了保守起见，定时任务的间隔应当设置为token保活期的一半。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Scheduled(fixedRate=1800000)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">go</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//TODO do something...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发送请求，请求构成基本可以分为请求体和请求头</p>
+<p>springboot提供了一个restemplate模板来构建请求。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HttpHeaders requestHeaders = <span class="keyword">new</span> HttpHeaders();<span class="comment">//新建请求头</span></span><br><span class="line">requestHeaders.set(<span class="string">&quot;key&quot;</span>,value);<span class="comment">//设置请求头参数</span></span><br></pre></td></tr></table></figure>
+<p>使用map封装键值数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MultiValueMap&lt;String, Object&gt; map = <span class="keyword">new</span> LinkedMultiValueMap&lt;&gt;();</span><br><span class="line">map.add(<span class="string">&quot;key&quot;</span>,value);</span><br></pre></td></tr></table></figure>
+<p>装载请求实体</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HttpEntity&lt;MultiValueMap&lt;String, Object&gt;&gt; httpEntity = <span class="keyword">new</span> HttpEntity&lt;&gt;(map, requestHeaders);</span><br></pre></td></tr></table></figure>
+<p>发送请求，获取回复</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ResponseEntity&lt;String&gt; responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);<span class="comment">//通过exchange发送请求，指定请求类型，指定回复类型</span></span><br><span class="line"><span class="keyword">if</span> (responseEntity.getStatusCode() == HttpStatus.OK)&#123;<span class="comment">//判断回复是否成功</span></span><br><span class="line">            String body = responseEntity.getBody();</span><br><span class="line">            resultMap = JSONObject.parseObject(body);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>对于返回图片的接口，可设置字节数组数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ResponseEntity&lt;<span class="keyword">byte</span>[]&gt; responseEntity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, <span class="keyword">byte</span>[].class);</span><br></pre></td></tr></table></figure>
+<h2 id="4-返回给客户端"><a href="#4-返回给客户端" class="headerlink" title="4.返回给客户端"></a>4.返回给客户端</h2><p>如果你是在别人的项目里面写接口，一般最好先找找项目有无统一封装好的回复实体类，如果有就把对象封装在里面并返回。如果有必要，还要对拿到的数据进行进一步的封装。</p>
+<p>此处返回的是原始数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">responseModule.setCode(<span class="number">200</span>);</span><br><span class="line">Object parse = JSONObject.parse(body);</span><br><span class="line">responseModule.setData(parse);</span><br><span class="line">responseModule.setMessage(<span class="string">&quot;返回查询结果&quot;</span>);</span><br><span class="line">responseModule.setSuccess(<span class="keyword">true</span>);</span><br><span class="line"><span class="keyword">return</span> responseModule;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>调用第三方接口本质就是把数据从左手倒到右手，一般把数据传输到第三方服务器之前先经过本服务器的一手过滤，然后发给第三方服务器，获取数据，之后拿到手之后，再转换为恰当的格式返回给客户端。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">springboot</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/java/SpringBoot/interface/springboot%E8%B0%83%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A5%E5%8F%A3/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-WorkLog/工作心得01" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/WorkLog/%E5%B7%A5%E4%BD%9C%E5%BF%83%E5%BE%9701/">工作心得01</a>
+    </h1>
+  
+
+        
+        <a href="/WorkLog/%E5%B7%A5%E4%BD%9C%E5%BF%83%E5%BE%9701/" class="archive-article-date">
+  	<time datetime="2021-01-16T12:08:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-16</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">32字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>和领导交流的时候啊，一定要详细的询问需求，不能一味的埋头干！！！</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/WorkLog/%E5%B7%A5%E4%BD%9C%E5%BF%83%E5%BE%9701/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-languages/BackEnd/java/maven/maven的多模块化部署" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -909,360 +1245,9 @@
 
 
   
-    <article id="post-languages/Android/Mixed/安卓本地打包指南" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/Android/Mixed/%E5%AE%89%E5%8D%93%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E6%8C%87%E5%8D%97/">安卓本地打包指南</a>
-    </h1>
-  
-
-        
-        <a href="/languages/Android/Mixed/%E5%AE%89%E5%8D%93%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E6%8C%87%E5%8D%97/" class="archive-article-date">
-  	<time datetime="2020-11-05T10:54:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-05</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">802字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">4分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1.环境准备"></a>1.环境准备</h2><ul>
-<li>Android Studio 下载地址：<a target="_blank" rel="noopener" href="https://developer.android.google.cn/studio/index.html">Android Studio官网</a> OR <a target="_blank" rel="noopener" href="http://www.android-studio.org/">Android Studio中文社区</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.dcloud.io/hbuilderx.html">HBuilderX</a></li>
-<li>App离线SDK下载：<a target="_blank" rel="noopener" href="https://nativesupport.dcloud.net.cn/AppDocs/download/android">最新android平台SDK下载</a></li>
-</ul>
-<h2 id="2-具体操作步骤"><a href="#2-具体操作步骤" class="headerlink" title="2.具体操作步骤"></a>2.具体操作步骤</h2><ol>
-<li>新建一个空项目</li>
-<li>切换项目视图到project下，新建一个lib文件夹，将lib.5plus.base-release.aar、android-gif-drawable-release@1.2.17.aar、uniapp-release.aar和miit_mdid_1.0.10.aar（HBuilderX2.8.1之后更新到msa_mdid_1.0.13.aar）拷贝到libs目录下</li>
-<li>复制以下这段话到build.gradle:app里，添加资源引用</li>
-</ol>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">    implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.jar&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    implementation <span class="string">&#x27;androidx.appcompat:appcompat:1.2.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;androidx.constraintlayout:constraintlayout:2.0.1&#x27;</span></span><br><span class="line">    testImplementation <span class="string">&#x27;junit:junit:4.12&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.ext:junit:1.1.2&#x27;</span></span><br><span class="line">    androidTestImplementation <span class="string">&#x27;androidx.test.espresso:espresso-core:3.3.0&#x27;</span></span><br><span class="line"></span><br><span class="line">    implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.aar&#x27;</span>, <span class="string">&#x27;*.jar&#x27;</span>], <span class="keyword">exclude</span>: [])</span><br><span class="line"></span><br><span class="line">    implementation <span class="string">&#x27;com.android.support:support-v4:28.0.0&#x27;</span></span><br><span class="line">    implementation <span class="string">&#x27;com.github.bumptech.glide:glide:4.9.0&#x27;</span> <span class="comment">// 基座依赖</span></span><br><span class="line">    implementation <span class="string">&#x27;com.alibaba:fastjson:1.1.46.android&#x27;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li><p>配置应用名称</p>
-<p>打开app-&gt;res -&gt; main -&gt; values -&gt; strings.xml文件，修改“app_name”字段值，该值为安装到手机上桌面显示的应用名称，建议与manifest.json中name（基础配置中的应用名称）对应。</p>
-</li>
-<li><p>配置应用启动页及provider节点</p>
-<p>将下述内容添加到Androidmanifest.xml的application节点中</p>
-<p><strong>注意：新建的项目默认会有一个MainActivity的节点，必须删掉！</strong></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;io.dcloud.PandoraEntry&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:configChanges</span>=<span class="string">&quot;orientation|keyboardHidden|keyboard|navigation&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:label</span>=<span class="string">&quot;@string/app_name&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">&quot;singleTask&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:hardwareAccelerated</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">&quot;@style/TranslucentTheme&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:screenOrientation</span>=<span class="string">&quot;user&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:windowSoftInputMode</span>=<span class="string">&quot;adjustResize&quot;</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">activity</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;io.dcloud.PandoraEntryActivity&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:launchMode</span>=<span class="string">&quot;singleTask&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:configChanges</span>=<span class="string">&quot;orientation|keyboardHidden|screenSize|mcc|mnc|fontScale|keyboard&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:hardwareAccelerated</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:permission</span>=<span class="string">&quot;com.miui.securitycenter.permission.AppPermissionsEditor&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:screenOrientation</span>=<span class="string">&quot;user&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">&quot;@style/DCloudTheme&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:windowSoftInputMode</span>=<span class="string">&quot;adjustResize&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.DEFAULT&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.BROWSABLE&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.VIEW&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">data</span> <span class="attr">android:scheme</span>=<span class="string">&quot;h56131bcf&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--provider节点必须添加--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">provider</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:name</span>=<span class="string">&quot;io.dcloud.common.util.DCloud_FileProvider&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:authorities</span>=<span class="string">&quot;$&#123;apk.applicationId&#125;.dc.fileprovider&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:exported</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:grantUriPermissions</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">&quot;android.support.FILE_PROVIDER_PATHS&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:resource</span>=<span class="string">&quot;@xml/dcloud_file_provider&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">provider</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><strong>注意：${apk.applicationId} 必须替换成当前应用的包名</strong></p>
-<ol>
-<li><p>在Andorid视图下，创建assets文件夹</p>
-<p>SDK-&gt;assets-&gt;data文件夹拷贝到刚刚创建的assets文件夹下</p>
-<p>注意：dcloud1.dat、dcloud2.dat为uni-app所需资源<strong>（2.7.0之后已不在需要，升级时需要删除，可以减少apk大小）</strong>，5+APP可将这两个文件删除。</p>
-<p>注意：SDK升级时，data下资源需要同时更新</p>
-<p>修改dcloud_control.xml</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">app</span> <span class="attr">appid</span>=<span class="string">&quot;duncant&quot;</span> <span class="attr">appver</span>=<span class="string">&quot;&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<p>确保dcloud_control.xml中的appid与manifest.json一致</p>
-<p>将HBuilderX中的项目导出，将导出的资源复制到assets-&gt;apps下</p>
-<p>项目名</p>
-<p>/src/main/assets/apps/duncant/www/</p>
-<p>-css</p>
-<p>-img</p>
-<p>-js</p>
-<p>-…</p>
-<p>index.html</p>
-<p>manifest.json</p>
-<p>基本就是这样的文件结构</p>
-</li>
-</ol>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://nativesupport.dcloud.net.cn/AppDocs/usesdk/android">安卓本地打包指南官网参考</a></li>
-<li><a target="_blank" rel="noopener" href="https://nativesupport.dcloud.net.cn/AppDocs/download/android">安卓混合开发SDK下载包</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Android混合开发</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/Android/Mixed/%E5%AE%89%E5%8D%93%E6%9C%AC%E5%9C%B0%E6%89%93%E5%8C%85%E6%8C%87%E5%8D%97/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/HBase/Basic/HbaseShell基本安装" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/HBase/Basic/HbaseShell%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85/">HbaseShell基本安装</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/HBase/Basic/HbaseShell%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85/" class="archive-article-date">
-  	<time datetime="2020-10-28T04:21:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">41字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://hbase.apache.org/downloads.html">Hbase下载地址（需要注意与HDFS版本相互对应）</a></li>
-<li><a target="_blank" rel="noopener" href="http://abloz.com/hbase/book.html">Hbase中文官方文档</a></li>
-<li><a target="_blank" rel="noopener" href="http://hbase.apache.org/book.html#configuration">HDFS Hbase对应关系(4.1. Hadoop有对照图)</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hbase</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/HBase/Basic/HbaseShell%E5%9F%BA%E6%9C%AC%E5%AE%89%E8%A3%85/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-BigData/HBase/Basic/HbaseShell命令测试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/HBase/Basic/HbaseShell%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95/">HbaseShell命令测试</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/HBase/Basic/HbaseShell%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95/" class="archive-article-date">
-  	<time datetime="2020-10-28T04:16:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">174字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;Ssex&#39;,&#39;male&#39;</span><br><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;Sage&#39;,&#39;22&#39;</span><br><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;Sdept&#39;,&#39;CS&#39;</span><br><span class="line">put &#39;student&#39;,&#39;95001&#39;,&#39;course:math&#39;,&#39;80&#39;</span><br><span class="line"></span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary1&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary2&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary3&#39;</span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary4&#39;  </span><br><span class="line">put &#39;teacher&#39;,&#39;91001&#39;,&#39;username&#39;,&#39;Mary5&#39;</span><br><span class="line"></span><br><span class="line">get &#39;teacher&#39;,&#39;91001&#39;,&#123;COLUMN&#x3D;&gt;&#39;username&#39;,VERSIONS&#x3D;&gt;5&#125;</span><br><span class="line">get &#39;teacher&#39;,&#39;91001&#39;,&#123;COLUMN&#x3D;&gt;&#39;username&#39;,VERSIONS&#x3D;&gt;3&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li>xxx</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Hbase</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/HBase/Basic/HbaseShell%E5%91%BD%E4%BB%A4%E6%B5%8B%E8%AF%95/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1504,6 +1489,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">GA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">lambda</a>
               </li>
             
             <div class="clearfix"></div>
