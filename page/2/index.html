@@ -148,6 +148,233 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security%E5%85%A5%E9%97%A8/">Springboot-Security入门</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security%E5%85%A5%E9%97%A8/" class="archive-article-date">
+  	<time datetime="2020-11-08T12:21:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-08</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">663字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">2分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[Toc]</p>
+<h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h2><p>Security可以简单理解成Springboot提供的一套拦截器，用来保护服务器资源，规定了标准登录，登出，以及一系列的权限管理。</p>
+<h2 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h2><h3 id="2-1新建类"><a href="#2-1新建类" class="headerlink" title="2.1新建类"></a>2.1新建类</h3><p>首先在新建一个config包，然后到下面新建一个类SecurityConfig，继承自WebSecurityConfigurerAdapter，加上@Configuration注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-使用用户自己的密码登录和权限"><a href="#2-2-使用用户自己的密码登录和权限" class="headerlink" title="2.2 使用用户自己的密码登录和权限"></a>2.2 使用用户自己的密码登录和权限</h3><h4 id="2-2-1-SecurityConfig"><a href="#2-2-1-SecurityConfig" class="headerlink" title="2.2.1 SecurityConfig"></a>2.2.1 SecurityConfig</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//表单登录</span></span><br><span class="line">        http.formLogin()</span><br><span class="line">                .and()</span><br><span class="line">                <span class="comment">//请求授权</span></span><br><span class="line">                .authorizeRequests()</span><br><span class="line">                <span class="comment">//所有请求</span></span><br><span class="line">                .anyRequest()</span><br><span class="line">                <span class="comment">//都需要身份认证</span></span><br><span class="line">                .authenticated();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际上不写这个类，默认就直接会配置安全访问了，即，直接访问目标域名资源将会被拦截，跳转到/login，然后给出默认的用户名，密码登录，默认用户名是user，密码则会在服务器启动时默认生成，直接复制即可。</p>
+<p>由于实际生产环境并不会使用默认用户名密码，甚至登录url也要自定义，所以接下来开始尝试使用用户自己默认的密码进行登录</p>
+<h4 id="2-2-2-UserService"><a href="#2-2-2-UserService" class="headerlink" title="2.2.2 UserService"></a>2.2.2 UserService</h4><p>首先到service文件夹下，在和登录相关的UserService应用UserDetailsService这个接口，重写loadUserByUsername方法</p>
+<p>UserService</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span> <span class="keyword">implements</span> <span class="title">UserDetailsService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">        <span class="comment">//用户输入表单的用户名，提交后到这里来</span></span><br><span class="line">        System.out.println(username);</span><br><span class="line">		</span><br><span class="line">        <span class="comment">//到数据库查询用户是否存在，若不存在，直接抛出用户名不存在异常</span></span><br><span class="line">        User user =userMapper.loadUserByUsername(username);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == user)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UsernameNotFoundException(<span class="string">&quot;用户名不存在&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//传递权限给用户，可以先不看，后面详细解释</span></span><br><span class="line">        user.setRoles(userMapper.getUserRolesByUserId(user.getUserId()));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再让User类本身应用UserDetails 接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">UserDetails</span> </span>&#123;</span><br><span class="line">    <span class="comment">//... 其他字段</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Role权限，根据数据库获得</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Role&gt; roles;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Role&gt; <span class="title">getRoles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> roles;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRoles</span><span class="params">(List&lt;Role&gt; roles)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.roles = roles;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Collection&lt;? extends GrantedAuthority&gt; getAuthorities() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//字段里的pwd</span></span><br><span class="line">        <span class="keyword">return</span> userPassword;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//账号是否不过期</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isAccountNonExpired</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//账号是否不冻结/锁定</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isAccountNonLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//账号凭证是否不过期（通常是vip这些）</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isCredentialsNonExpired</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//账号是否有效</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEnabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Role类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 角色主键</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer roleId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 角色名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String roleName;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 角色名中文</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String roleNamezh;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date createDatetime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Boolean enabled;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3其他"><a href="#2-3其他" class="headerlink" title="2.3其他"></a>2.3其他</h3><h4 id="2-3-1添加默认密码加密器"><a href="#2-3-1添加默认密码加密器" class="headerlink" title="2.3.1添加默认密码加密器"></a>2.3.1添加默认密码加密器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function">PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringBoot-Security</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security%E5%85%A5%E9%97%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-languages/Android/Bug/模拟器端口被占用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/Android/Bug/%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/">模拟器端口被微信占用</a>
+    </h1>
+  
+
+        
+        <a href="/languages/Android/Bug/%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2020-11-06T16:13:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-07</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">335字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[Toc]</p>
+<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1.问题描述"></a>1.问题描述</h2><p>启动夜神模拟器的时候，有时候Android Studio能识别到，有时候又识别不到。这种看似玄学的现象在背后必定有一个逻辑解释，查看了一下Android Studio的Event Log</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>:<span class="number">13</span>	Unable to open connection to: localhost/<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>, due to: java.net.ConnectException: Connection refused: connect</span><br></pre></td></tr></table></figure>
+<h2 id="2-推测问题"><a href="#2-推测问题" class="headerlink" title="2.推测问题"></a>2.推测问题</h2><p>推测是端口被占用</p>
+<h2 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3.解决方案"></a>3.解决方案</h2><p>在Win系统CMD敲下以下命令查看端口被占用情况</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> netstat <span class="literal">-ano</span> | findstr <span class="number">5037</span></span><br><span class="line"></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>              LISTENING       <span class="number">28180</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51078</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51099</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51122</span>        ESTABLISHED     <span class="number">28180</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51130</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51131</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51137</span>        ESTABLISHED     <span class="number">28180</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51140</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51215</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51122</span>        <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         ESTABLISHED     <span class="number">3660</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51137</span>        <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         ESTABLISHED     <span class="number">3660</span></span><br></pre></td></tr></table></figure>
+<p>然后输入以下命令查看占用的程序情况</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> tasklist|findstr <span class="number">28180</span></span><br></pre></td></tr></table></figure>
+<p>显示被某个程序占用，直接关掉，搞定</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>所以ADB的端口为什么会给普通程序占用呢？这合理吗？</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>无</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安卓开发BUG</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/Android/Bug/%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-languages/Android/Mixed/安卓本地打包指南" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -965,121 +1192,6 @@
 
 
   
-    <article id="post-languages/BackEnd/php/lib/php数据库操作文件代码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/BackEnd/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/">php数据库操作文件代码</a>
-    </h1>
-  
-
-        
-        <a href="/languages/BackEnd/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/" class="archive-article-date">
-  	<time datetime="2020-10-22T05:38:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">611字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">3分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li>config.inc.php</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">define(<span class="string">&#x27;DB_HOST&#x27;</span>,<span class="string">&#x27;localhost&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_USER&#x27;</span>,<span class="string">&#x27;root&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PASSWORD&#x27;</span>,<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_DATABASE&#x27;</span>,<span class="string">&#x27;php1&#x27;</span>);</span><br><span class="line">define(<span class="string">&#x27;DB_PORT&#x27;</span>,<span class="number">3306</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>mysql.inc.php</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="comment">//数据库连接</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">connect</span>(<span class="params">$host=DB_HOST,$user=DB_USER,$password=DB_PASSWORD,$database=DB_DATABASE,$port=DB_PORT</span>)</span>&#123;</span><br><span class="line">	$link=@mysqli_connect($host, $user, $password, $database, $port);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_connect_errno())&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_connect_error());</span><br><span class="line">	&#125;</span><br><span class="line">	mysqli_set_charset($link,<span class="string">&#x27;utf8&#x27;</span>);</span><br><span class="line">	<span class="keyword">return</span> $link;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行一条SQL语句,返回结果集对象或者返回布尔值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute</span>(<span class="params">$link,$query</span>)</span>&#123;</span><br><span class="line">	$result=mysqli_query($link,$query);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_errno($link))&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_error($link));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> $result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//执行一条SQL语句，只会返回布尔值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute_bool</span>(<span class="params">$link,$query</span>)</span>&#123;</span><br><span class="line">	$bool=mysqli_real_query($link,$query);</span><br><span class="line">	<span class="keyword">if</span>(mysqli_errno($link))&#123;</span><br><span class="line">		<span class="keyword">exit</span>(mysqli_error($link));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> $bool;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//一次性执行多条SQL语句</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> 一次性执行多条SQL语句</span></span><br><span class="line"><span class="comment">$link：连接</span></span><br><span class="line"><span class="comment">$arr_sqls：数组形式的多条sql语句</span></span><br><span class="line"><span class="comment">$error：传入一个变量，里面会存储语句执行的错误信息</span></span><br><span class="line"><span class="comment">使用案例：</span></span><br><span class="line"><span class="comment">$arr_sqls=array(</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;,</span></span><br><span class="line"><span class="comment">	&#x27;select * from sfk_father_module&#x27;</span></span><br><span class="line"><span class="comment">);</span></span><br><span class="line"><span class="comment">var_dump(execute_multi($link, $arr_sqls,$error));</span></span><br><span class="line"><span class="comment">echo $error;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">execute_multi</span>(<span class="params">$link,$arr_sqls,&amp;$error</span>)</span>&#123;</span><br><span class="line">	$sqls=implode(<span class="string">&#x27;;&#x27;</span>,$arr_sqls).<span class="string">&#x27;;&#x27;</span>;</span><br><span class="line">	<span class="keyword">if</span>(mysqli_multi_query($link,$sqls))&#123;</span><br><span class="line">		$data=<span class="keyword">array</span>();</span><br><span class="line">		$i=<span class="number">0</span>;<span class="comment">//计数</span></span><br><span class="line">		<span class="keyword">do</span> &#123;</span><br><span class="line">			<span class="keyword">if</span>($result=mysqli_store_result($link))&#123;</span><br><span class="line">				$data[$i]=mysqli_fetch_all($result);</span><br><span class="line">				mysqli_free_result($result);</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				$data[$i]=<span class="literal">null</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			$i++;</span><br><span class="line">			<span class="keyword">if</span>(!mysqli_more_results($link)) <span class="keyword">break</span>;</span><br><span class="line">		&#125;<span class="keyword">while</span> (mysqli_next_result($link));</span><br><span class="line">		<span class="keyword">if</span>($i==count($arr_sqls))&#123;</span><br><span class="line">			<span class="keyword">return</span> $data;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			$error=<span class="string">&quot;sql语句执行失败：&lt;br /&gt;&amp;nbsp;数组下标为<span class="subst">&#123;$i&#125;</span>的语句:<span class="subst">&#123;$arr_sqls[$i]&#125;</span>执行错误&lt;br /&gt;&amp;nbsp;错误原因：&quot;</span>.mysqli_error($link);</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		$error=<span class="string">&#x27;执行失败！请检查首条语句是否正确！&lt;br /&gt;可能的错误原因：&#x27;</span>.mysqli_error($link);</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//获取记录数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">num</span>(<span class="params">$link,$sql_count</span>)</span>&#123;</span><br><span class="line">	$result=execute($link,$sql_count);</span><br><span class="line">	$count=mysqli_fetch_row($result);</span><br><span class="line">	<span class="keyword">return</span> $count[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//数据入库之前进行转义，确保，数据能够顺利的入库</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//关闭与数据库的连接</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">close</span>(<span class="params">$link</span>)</span>&#123;</span><br><span class="line">	mysqli_close($link);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>返回json结果集</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$link=connect();</span><br><span class="line">$query = <span class="string">&#x27;SELECT * FROM recruit&#x27;</span>;</span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">while</span> ( $row =mysqli_fetch_assoc( $result ))&#123;</span><br><span class="line">    $rows []= $row ; <span class="comment">//接受结果集</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> json_encode($rows);</span><br><span class="line">close($link);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>从get或者post获取参数</li>
-</ul>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">&#x27;Content-Type:application/json; charset=utf-8&#x27;</span>);</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;config.inc.php&#x27;</span>;</span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&#x27;mysql.inc.php&#x27;</span>;</span><br><span class="line">$link = connect();</span><br><span class="line">$query = <span class="string">&#x27;insert </span></span><br><span class="line"><span class="string">into </span></span><br><span class="line"><span class="string">comment </span></span><br><span class="line"><span class="string">values</span></span><br><span class="line"><span class="string">(NULL,&#x27;</span>.$_GET[<span class="string">&#x27;user_id&#x27;</span>].<span class="string">&#x27;,&#x27;</span>.$_GET[<span class="string">&#x27;post_id&#x27;</span>].<span class="string">&#x27;,\&#x27;&#x27;</span>.$_GET[<span class="string">&#x27;cmt_content&#x27;</span>].<span class="string">&#x27;\&#x27;);&#x27;</span>;</span><br><span class="line"></span><br><span class="line">$result = execute($link,$query);</span><br><span class="line"><span class="keyword">if</span>($result)&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">200</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">	$data = <span class="keyword">array</span>(</span><br><span class="line">	        <span class="string">&#x27;code&#x27;</span> =&gt; <span class="number">500</span>,</span><br><span class="line">	    );</span><br><span class="line">&#125;</span><br><span class="line">close($link);</span><br><span class="line"><span class="keyword">echo</span> json_encode($data);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://houdunren.gitee.io/note/php/">后盾人的PHP文档</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">php</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/BackEnd/php/lib/php%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C%E6%96%87%E4%BB%B6%E4%BB%A3%E7%A0%81/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-languages/BackEnd/php/lib/php接收参数以及返回json" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1158,110 +1270,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/languages/BackEnd/php/lib/php%E6%8E%A5%E6%94%B6%E5%8F%82%E6%95%B0%E4%BB%A5%E5%8F%8A%E8%BF%94%E5%9B%9Ejson/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-languages/BackEnd/python/advance/tensorFlow2/初识tensorFlow" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/BackEnd/python/advance/tensorFlow2/%E5%88%9D%E8%AF%86tensorFlow/">初识tensorFlow2</a>
-    </h1>
-  
-
-        
-        <a href="/languages/BackEnd/python/advance/tensorFlow2/%E5%88%9D%E8%AF%86tensorFlow/" class="archive-article-date">
-  	<time datetime="2020-10-22T05:37:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">22字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.tensorflow.org/">TensorFlow 官网（需要翻墙）</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/geektutu/tensorflow2-docs-zh">TensorFlow 2 / 2.0 官方文档中文版</a></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">tensorFlow2</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/BackEnd/python/advance/tensorFlow2/%E5%88%9D%E8%AF%86tensorFlow/">展开全文 >></a>
         </p>
       
 
@@ -1410,6 +1418,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">worklog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BigData</a>
               </li>
              
@@ -1418,7 +1430,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">postgraduate</a>
+                <a href="javascript:void(0)" class="js-tag color2">oracle</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">bug</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1430,15 +1446,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">postgraduate</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Hbase</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1450,11 +1470,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Shell</a>
+                <a href="javascript:void(0)" class="js-tag color3">安卓开发BUG</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">安卓开发BUG</a>
+                <a href="javascript:void(0)" class="js-tag color1">Shell</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1470,11 +1490,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Liscense</a>
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color4">Liscense</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1498,11 +1518,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1519,6 +1539,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">SpringBoot-Security</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">io</a>
               </li>
              
               <li class="article-tag-list-item">

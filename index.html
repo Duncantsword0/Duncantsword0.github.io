@@ -148,6 +148,244 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-languages/BackEnd/java/SpringBoot/resource/springboot读写静态文件" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/languages/BackEnd/java/SpringBoot/resource/springboot%E8%AF%BB%E5%86%99%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6/">springboot读写静态文件</a>
+    </h1>
+  
+
+        
+        <a href="/languages/BackEnd/java/SpringBoot/resource/springboot%E8%AF%BB%E5%86%99%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6/" class="archive-article-date">
+  	<time datetime="2021-01-26T02:02:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-26</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">960字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">4分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>对于springboot的resource文件夹和webapp文件夹来说，都是静态资源。但在实际开发中，因为部分业务问题总归要在运行时进行修改。而又由于springboot编译后这些静态文件将会在别的目录下，因此在进行任何io流操作前，都应当<strong>优先获取正确的路径</strong></p>
+<h1 id="2-问题"><a href="#2-问题" class="headerlink" title="2. 问题"></a>2. 问题</h1><p>项目经理给了个需求，获取表的最新更新时间，然后跟当前静态json文件的更新时间做比较，如果时间更新，则更新静态json文件（从数据库读出数据转json）</p>
+<p>这个问题本质非常简单，步骤可以概括为以下三步</p>
+<p>即</p>
+<ol>
+<li>读数据库更新时间</li>
+<li>读文件内容里写的更新时间</li>
+<li>对比两个更新时间</li>
+<li>如果新，写入新文件内容，否则保持不变</li>
+</ol>
+<p>这个功能其实本质应当是其他功能的回调，即别的功能修改了数据库表的内容后，通过回调来通知我负责的这块代码。可实际由于两块功能写在不同的模块里，导致写回调很麻烦。</p>
+<p>因此，迫不得已，要我自己去获取数据库表的更新时间。当然，找到正确的静态资源路径进行读写也是个问题。</p>
+<h1 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3. 解决方案"></a>3. 解决方案</h1><ol>
+<li>首先是获取数据库的更新时间，这边用的oracle，最多只能获取到表结构更新时间或者基于块的更细时间，无法精细到每一条记录被更新的时间。因此只能直接</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> (</span><br><span class="line"><span class="keyword">SELECT</span> to_char(moddified,<span class="string">&#x27;yyyy-MM-dd hh24:mi:ss&#x27;</span>) <span class="keyword">as</span> <span class="string">&quot;updateTime&quot;</span> <span class="keyword">from</span> TABLE_NAME</span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">condition = <span class="comment">#&#123;condition&#125;</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> moddified <span class="keyword">desc</span>)</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">rownum</span> = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>在mapper里拿到的数据，在转Date比较后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//拿到最新更新时间</span></span><br><span class="line">                String newUpdateTime = (String) newMap.get(<span class="string">&quot;updateTime&quot;</span>);</span><br><span class="line">                SimpleDateFormat sdf = <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line">                Date oldDate = <span class="keyword">null</span>;</span><br><span class="line">                Date newDate = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    oldDate = sdf.parse(oldUpdateTime);</span><br><span class="line">                    newDate = sdf.parse(newUpdateTime);</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">null</span> != oldDate &amp;&amp; <span class="keyword">null</span> != newDate)&#123;</span><br><span class="line">                        flag = oldDate.getTime() &lt; newDate.getTime();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (ParseException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+<p>转json后写入update文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">&quot;updateTime&quot;</span>:<span class="string">&quot;0000-00-01 00:00:00&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>读写静态文件</p>
+<p>首先拿到File或者流对象才能对文件进行操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">ResourceLoader resourceLoader;<span class="comment">//springboot会自动注入，静态变量则不会注入</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">read2Update</span><span class="params">(String groupId)</span></span>&#123;</span><br><span class="line">        <span class="comment">//利用spring io 提供的resourceLoader</span></span><br><span class="line">		Resource resource = resourceLoader.getResource(<span class="string">&quot;static/&quot;</span>+fileName+<span class="string">&quot;.suffix&quot;</span>);<span class="comment">//实际在webapp下的文件最后也会被打包到static文件夹下，除非在maven打包插件里面指定</span></span><br><span class="line">        <span class="comment">//声明字符串构建器</span></span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="comment">//声明流变量</span></span><br><span class="line">        BufferedReader br = <span class="keyword">null</span>;</span><br><span class="line">        InputStreamReader isr = <span class="keyword">null</span>;</span><br><span class="line">        InputStream is = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//如果存在，则读入数据</span></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">//为流赋值</span></span><br><span class="line">                    is =  resource.getInputStream();</span><br><span class="line">                    isr = <span class="keyword">new</span> InputStreamReader(is,<span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">                    br = <span class="keyword">new</span> BufferedReader(isr);</span><br><span class="line">                    String data = <span class="keyword">null</span>;</span><br><span class="line">                    <span class="comment">//读取数据</span></span><br><span class="line">                    <span class="keyword">while</span>((data = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        sb.append(data);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;<span class="keyword">catch</span> (FileNotFoundException e)&#123;</span><br><span class="line">                    <span class="comment">//如果不存在，则直接返回最古老的的数据</span></span><br><span class="line">                    sb.append(<span class="string">&quot;&#123;\&quot;updateTime\&quot;:\&quot;0000-01-01 00:00:00\&quot;&#125;&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">//关闭流对象</span></span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">null</span> != br)br.close();</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">null</span> != br)is.close();</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">null</span> != br)isr.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="comment">//返回旧文件的更新时间</span></span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">write2File</span><span class="params">(String fileName, String data)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">//可以不返回boolean 这里只是为了返回一个成功写入的信号量，和其他数据</span></span><br><span class="line">        <span class="comment">//利用springio 提供的resourceLoader获取file</span></span><br><span class="line">        Resource resource = resourceLoader.getResource(<span class="string">&quot;static/&quot;</span>+fileName+<span class="string">&quot;.suffix&quot;</span>);</span><br><span class="line">        <span class="comment">//声明流对象</span></span><br><span class="line">        BufferedOutputStream bos = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//如果文件不存在，则创建文件</span></span><br><span class="line">            File file = resource.getFile();</span><br><span class="line">            <span class="keyword">if</span> (!file.exists()) &#123;</span><br><span class="line">                file.createNewFile();</span><br><span class="line">            &#125;</span><br><span class="line">            bos =  <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(file));</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != bos)&#123;</span><br><span class="line">                bos.write(data.getBytes(<span class="string">&quot;UTF-8&quot;</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != bos)&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    bos.close();</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">oracle</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">springboot</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">io</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/languages/BackEnd/java/SpringBoot/resource/springboot%E8%AF%BB%E5%86%99%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-DB/oracle/oracle时间日期格式坑" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/DB/oracle/oracle%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E5%9D%91/">oracle时间日期格式坑</a>
+    </h1>
+  
+
+        
+        <a href="/DB/oracle/oracle%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E5%9D%91/" class="archive-article-date">
+  	<time datetime="2021-01-26T01:59:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-26</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">59字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="oracle-内部不区分英文大小写"><a href="#oracle-内部不区分英文大小写" class="headerlink" title="oracle 内部不区分英文大小写"></a>oracle 内部不区分英文大小写</h2><p>因此在存取时间时，日期格式应当写成<br><strong>yyyy-MM-dd hh24:mi:ss</strong></p>
+<p>其中hh24表示按24小时制取，mi为了和月份的mm区分开来</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li>xxx</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">oracle</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">bug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/DB/oracle/oracle%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E6%A0%BC%E5%BC%8F%E5%9D%91/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-languages/BackEnd/java/jdk/lambda表达式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -416,7 +654,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">32字</span>
+      <span class="post-count">75字</span>
     </span>
   </span>
 
@@ -438,7 +676,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>和领导交流的时候啊，一定要详细的询问需求，不能一味的埋头干！！！</p>
+        <ol>
+<li><p>和领导交流的时候啊，一定要详细的询问需求，不能一味的埋头干！！！</p>
+</li>
+<li><p>写自己不熟悉的业务代码时，不懂的就要询问同事，有的时候，自己现在正在踩的坑，就是同事之前踩过的！！</p>
+</li>
+</ol>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
 <li>xxx</li>
 </ul>
@@ -450,6 +693,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">worklog</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1023,233 +1277,6 @@
 
 
   
-    <article id="post-languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security%E5%85%A5%E9%97%A8/">Springboot-Security入门</a>
-    </h1>
-  
-
-        
-        <a href="/languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security%E5%85%A5%E9%97%A8/" class="archive-article-date">
-  	<time datetime="2020-11-08T12:21:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-08</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">663字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">2分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>[Toc]</p>
-<h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义"></a>1.定义</h2><p>Security可以简单理解成Springboot提供的一套拦截器，用来保护服务器资源，规定了标准登录，登出，以及一系列的权限管理。</p>
-<h2 id="2-使用"><a href="#2-使用" class="headerlink" title="2.使用"></a>2.使用</h2><h3 id="2-1新建类"><a href="#2-1新建类" class="headerlink" title="2.1新建类"></a>2.1新建类</h3><p>首先在新建一个config包，然后到下面新建一个类SecurityConfig，继承自WebSecurityConfigurerAdapter，加上@Configuration注解</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-使用用户自己的密码登录和权限"><a href="#2-2-使用用户自己的密码登录和权限" class="headerlink" title="2.2 使用用户自己的密码登录和权限"></a>2.2 使用用户自己的密码登录和权限</h3><h4 id="2-2-1-SecurityConfig"><a href="#2-2-1-SecurityConfig" class="headerlink" title="2.2.1 SecurityConfig"></a>2.2.1 SecurityConfig</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SecurityConfig</span> <span class="keyword">extends</span> <span class="title">WebSecurityConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//表单登录</span></span><br><span class="line">        http.formLogin()</span><br><span class="line">                .and()</span><br><span class="line">                <span class="comment">//请求授权</span></span><br><span class="line">                .authorizeRequests()</span><br><span class="line">                <span class="comment">//所有请求</span></span><br><span class="line">                .anyRequest()</span><br><span class="line">                <span class="comment">//都需要身份认证</span></span><br><span class="line">                .authenticated();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>实际上不写这个类，默认就直接会配置安全访问了，即，直接访问目标域名资源将会被拦截，跳转到/login，然后给出默认的用户名，密码登录，默认用户名是user，密码则会在服务器启动时默认生成，直接复制即可。</p>
-<p>由于实际生产环境并不会使用默认用户名密码，甚至登录url也要自定义，所以接下来开始尝试使用用户自己默认的密码进行登录</p>
-<h4 id="2-2-2-UserService"><a href="#2-2-2-UserService" class="headerlink" title="2.2.2 UserService"></a>2.2.2 UserService</h4><p>首先到service文件夹下，在和登录相关的UserService应用UserDetailsService这个接口，重写loadUserByUsername方法</p>
-<p>UserService</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span> <span class="keyword">implements</span> <span class="title">UserDetailsService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    UserMapper userMapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</span><br><span class="line">        <span class="comment">//用户输入表单的用户名，提交后到这里来</span></span><br><span class="line">        System.out.println(username);</span><br><span class="line">		</span><br><span class="line">        <span class="comment">//到数据库查询用户是否存在，若不存在，直接抛出用户名不存在异常</span></span><br><span class="line">        User user =userMapper.loadUserByUsername(username);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == user)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UsernameNotFoundException(<span class="string">&quot;用户名不存在&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//传递权限给用户，可以先不看，后面详细解释</span></span><br><span class="line">        user.setRoles(userMapper.getUserRolesByUserId(user.getUserId()));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>再让User类本身应用UserDetails 接口</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">UserDetails</span> </span>&#123;</span><br><span class="line">    <span class="comment">//... 其他字段</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//Role权限，根据数据库获得</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Role&gt; roles;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Role&gt; <span class="title">getRoles</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> roles;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRoles</span><span class="params">(List&lt;Role&gt; roles)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.roles = roles;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Collection&lt;? extends GrantedAuthority&gt; getAuthorities() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//字段里的pwd</span></span><br><span class="line">        <span class="keyword">return</span> userPassword;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getUsername</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> username;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//账号是否不过期</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isAccountNonExpired</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//账号是否不冻结/锁定</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isAccountNonLocked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//账号凭证是否不过期（通常是vip这些）</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isCredentialsNonExpired</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//账号是否有效</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEnabled</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Role类</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Role</span></span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 角色主键</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer roleId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 角色名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String roleName;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 角色名中文</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String roleNamezh;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Date createDatetime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Boolean enabled;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-3其他"><a href="#2-3其他" class="headerlink" title="2.3其他"></a>2.3其他</h3><h4 id="2-3-1添加默认密码加密器"><a href="#2-3-1添加默认密码加密器" class="headerlink" title="2.3.1添加默认密码加密器"></a>2.3.1添加默认密码加密器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function">PasswordEncoder <span class="title">passwordEncoder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> BCryptPasswordEncoder();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li>xxx</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">SpringBoot-Security</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/BackEnd/java/SpringBoot/Security/SpringBoot-Security%E5%85%A5%E9%97%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-languages/Android/Bug/模拟器端口被占用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/languages/Android/Bug/%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/">模拟器端口被微信占用</a>
-    </h1>
-  
-
-        
-        <a href="/languages/Android/Bug/%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-11-06T16:13:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-07</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">335字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>[Toc]</p>
-<h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1.问题描述"></a>1.问题描述</h2><p>启动夜神模拟器的时候，有时候Android Studio能识别到，有时候又识别不到。这种看似玄学的现象在背后必定有一个逻辑解释，查看了一下Android Studio的Event Log</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>:<span class="number">13</span>	Unable to open connection to: localhost/<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>, due to: java.net.ConnectException: Connection refused: connect</span><br></pre></td></tr></table></figure>
-<h2 id="2-推测问题"><a href="#2-推测问题" class="headerlink" title="2.推测问题"></a>2.推测问题</h2><p>推测是端口被占用</p>
-<h2 id="3-解决方案"><a href="#3-解决方案" class="headerlink" title="3.解决方案"></a>3.解决方案</h2><p>在Win系统CMD敲下以下命令查看端口被占用情况</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> netstat <span class="literal">-ano</span> | findstr <span class="number">5037</span></span><br><span class="line"></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">0</span>              LISTENING       <span class="number">28180</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51078</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51099</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51122</span>        ESTABLISHED     <span class="number">28180</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51130</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51131</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51137</span>        ESTABLISHED     <span class="number">28180</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51140</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51215</span>        TIME_WAIT       <span class="number">0</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51122</span>        <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         ESTABLISHED     <span class="number">3660</span></span><br><span class="line">  TCP    <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">51137</span>        <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">5037</span>         ESTABLISHED     <span class="number">3660</span></span><br></pre></td></tr></table></figure>
-<p>然后输入以下命令查看占用的程序情况</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> tasklist|findstr <span class="number">28180</span></span><br></pre></td></tr></table></figure>
-<p>显示被某个程序占用，直接关掉，搞定</p>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>所以ADB的端口为什么会给普通程序占用呢？这合理吗？</p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li>无</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安卓开发BUG</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/languages/Android/Bug/%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1369,6 +1396,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">worklog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BigData</a>
               </li>
              
@@ -1377,7 +1408,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">postgraduate</a>
+                <a href="javascript:void(0)" class="js-tag color2">oracle</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">bug</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1389,15 +1424,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">postgraduate</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Hbase</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDFS</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1409,11 +1448,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Shell</a>
+                <a href="javascript:void(0)" class="js-tag color3">安卓开发BUG</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">安卓开发BUG</a>
+                <a href="javascript:void(0)" class="js-tag color1">Shell</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1429,11 +1468,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Liscense</a>
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color4">Liscense</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1457,11 +1496,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1478,6 +1517,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">SpringBoot-Security</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">io</a>
               </li>
              
               <li class="article-tag-list-item">
