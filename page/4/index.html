@@ -148,7 +148,7 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-BigData/env/完全分布式配置/启动集群常见错误" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-languages/Text/md/typoraDoc" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -156,20 +156,20 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/">启动集群常见错误</a>
+      <a class="article-title" href="/languages/Text/md/typoraDoc/">typora</a>
     </h1>
   
 
         
-        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" class="archive-article-date">
-  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
+        <a href="/languages/Text/md/typoraDoc/" class="archive-article-date">
+  	<time datetime="2020-10-16T08:32:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
 </a>
         <div style="margin-top:10px;">
   <span class="post-time">
     <span class="post-meta-item-icon">
       <i class="fa fa-keyboard-o"></i>
       <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">135字</span>
+      <span class="post-count">398字</span>
     </span>
   </span>
 
@@ -191,21 +191,205 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="启动节点失败可能的原因"><a href="#启动节点失败可能的原因" class="headerlink" title="启动节点失败可能的原因"></a>启动节点失败可能的原因</h3><ul>
-<li><p>不同节点的namenode格式化数据不对，可直接删除tmp/dfs文件夹，然后重新执行-format命令格式化</p>
+        <h2 id="一：菜单栏"><a href="#一：菜单栏" class="headerlink" title="一：菜单栏"></a>一：菜单栏</h2><ul>
+<li>文件：alt+F</li>
+</ul>
 <ul>
-<li><p>```shell<br>$ hadoop-daemon.sh stop namenode</p>
-<p>$ hadoop-daemon.sh stop secondarynamenode</p>
-<p>$ rm /opt/module/hadoop-2.9.2/data/tmp/dfs/ -rf</p>
-<p>$ hdfs namenode -format</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 执行启动节点命令时，显示pid permission denied，可能由于没有正确关闭集群导致</span><br><span class="line"></span><br><span class="line">  * &#96;&#96;&#96;shell</span><br><span class="line">    $ cd &#x2F;tmp&#x2F;</span><br><span class="line">    $ ll</span><br><span class="line">    $ sudo chown username:username hadoop-username-datanode.pid</span><br><span class="line">    $ ..以及其他pid</span><br></pre></td></tr></table></figure>
-</li>
+<li>编辑：alt+E</li>
 </ul>
-</li>
+<ul>
+<li>段落：alt+P</li>
 </ul>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
+<ul>
+<li>格式：alt+O</li>
 </ul>
+<ul>
+<li>视图：alt+V</li>
+</ul>
+<ul>
+<li>主题：alt+T</li>
+</ul>
+<ul>
+<li>帮助：alt+H</li>
+</ul>
+<h2 id="二：文件"><a href="#二：文件" class="headerlink" title="二：文件"></a>二：文件</h2><ul>
+<li>新建：Ctrl+N</li>
+</ul>
+<ul>
+<li>新建窗口：Ctrl+Shift+N</li>
+</ul>
+<ul>
+<li>打开：Ctrl+O</li>
+</ul>
+<ul>
+<li>快速打开：Ctrl+P</li>
+</ul>
+<ul>
+<li>保存：Ctrl+S</li>
+</ul>
+<ul>
+<li>另存为：Ctrl+Shift+S</li>
+</ul>
+<ul>
+<li>偏好：Ctrl+,</li>
+</ul>
+<ul>
+<li>关闭：Ctrl+W</li>
+</ul>
+<h2 id="三：编辑"><a href="#三：编辑" class="headerlink" title="三：编辑"></a>三：编辑</h2><ul>
+<li>撤销：Ctrl+Z</li>
+</ul>
+<ul>
+<li>重做：Ctrl+Y</li>
+</ul>
+<ul>
+<li>剪切：Ctrl+X</li>
+</ul>
+<ul>
+<li>复制：Ctrl+C</li>
+</ul>
+<ul>
+<li>粘贴：Ctrl+V</li>
+</ul>
+<ul>
+<li>复制为MarkDown：Ctrl+Shift+C</li>
+</ul>
+<ul>
+<li>粘贴为纯文本：Ctrl+Shift+V</li>
+</ul>
+<ul>
+<li>全选：Ctrl+A</li>
+</ul>
+<ul>
+<li>选中当前行/句：Ctrl+L</li>
+</ul>
+<ul>
+<li>选中当前格式文本：Ctrl+E</li>
+</ul>
+<ul>
+<li>选中当前词：Ctrl+D</li>
+</ul>
+<ul>
+<li>跳转到文首：Ctrl+Home</li>
+</ul>
+<ul>
+<li>跳转到所选内容：Ctrl+J</li>
+</ul>
+<ul>
+<li>跳转到文末：Ctrl+End</li>
+</ul>
+<ul>
+<li>查找：Ctrl+F</li>
+</ul>
+<ul>
+<li>查找下一个：F3</li>
+</ul>
+<ul>
+<li>查找上一个：Shift+F3</li>
+</ul>
+<ul>
+<li>替换：Ctrl+H</li>
+</ul>
+<h2 id="四：段落"><a href="#四：段落" class="headerlink" title="四：段落"></a>四：段落</h2><ul>
+<li>标题：Ctrl+1/2/3/4/5</li>
+</ul>
+<ul>
+<li>段落：Ctrl+0</li>
+</ul>
+<ul>
+<li>增大标题级别：Ctrl+=</li>
+</ul>
+<ul>
+<li>减少标题级别：Ctrl+-</li>
+</ul>
+<ul>
+<li>表格：Ctrl+T</li>
+</ul>
+<ul>
+<li>代码块：Ctrl+Shift+K</li>
+</ul>
+<ul>
+<li>公式块：Ctrl+Shift+M</li>
+</ul>
+<ul>
+<li>引用：Ctrl+Shift+Q</li>
+</ul>
+<ul>
+<li>有序列表：Ctrl+Shift+[</li>
+</ul>
+<ul>
+<li>无序列表：Ctrl+Shift+]</li>
+</ul>
+<ul>
+<li>增加缩进：Ctrl+]</li>
+</ul>
+<ul>
+<li>减少缩进：Ctrl+[</li>
+</ul>
+<h2 id="五：格式"><a href="#五：格式" class="headerlink" title="五：格式"></a>五：格式</h2><ul>
+<li>加粗：Ctrl+B</li>
+</ul>
+<ul>
+<li>斜体：Ctrl+I</li>
+</ul>
+<ul>
+<li>下划线：Ctrl+U</li>
+</ul>
+<ul>
+<li>代码：Ctrl+Shift+`</li>
+</ul>
+<ul>
+<li>删除线：Alt+Shift+5</li>
+</ul>
+<ul>
+<li>超链接：Ctrl+K</li>
+</ul>
+<ul>
+<li>图像：Ctrl+Shift+I</li>
+</ul>
+<ul>
+<li>清除样式：Ctrl+</li>
+</ul>
+<h2 id="六：视图"><a href="#六：视图" class="headerlink" title="六：视图"></a>六：视图</h2><ul>
+<li>显示隐藏侧边栏：Ctrl+Shift+L</li>
+</ul>
+<ul>
+<li>大纲视图：Ctrl+Shift+1</li>
+</ul>
+<ul>
+<li>文档列表视图：Ctrl+Shift+2</li>
+</ul>
+<ul>
+<li>文件树视图：Ctrl+Shift+3</li>
+</ul>
+<ul>
+<li>源代码模式：Ctrl+/</li>
+</ul>
+<ul>
+<li>专注模式：F8</li>
+</ul>
+<ul>
+<li>打字机模式：F9</li>
+</ul>
+<ul>
+<li>切换全屏：F11</li>
+</ul>
+<ul>
+<li>实际大小：Ctrl+Shift+0</li>
+</ul>
+<ul>
+<li>放大：Ctrl+Shift+=</li>
+</ul>
+<ul>
+<li>缩小：Ctrl+Shift+-</li>
+</ul>
+<ul>
+<li>应用内窗口切换：Ctrl+Tab</li>
+</ul>
+<ul>
+<li>打开DevTools：Shift+F12</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="http://support.typora.io/Shortcut-Keys/">typora快捷键</a><br><a target="_blank" rel="noopener" href="http://support.typora.io/">typora支持</a><br><a target="_blank" rel="noopener" href="https://www.typora.io/">typora官网</a></p>
 
       
 
@@ -219,7 +403,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">markdown</a>
         		</li>
       		
 		</ul>
@@ -229,7 +413,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/">展开全文 >></a>
+          <a class="article-more-a" href="/languages/Text/md/typoraDoc/">展开全文 >></a>
         </p>
       
 
@@ -432,6 +616,244 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E9%9B%86%E7%BE%A4%E9%85%8D%E7%BD%AE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/env/完全分布式配置/分发脚本" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">分发脚本</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/" class="archive-article-date">
+  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">512字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">2分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="分发脚本"><a href="#分发脚本" class="headerlink" title="分发脚本"></a>分发脚本</h1><p>​    <del>在根据镜像，配置多台机器后，并修改ip地址后。</del></p>
+<p>​    考虑到hadoop集群的配置一般是多台机器，如果一台一台去配置会非常麻烦，因此一般是利用一些脚本对这些事情进行自动化配置。这里会介绍两个命令。</p>
+<ul>
+<li><strong>scp  -r</strong> （递归复制） </li>
+</ul>
+<blockquote>
+<p><code>scp directory hostname:destination</code></p>
+<p>$ scp /etc/profile root@hadoop102:/etc/profile</p>
+<p>$ source /etc/profile</p>
+</blockquote>
+<p>基本用法和cp一致，执行时需要输入代码</p>
+<p>此复制命令，并没有完全把文件复制过来，比如文件的时间戳等</p>
+<ul>
+<li><p><strong>rsync（和scp基本一致，不过文件复制是归档复制,包括所有者还有权限都完全拷贝，两个目录参数不能都为远程目录）</strong><br>如果文件一模一样，不会拷贝</p>
+<p>-a 归档复制（可以省略）</p>
+<p>-v 显示复制信息</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1)拉取: </span><br><span class="line"></span><br><span class="line">​        rsync [option]   user@host::src   dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   rsync://user@host:port/src    dest</span><br><span class="line"></span><br><span class="line">2)推送:</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   user@host::dest</span><br><span class="line"></span><br><span class="line">​        rsync [option]   src   rsync://user@host:port/dest</span><br></pre></td></tr></table></figure>
+<p> rsync 命令一般不单独使用，而是编写成shell脚本直接自动化执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">1.获取参数个数，如果没有参数，直接退出</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$#</span> 这个程式的参数个数,<span class="keyword">if</span>后面记得跟空格</span></span><br><span class="line"></span><br><span class="line">pcount=$#</span><br><span class="line"></span><br><span class="line">if ((pcount==0)); then</span><br><span class="line"></span><br><span class="line">echo no args;</span><br><span class="line"></span><br><span class="line">exit;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="keyword">fi</span> 作为<span class="keyword">if</span>条件的结束 即end <span class="keyword">if</span></span></span><br><span class="line"></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">2 获取文件名称</span></span><br><span class="line"></span><br><span class="line">p1=$1</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">不是<span class="string">&#x27;，而是`</span></span></span><br><span class="line"></span><br><span class="line">fname=`basename $p1`</span><br><span class="line"></span><br><span class="line">echo fname=$fname</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">3 获取上级目录到绝对路径 </span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">-P是绝对路劲选项，防止输入的参数是软链接</span></span><br><span class="line"></span><br><span class="line">pdir=`cd -P $(dirname $p1); pwd`</span><br><span class="line"></span><br><span class="line">echo pdir =$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">4 获取当前用户名称</span></span><br><span class="line"></span><br><span class="line">user=`whoami`</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">5 循环 将本地数据发送到其他服务器 此处只配置三台机器</span></span><br><span class="line"></span><br><span class="line">for((host=102;host&lt;105;host++));</span><br><span class="line"></span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">echo --------------hadoop$host----------------</span><br><span class="line"></span><br><span class="line">rsync -av $pdir/$fname $user@hadoop$host:$pdir</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试脚本是否正常运作</p>
+<p>$ cd ~</p>
+<p>$ vim xsync</p>
+<p>$ sudo chmod +7 xsync 修改为可执行文件</p>
+<p>$ sudo ./xsync .  将当前目录所有文件分发到其他服务器对应的目录里</p>
+</blockquote>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://duncantsword0.github.io/system/Linux/shell/shell%20%E8%84%9A%E6%9C%AC%E5%91%BD%E4%BB%A4/">一些Shell的基础知识</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%88%86%E5%8F%91%E8%84%9A%E6%9C%AC/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-BigData/env/完全分布式配置/启动集群常见错误" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/">启动集群常见错误</a>
+    </h1>
+  
+
+        
+        <a href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/" class="archive-article-date">
+  	<time datetime="2020-10-16T07:51:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-16</time>
+</a>
+        <div style="margin-top:10px;">
+  <span class="post-time">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-keyboard-o"></i>
+      <span class="post-meta-item-text">  字数统计: </span>
+      <span class="post-count">135字</span>
+    </span>
+  </span>
+
+  <span class="post-time">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+      <i class="fa fa-hourglass-half"></i>
+      <span class="post-meta-item-text">  阅读时长: </span>
+      <span class="post-count">1分</span>
+    </span>
+  </span>
+</div>
+          <!-- 开始添加阅读量统计-->
+          <!-- <span id="busuanzi_container_page_pv">
+            全站访问次数<span id="busuanzi_value_page_pv"></span>次
+          </span> -->
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="启动节点失败可能的原因"><a href="#启动节点失败可能的原因" class="headerlink" title="启动节点失败可能的原因"></a>启动节点失败可能的原因</h3><ul>
+<li><p>不同节点的namenode格式化数据不对，可直接删除tmp/dfs文件夹，然后重新执行-format命令格式化</p>
+<ul>
+<li><p>```shell<br>$ hadoop-daemon.sh stop namenode</p>
+<p>$ hadoop-daemon.sh stop secondarynamenode</p>
+<p>$ rm /opt/module/hadoop-2.9.2/data/tmp/dfs/ -rf</p>
+<p>$ hdfs namenode -format</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 执行启动节点命令时，显示pid permission denied，可能由于没有正确关闭集群导致</span><br><span class="line"></span><br><span class="line">  * &#96;&#96;&#96;shell</span><br><span class="line">    $ cd &#x2F;tmp&#x2F;</span><br><span class="line">    $ ll</span><br><span class="line">    $ sudo chown username:username hadoop-username-datanode.pid</span><br><span class="line">    $ ..以及其他pid</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html">apache hadoop官方文档英文版</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/BigData/env/%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%85%8D%E7%BD%AE/%E5%90%AF%E5%8A%A8%E9%9B%86%E7%BE%A4%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF/">展开全文 >></a>
         </p>
       
 
@@ -1119,105 +1541,6 @@
 
 
   
-    <article id="post-BigData/env/基础配置/Hadoop基本架构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">Hadoop基本架构</a>
-    </h1>
-  
-
-        
-        <a href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/" class="archive-article-date">
-  	<time datetime="2020-10-01T15:08:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-01</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">2字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Apache-Hadoop"><a href="#Apache-Hadoop" class="headerlink" title="Apache Hadoop"></a>Apache Hadoop</h2><ul>
-<li><img src="../../../../assets/blogImg/bigData/Hadoop基本架构.png" alt="大数据基本架构"></li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">BigData</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/BigData/env/%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE/Hadoop%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-BigData/env/基础配置/Hadoop基本环境配置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1433,105 +1756,6 @@ echo "192.168.94.$i hadoop$i" >&gt; /etc/hosts<br>done</p>
 
 
   
-    <article id="post-Postgraduate/Dictionary/数学公式符号参考" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/Postgraduate/Dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/">1.4 无穷小与无穷大</a>
-    </h1>
-  
-
-        
-        <a href="/Postgraduate/Dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/" class="archive-article-date">
-  	<time datetime="2019-10-17T15:49:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-17</time>
-</a>
-        <div style="margin-top:10px;">
-  <span class="post-time">
-    <span class="post-meta-item-icon">
-      <i class="fa fa-keyboard-o"></i>
-      <span class="post-meta-item-text">  字数统计: </span>
-      <span class="post-count">199字</span>
-    </span>
-  </span>
-
-  <span class="post-time">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-      <i class="fa fa-hourglass-half"></i>
-      <span class="post-meta-item-text">  阅读时长: </span>
-      <span class="post-count">1分</span>
-    </span>
-  </span>
-</div>
-          <!-- 开始添加阅读量统计-->
-          <!-- <span id="busuanzi_container_page_pv">
-            全站访问次数<span id="busuanzi_value_page_pv"></span>次
-          </span> -->
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Mathematical-formula-in-MarkDown"><a href="#Mathematical-formula-in-MarkDown" class="headerlink" title="Mathematical formula in MarkDown"></a>Mathematical formula in MarkDown</h1><h4 id="删除线-text"><a href="#删除线-text" class="headerlink" title="删除线 :text"></a>删除线 :<del>text</del></h4><h4 id="积分上下限-int-a-b"><a href="#积分上下限-int-a-b" class="headerlink" title="积分上下限 :$\int_{a}^{b}$"></a>积分上下限 :$\int_{a}^{b}$</h4><h4 id="求积分-prod"><a href="#求积分-prod" class="headerlink" title="求积分:$\prod$"></a>求积分:$\prod$</h4><h4 id="π-：-pi"><a href="#π-：-pi" class="headerlink" title="π ：$\pi$"></a>π ：$\pi$</h4><h4 id="lim"><a href="#lim" class="headerlink" title="$lim$"></a>$lim$</h4><h4 id="圈叉-bigotimes"><a href="#圈叉-bigotimes" class="headerlink" title="圈叉 :$\bigotimes$"></a>圈叉 :$\bigotimes$</h4><h4 id="displaystyle-lim-x-to-infty-f-x"><a href="#displaystyle-lim-x-to-infty-f-x" class="headerlink" title="$\displaystyle \lim_{x \to \infty} f(x)$"></a>$\displaystyle \lim_{x \to \infty} f(x)$</h4><h4 id="displaystyle-lim-x-to-x-0-f-x"><a href="#displaystyle-lim-x-to-x-0-f-x" class="headerlink" title="$\displaystyle \lim_{x \to x_{0}} f(x)$"></a>$\displaystyle \lim_{x \to x_{0}} f(x)$</h4><h4 id="因为∵alt-41439-所以alt-41440∴"><a href="#因为∵alt-41439-所以alt-41440∴" class="headerlink" title="因为∵alt+41439 所以alt+41440∴"></a>因为∵alt+41439 所以alt+41440∴</h4><h4 id="约等于≈-alt-41430"><a href="#约等于≈-alt-41430" class="headerlink" title="约等于≈ alt+41430"></a>约等于≈ alt+41430</h4><h4 id=""><a href="#" class="headerlink" title=" "></a> </h4><p>Alt+42712 ω（欧米茄）<br>Alt+42711 ψ （普西）<br>Alt+42710 χ （奇）<br>Alt+42709 φ （法爱）<br>Alt+42708 υ （宇普西龙）<br>Alt+42707 τ （陶）<br>Alt+42706 σ （西格玛）<br>Alt+42705 ρ （肉）<br>Alt+42704 π (派）<br>Alt+42703 ο （奥米克隆）<br>Alt+42702 ξ （克赛）<br>Alt+42701 ν （纽）<br>Alt+42700 μ （缪）<br>Alt+42699 λ （兰姆达）<br>Alt+42698 κ （卡帕）<br>Alt+42697 ι （约塔）<br>Alt+42696 θ （西塔）<br>Alt+42695 η （伊塔）<br>Alt+42694 ζ （泽塔）<br>Alt+42693 ε （爱普西龙）<br>Alt+42692 δ （德尔塔）<br>Alt+42691 γ （伽马）<br>Alt+42690 β （贝塔）<br>Alt+42689 α （阿尔法)<br>Alt+42657为大写的</p>
-<p>∀    $\forall$<br>∃    $\exists$<br>∈    $\in$<br>⊨    $\models$  </p>
-<p><a target="_blank" rel="noopener" href="http://davidagler.com/teaching/logic/handouts/supplemental_material/MarkdownForSymbolicLogic.html">逻辑命题符号的md参考</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">postgraduate</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/Postgraduate/Dictionary/%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E7%AC%A6%E5%8F%B7%E5%8F%82%E8%80%83/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
@@ -1703,11 +1927,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">安卓开发BUG</a>
+                <a href="javascript:void(0)" class="js-tag color1">Shell</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Shell</a>
+                <a href="javascript:void(0)" class="js-tag color3">安卓开发BUG</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1715,19 +1939,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">regx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color5">regx</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Liscense</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1743,6 +1967,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">maven</a>
               </li>
              
@@ -1751,15 +1979,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PHP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">php</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1771,7 +1991,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">highcharts</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">SpringBoot-Security</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">apache</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">solr</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1784,6 +2016,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">测试工具</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">自定义工具类</a>
               </li>
              
               <li class="article-tag-list-item">
